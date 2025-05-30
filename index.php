@@ -1,12 +1,18 @@
 <?php
 /**
- * الصفحة الرئيسية السينمائية - قوالب عربية ووردبريس
- * تجربة مركزة بدون تمرير - شاشة واحدة فقط
+ * الصفحة الرئيسية الشاملة - قوالب عربية ووردبريس
+ * تجربة سينمائية متكاملة مع جميع المكونات المطلوبة
  * 
  * @package ArabicThemes
  * @author Tahactw
- * @date 2025-05-28
+ * @date 2025-05-30
+ * @version 3.0.0-complete
  */
+
+// منع الوصول المباشر
+if (!defined('ABSPATH')) {
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -14,191 +20,275 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php wp_title('|', true, 'right'); ?></title>
+    <meta name="description" content="اكتشف أجمل وأحدث قوالب ووردبريس العربية المجانية والاحترافية. تصاميم حديثة ومتجاوبة لجميع أنواع المواقع العربية.">
+    <meta name="keywords" content="قوالب ووردبريس, قوالب عربية, تصاميم ووردبريس, مواقع عربية, قوالب مجانية">
+    <meta name="author" content="Tahactw">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="قوالب عربية ووردبريس - مستقبل الويب العربي">
+    <meta property="og:description" content="اكتشف أجمل وأحدث قوالب ووردبريس العربية المجانية والاحترافية">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo home_url(); ?>">
+    <meta property="og:image" content="<?php echo get_template_directory_uri(); ?>/assets/images/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="قوالب عربية ووردبريس">
+    <meta name="twitter:description" content="اكتشف أجمل وأحدث قوالب ووردبريس العربية">
+    
+    <title><?php wp_title('|', true, 'right'); bloginfo('name'); ?></title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    
     <?php wp_head(); ?>
+    
+    <!-- Critical CSS للتحميل السريع -->
+    <style id="critical-css">
+        /* Critical CSS للتحميل الفوري */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: #000011;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000011 0%, #1a1a2e 50%, #16213e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999999;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(59, 130, 246, 0.2);
+            border-left: 4px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class('homepage-cinematic'); ?>>
 
-
-
-<style>
-/* إصلاح عكس أنماط المظهر - Global Fix */
-html.dark-mode,
-body.dark-mode {
-    background: #000000 !important;
-    color: #ffffff !important;
-}
-
-html.light-mode,
-body.light-mode {
-    background: #f8fafc !important;
-    color: #1e293b !important;
-}
-
-/* إصلاح خلفيات الصفحات */
-html.dark-mode .archive-themes-page,
-body.dark-mode .archive-themes-page,
-html.dark-mode main,
-body.dark-mode main {
-    background: linear-gradient(135deg, #000011 0%, #1a1a2e 50%, #16213e 100%) !important;
-    color: #ffffff !important;
-}
-
-html.light-mode .archive-themes-page,
-body.light-mode .archive-themes-page,
-html.light-mode main,
-body.light-mode main {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
-    color: #1e293b !important;
-}
-
-/* إصلاح البطاقات والعناصر */
-html.light-mode .theme-card,
-body.light-mode .theme-card {
-    background: rgba(255, 255, 255, 0.9) !important;
-    color: #1e293b !important;
-    border-color: rgba(59, 130, 246, 0.3) !important;
-}
-
-html.dark-mode .theme-card,
-body.dark-mode .theme-card {
-    background: rgba(26, 26, 46, 0.8) !important;
-    color: #ffffff !important;
-    border-color: rgba(59, 130, 246, 0.2) !important;
-}
-
-/* إصلاح صناديق البحث والفلاتر */
-html.light-mode .search-box,
-body.light-mode .search-box,
-html.light-mode .filter-select,
-body.light-mode .filter-select {
-    background: rgba(255, 255, 255, 0.9) !important;
-    color: #1e293b !important;
-    border-color: rgba(59, 130, 246, 0.3) !important;
-}
-
-html.dark-mode .search-box,
-body.dark-mode .search-box,
-html.dark-mode .filter-select,
-body.dark-mode .filter-select {
-    background: rgba(26, 26, 46, 0.8) !important;
-    color: #ffffff !important;
-    border-color: rgba(59, 130, 246, 0.3) !important;
-}
-
-/* إصلاح العناوين والنصوص */
-html.light-mode .theme-title a,
-body.light-mode .theme-title a {
-    color: #1e293b !important;
-    background: linear-gradient(45deg, #1e293b, #3b82f6) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-}
-
-html.dark-mode .theme-title a,
-body.dark-mode .theme-title a {
-    color: #ffffff !important;
-    background: linear-gradient(45deg, #ffffff, #3b82f6) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-}
-
-/* إصلاح أقسام البحث */
-html.light-mode .main-search-section,
-body.light-mode .main-search-section {
-    background: rgba(255, 255, 255, 0.3) !important;
-    border-color: rgba(59, 130, 246, 0.2) !important;
-}
-
-html.dark-mode .main-search-section,
-body.dark-mode .main-search-section {
-    background: rgba(26, 26, 46, 0.3) !important;
-    border-color: rgba(59, 130, 246, 0.2) !important;
-}
-
-/* إصلاح عناصر التحكم */
-html.light-mode .view-controls,
-body.light-mode .view-controls {
-    background: rgba(255, 255, 255, 0.8) !important;
-    border-color: rgba(59, 130, 246, 0.2) !important;
-}
-
-html.dark-mode .view-controls,
-body.dark-mode .view-controls {
-    background: rgba(26, 26, 46, 0.6) !important;
-    border-color: rgba(59, 130, 246, 0.2) !important;
-}
-
-</style>
+<!-- شاشة التحميل -->
+<div id="loading-screen" class="loading-screen">
+    <div class="loader-container">
+        <div class="loader"></div>
+        <div class="loading-text">
+            <h3>جاري التحميل...</h3>
+            <p>مرحباً بك في قوالب عربية ووردبريس</p>
+        </div>
+    </div>
+</div>
 
 <!-- Canvas للجسيمات المتحركة -->
 <canvas id="particles-canvas"></canvas>
 
-<!-- خلفية الـ Parallax -->
+<!-- خلفية الـ Parallax المتقدمة -->
 <div class="parallax-background">
     <div class="parallax-layer" data-speed="0.1"></div>
     <div class="parallax-layer" data-speed="0.3"></div>
     <div class="parallax-layer" data-speed="0.5"></div>
+    <div class="cosmic-grid"></div>
 </div>
 
-<!-- البوابة السينمائية -->
+<!-- البوابة السينمائية المحسنة -->
 <div id="cinematic-portal" class="cinematic-portal">
-    <div class="portal-background"></div>
+    <div class="portal-background">
+        <div class="energy-waves"></div>
+        <div class="plasma-field"></div>
+    </div>
+    
     <div class="portal-wave"></div>
+    
     <div class="floating-elements">
-        <!-- عناصر متحركة -->
-        <div class="floating-icon" data-icon="🎨"></div>
-        <div class="floating-icon" data-icon="📱"></div>
-        <div class="floating-icon" data-icon="💻"></div>
-        <div class="floating-icon" data-icon="🚀"></div>
-        <div class="floating-icon" data-icon="⭐"></div>
-        <div class="floating-icon" data-icon="🎯"></div>
+        <!-- أيقونات تقنية -->
+        <div class="floating-icon tech-icon" data-icon="🎨" data-delay="0.1"></div>
+        <div class="floating-icon tech-icon" data-icon="📱" data-delay="0.2"></div>
+        <div class="floating-icon tech-icon" data-icon="💻" data-delay="0.3"></div>
+        <div class="floating-icon tech-icon" data-icon="🚀" data-delay="0.4"></div>
+        <div class="floating-icon tech-icon" data-icon="⭐" data-delay="0.5"></div>
+        <div class="floating-icon tech-icon" data-icon="🎯" data-delay="0.6"></div>
+        <div class="floating-icon tech-icon" data-icon="💎" data-delay="0.7"></div>
+        <div class="floating-icon tech-icon" data-icon="🌟" data-delay="0.8"></div>
         
         <!-- حروف عربية -->
-        <div class="floating-letter">ق</div>
-        <div class="floating-letter">و</div>
-        <div class="floating-letter">ا</div>
-        <div class="floating-letter">ل</div>
-        <div class="floating-letter">ب</div>
+        <div class="floating-letter arabic-letter" data-delay="0.9">ق</div>
+        <div class="floating-letter arabic-letter" data-delay="1.0">و</div>
+        <div class="floating-letter arabic-letter" data-delay="1.1">ا</div>
+        <div class="floating-letter arabic-letter" data-delay="1.2">ل</div>
+        <div class="floating-letter arabic-letter" data-delay="1.3">ب</div>
+        <div class="floating-letter arabic-letter" data-delay="1.4">ع</div>
+        <div class="floating-letter arabic-letter" data-delay="1.5">ر</div>
+        <div class="floating-letter arabic-letter" data-delay="1.6">ب</div>
+        <div class="floating-letter arabic-letter" data-delay="1.7">ي</div>
+        <div class="floating-letter arabic-letter" data-delay="1.8">ة</div>
     </div>
+    
     <div class="portal-center">
         <div class="portal-rings">
             <div class="ring ring-1"></div>
             <div class="ring ring-2"></div>
             <div class="ring ring-3"></div>
             <div class="ring ring-4"></div>
+            <div class="ring ring-5"></div>
         </div>
         <div class="portal-core">
-            <i class="fas fa-rocket"></i>
+            <div class="core-inner">
+                <i class="fas fa-rocket"></i>
+                <div class="energy-pulse"></div>
+            </div>
         </div>
     </div>
+    
     <div class="portal-text">
-        <h2>جاري فتح بوابة القوالب...</h2>
+        <h2 class="portal-title">جاري فتح بوابة القوالب...</h2>
         <div class="loading-progress">
             <div class="progress-bar"></div>
+            <div class="progress-glow"></div>
         </div>
+        <div class="portal-subtitle">مستقبل الويب العربي يبدأ الآن</div>
+    </div>
+    
+    <!-- تأثيرات إضافية -->
+    <div class="portal-effects">
+        <div class="lightning-effect"></div>
+        <div class="stardust-trail"></div>
+        <div class="quantum-field"></div>
     </div>
 </div>
 
+<!-- التنقل العلوي الثابت -->
+<nav id="main-navigation" class="main-navigation">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="<?php echo home_url(); ?>" class="brand-link">
+                <div class="brand-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">قوالب عربية</span>
+                    <span class="brand-tagline">ووردبريس</span>
+                </div>
+            </a>
+        </div>
+        
+        <div class="nav-menu">
+            <ul class="nav-list">
+                <li class="nav-item active">
+                    <a href="<?php echo home_url(); ?>" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>الرئيسية</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?php echo home_url('/themes/'); ?>" class="nav-link">
+                        <i class="fas fa-th-large"></i>
+                        <span>القوالب</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?php echo home_url('/categories/'); ?>" class="nav-link">
+                        <i class="fas fa-tags"></i>
+                        <span>التصنيفات</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?php echo home_url('/about/'); ?>" class="nav-link">
+                        <i class="fas fa-info-circle"></i>
+                        <span>من نحن</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?php echo home_url('/contact/'); ?>" class="nav-link">
+                        <i class="fas fa-envelope"></i>
+                        <span>اتصل بنا</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="nav-actions">
+            <button class="search-toggle" id="search-toggle" title="البحث">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="menu-toggle" id="menu-toggle" title="القائمة">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- قائمة البحث المخفية -->
+    <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+            <form class="search-form" role="search" method="get" action="<?php echo home_url('/'); ?>">
+                <input type="search" name="s" placeholder="ابحث عن القوالب..." class="search-input" autocomplete="off">
+                <button type="submit" class="search-submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+            <button class="search-close" id="search-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+
 <!-- الصفحة الرئيسية المركزة -->
 <main class="main-content homepage-focused">
-    <!-- Hero Section الوحيد -->
+    <!-- Hero Section الشاشة الكاملة -->
     <section class="hero-section-fullscreen" id="hero-section">
         <div class="hero-cosmic-bg">
             <div class="cosmic-stars"></div>
             <div class="cosmic-nebula"></div>
             <div class="cosmic-portal"></div>
+            <div class="meteor-shower"></div>
         </div>
         
         <div class="container-centered">
             <div class="hero-content-main">
-                <!-- العنوان المتحرك -->
+                <!-- العنوان المتحرك المحسن -->
                 <div class="animated-title-container">
+                    <div class="title-decoration">
+                        <div class="title-line"></div>
+                        <div class="title-spark"></div>
+                    </div>
+                    
                     <h1 class="hero-title-mega">
                         <span class="title-static">مرحباً بك في</span>
                         <span class="title-animated" id="animated-text">قوالب عربية ووردبريس</span>
                         <span class="title-cursor">|</span>
                     </h1>
+                    
+                    <div class="title-decoration bottom">
+                        <div class="title-line"></div>
+                        <div class="title-spark"></div>
+                    </div>
                 </div>
                 
                 <p class="hero-description-enhanced magic-text">
@@ -213,6 +303,7 @@ body.dark-mode .view-controls {
                     <span class="magic-word">للمواقع</span> 
                     <span class="magic-word">العربية</span> 
                     <span class="magic-word">الاحترافية</span>
+                    <span class="magic-word">والحديثة</span>
                 </p>
                 
                 <!-- الأزرار المتطورة -->
@@ -221,6 +312,7 @@ body.dark-mode .view-controls {
                         <div class="btn-background">
                             <div class="btn-gradient"></div>
                             <div class="btn-particles-bg"></div>
+                            <div class="btn-energy-field"></div>
                         </div>
                         <div class="btn-content">
                             <div class="btn-icon">
@@ -230,125 +322,865 @@ body.dark-mode .view-controls {
                             <div class="btn-ripple-effect"></div>
                         </div>
                         <div class="btn-aura"></div>
+                        <div class="btn-glow"></div>
                     </button>
                     
-
+                    <a href="<?php echo home_url('/about/'); ?>" class="btn-secondary-cosmic">
+                        <div class="btn-secondary-bg"></div>
+                        <div class="btn-secondary-text">
+                            <i class="fas fa-info-circle"></i>
+                            <span>تعرف علينا</span>
+                        </div>
+                        <div class="btn-secondary-ripple"></div>
+                    </a>
                 </div>
                 
                 <!-- إحصائيات متحركة محسنة -->
                 <div class="hero-stats-enhanced floating-stats">
                     <div class="stat-item-mega" data-aos="flip-left" data-aos-delay="100">
-                        <div class="stat-icon-enhanced">
-                            <i class="fas fa-palette"></i>
+                        <div class="stat-background">
+                            <div class="stat-glow-bg"></div>
+                            <div class="stat-particle-field"></div>
                         </div>
-                        <span class="stat-number-huge" data-target="<?php
-                            $themes_count = wp_count_posts('wp_themes');
-                            echo $themes_count ? $themes_count->publish : '25';
-                        ?>">0</span>
-                        <span class="stat-label-enhanced">قالب متاح</span>
+                        <div class="stat-content">
+                            <div class="stat-icon-enhanced">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <span class="stat-number-huge" data-target="<?php
+                                $themes_count = wp_count_posts('wp_themes');
+                                echo $themes_count ? $themes_count->publish : '50';
+                            ?>">0</span>
+                            <span class="stat-label-enhanced">قالب متاح</span>
+                        </div>
                         <div class="stat-glow"></div>
                     </div>
                     
                     <div class="stat-item-mega" data-aos="flip-left" data-aos-delay="200">
-                        <div class="stat-icon-enhanced">
-                            <i class="fas fa-download"></i>
+                        <div class="stat-background">
+                            <div class="stat-glow-bg"></div>
+                            <div class="stat-particle-field"></div>
                         </div>
-                        <span class="stat-number-huge" data-target="<?php
-                            global $wpdb;
-                            $total_downloads = $wpdb->get_var("
-                                SELECT SUM(meta_value) 
-                                FROM {$wpdb->postmeta} 
-                                WHERE meta_key = '_download_count'
-                            ");
-                            echo $total_downloads ? $total_downloads : '1250';
-                        ?>">0</span>
-                        <span class="stat-label-enhanced">تحميل</span>
+                        <div class="stat-content">
+                            <div class="stat-icon-enhanced">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <span class="stat-number-huge" data-target="<?php
+                                global $wpdb;
+                                $total_downloads = $wpdb->get_var("
+                                    SELECT SUM(meta_value) 
+                                    FROM {$wpdb->postmeta} 
+                                    WHERE meta_key = '_download_count'
+                                ");
+                                echo $total_downloads ? $total_downloads : '15000';
+                            ?>">0</span>
+                            <span class="stat-label-enhanced">تحميل</span>
+                        </div>
                         <div class="stat-glow"></div>
                     </div>
                     
                     <div class="stat-item-mega" data-aos="flip-left" data-aos-delay="300">
-                        <div class="stat-icon-enhanced">
-                            <i class="fas fa-gift"></i>
+                        <div class="stat-background">
+                            <div class="stat-glow-bg"></div>
+                            <div class="stat-particle-field"></div>
                         </div>
-                        <span class="stat-number-huge" data-target="100">0</span>
-                        <span class="stat-label-enhanced">% مجاني</span>
+                        <div class="stat-content">
+                            <div class="stat-icon-enhanced">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <span class="stat-number-huge" data-target="100">0</span>
+                            <span class="stat-label-enhanced">% مجاني</span>
+                        </div>
                         <div class="stat-glow"></div>
                     </div>
                     
                     <div class="stat-item-mega" data-aos="flip-left" data-aos-delay="400">
-                        <div class="stat-icon-enhanced">
-                            <i class="fas fa-users"></i>
+                        <div class="stat-background">
+                            <div class="stat-glow-bg"></div>
+                            <div class="stat-particle-field"></div>
                         </div>
-                        <span class="stat-number-huge" data-target="500">0</span>
-                        <span class="stat-label-enhanced">مستخدم راضٍ</span>
+                        <div class="stat-content">
+                            <div class="stat-icon-enhanced">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <span class="stat-number-huge" data-target="2500">0</span>
+                            <span class="stat-label-enhanced">مستخدم راضٍ</span>
+                        </div>
                         <div class="stat-glow"></div>
+                    </div>
+                </div>
+                
+                <!-- ميزات سريعة -->
+                <div class="quick-features">
+                    <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <span class="feature-text">متجاوب تماماً</span>
+                    </div>
+                    <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <span class="feature-text">سريع التحميل</span>
+                    </div>
+                    <div class="feature-item" data-aos="fade-up" data-aos-delay="700">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <span class="feature-text">آمن ومحدث</span>
+                    </div>
+                    <div class="feature-item" data-aos="fade-up" data-aos-delay="800">
+                        <div class="feature-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <span class="feature-text">دعم كامل للعربية</span>
                     </div>
                 </div>
                 
                 <!-- شعار أو نص إضافي -->
                 <div class="hero-footer-text">
-                    <p class="slogan-text">
-                        <i class="fas fa-star"></i>
-                        مستقبل الويب العربي يبدأ من هنا
-                        <i class="fas fa-star"></i>
-                    </p>
+                    <div class="slogan-container">
+                        <div class="slogan-decoration">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="slogan-text">
+                            مستقبل الويب العربي يبدأ من هنا
+                        </p>
+                        <div class="slogan-decoration">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="scroll-indicator" id="scroll-indicator">
+                        <div class="scroll-arrow">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <span class="scroll-text">اكتشف المزيد</span>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- عناصر خلفية إضافية -->
+        <!-- عناصر خلفية إضافية متطورة -->
         <div class="floating-shapes-enhanced">
-            <div class="shape-1"></div>
-            <div class="shape-2"></div>
-            <div class="shape-3"></div>
-            <div class="shape-4"></div>
+            <div class="shape-1 floating-shape"></div>
+            <div class="shape-2 floating-shape"></div>
+            <div class="shape-3 floating-shape"></div>
+            <div class="shape-4 floating-shape"></div>
+            <div class="shape-5 floating-shape"></div>
+            <div class="shape-6 floating-shape"></div>
+        </div>
+    </section>
+
+    <!-- قسم القوالب المميزة -->
+    <section class="featured-themes-section" id="featured-themes">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <i class="fas fa-star"></i>
+                    <span>مميز</span>
+                </div>
+                <h2 class="section-title">القوالب المميزة</h2>
+                <p class="section-description">اكتشف أحدث وأجمل قوالب ووردبريس العربية</p>
+                <div class="section-decoration">
+                    <div class="decoration-line"></div>
+                    <div class="decoration-dot"></div>
+                    <div class="decoration-line"></div>
+                </div>
+            </div>
+            
+            <div class="themes-grid">
+                <?php
+                // جلب القوالب المميزة
+                $featured_themes = new WP_Query(array(
+                    'post_type' => 'wp_themes',
+                    'posts_per_page' => 6,
+                    'meta_query' => array(
+                        array(
+                            'key' => '_featured_theme',
+                            'value' => 'yes',
+                            'compare' => '='
+                        )
+                    )
+                ));
+                
+                if ($featured_themes->have_posts()) :
+                    $delay = 0;
+                    while ($featured_themes->have_posts()) : $featured_themes->the_post();
+                        $theme_id = get_the_ID();
+                        $demo_url = get_post_meta($theme_id, '_theme_demo_url', true);
+                        $download_url = get_post_meta($theme_id, '_theme_download_url', true);
+                        $version = get_post_meta($theme_id, '_theme_version', true);
+                        $price = get_post_meta($theme_id, '_theme_price', true);
+                        $downloads = get_post_meta($theme_id, '_download_count', true) ?: 0;
+                        $rating = 4.5; // يمكن حسابه من قاعدة البيانات
+                        $delay += 100;
+                ?>
+                <article class="theme-card featured-card" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
+                    <div class="card-background">
+                        <div class="card-glow"></div>
+                        <div class="card-particles"></div>
+                    </div>
+                    
+                    <div class="theme-badges">
+                        <span class="badge badge-featured">
+                            <i class="fas fa-star"></i>
+                            مميز
+                        </span>
+                        <?php if (empty($price)) : ?>
+                        <span class="badge badge-free">
+                            <i class="fas fa-gift"></i>
+                            مجاني
+                        </span>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <div class="theme-preview">
+                        <div class="preview-container">
+                            <?php if (has_post_thumbnail()) : ?>
+                                <?php the_post_thumbnail('theme-preview', array('class' => 'theme-image', 'loading' => 'lazy')); ?>
+                            <?php else : ?>
+                                <div class="no-image">
+                                    <i class="fas fa-image"></i>
+                                    <span>لا توجد صورة</span>
+                                </div>
+                            <?php endif; ?>
+                            <div class="preview-overlay">
+                                <div class="preview-actions">
+                                    <?php if ($demo_url) : ?>
+                                    <a href="<?php echo esc_url($demo_url); ?>" class="preview-btn demo-btn" target="_blank" title="معاينة مباشرة">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <?php endif; ?>
+                                    <button class="preview-btn download-btn" data-theme-id="<?php echo $theme_id; ?>" title="تحميل القالب">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="theme-content">
+                        <h3 class="theme-title">
+                            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                        </h3>
+                        
+                        <div class="theme-meta">
+                            <div class="theme-rating">
+                                <div class="rating-stars">
+                                    <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                        <i class="<?php echo $i <= $rating ? 'fas' : 'far'; ?> fa-star"></i>
+                                    <?php endfor; ?>
+                                    <span class="rating-value">(<?php echo number_format($rating, 1); ?>)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-download"></i>
+                                    <span><?php echo number_format($downloads); ?></span>
+                                </div>
+                                <?php if ($version) : ?>
+                                <div class="stat-item">
+                                    <i class="fas fa-tag"></i>
+                                    <span>v<?php echo esc_html($version); ?></span>
+                                </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        
+                        <div class="theme-excerpt">
+                            <?php echo wp_trim_words(get_the_excerpt(), 15, '...'); ?>
+                        </div>
+                        
+                        <div class="theme-categories">
+                            <?php
+                            $categories = get_the_terms($theme_id, 'theme_category');
+                            if ($categories && !is_wp_error($categories)) :
+                                foreach (array_slice($categories, 0, 2) as $category) :
+                            ?>
+                                <span class="category-tag"><?php echo esc_html($category->name); ?></span>
+                            <?php endforeach; endif; ?>
+                        </div>
+                    </div>
+                    
+                    <div class="theme-actions">
+                        <button class="btn-primary download-theme-btn" data-theme-id="<?php echo $theme_id; ?>">
+                            <i class="fas fa-download"></i>
+                            <span>تحميل مجاني</span>
+                            <div class="btn-ripple"></div>
+                        </button>
+                        
+                        <a href="<?php the_permalink(); ?>" class="btn-secondary">
+                            <i class="fas fa-info-circle"></i>
+                            <span>التفاصيل</span>
+                        </a>
+                    </div>
+                </article>
+                <?php endwhile; wp_reset_postdata(); endif; ?>
+            </div>
+            
+            <div class="section-footer">
+                <a href="<?php echo home_url('/themes/'); ?>" class="btn-view-all">
+                    <span>عرض جميع القوالب</span>
+                    <i class="fas fa-arrow-left"></i>
+                    <div class="btn-glow"></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم التصنيفات -->
+    <section class="categories-section" id="categories">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <i class="fas fa-tags"></i>
+                    <span>تصنيفات</span>
+                </div>
+                <h2 class="section-title">تصفح حسب النوع</h2>
+                <p class="section-description">اختر التصنيف المناسب لموقعك</p>
+            </div>
+            
+            <div class="categories-grid">
+                <?php
+                $categories = get_terms(array(
+                    'taxonomy' => 'theme_category',
+                    'hide_empty' => true,
+                    'number' => 8
+                ));
+                
+                if ($categories && !is_wp_error($categories)) :
+                    $delay = 0;
+                    foreach ($categories as $category) :
+                        $category_icon = get_term_meta($category->term_id, '_category_icon', true) ?: 'fas fa-folder';
+                        $category_color = get_term_meta($category->term_id, '_category_color', true) ?: '#3b82f6';
+                        $delay += 100;
+                ?>
+                <div class="category-card" data-aos="zoom-in" data-aos-delay="<?php echo $delay; ?>">
+                    <div class="category-background" style="--category-color: <?php echo esc_attr($category_color); ?>">
+                        <div class="category-glow"></div>
+                    </div>
+                    
+                    <div class="category-icon">
+                        <i class="<?php echo esc_attr($category_icon); ?>"></i>
+                    </div>
+                    
+                    <div class="category-content">
+                        <h3 class="category-name"><?php echo esc_html($category->name); ?></h3>
+                        <p class="category-count"><?php echo $category->count; ?> قالب</p>
+                        <?php if ($category->description) : ?>
+                        <p class="category-description"><?php echo esc_html($category->description); ?></p>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <a href="<?php echo get_term_link($category); ?>" class="category-link">
+                        <span>استكشاف</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+                <?php endforeach; endif; ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم المزايا -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <i class="fas fa-star"></i>
+                    <span>مزايا</span>
+                </div>
+                <h2 class="section-title">لماذا تختار قوالبنا؟</h2>
+                <p class="section-description">مزايا استثنائية تجعل موقعك يتميز</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-item" data-aos="fade-right" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">أداء فائق</h3>
+                        <p class="feature-description">قوالب محسنة للسرعة والأداء مع تحميل سريع وتجربة مستخدم ممتازة</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item" data-aos="fade-right" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">تصميم متجاوب</h3>
+                        <p class="feature-description">يعمل بشكل مثالي على جميع الأجهزة من الهواتف إلى أجهزة الكمبيوتر المكتبية</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item" data-aos="fade-right" data-aos-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">دعم كامل للعربية</h3>
+                        <p class="feature-description">مصمم خصيصاً للمحتوى العربي مع دعم الكتابة من اليمين إلى اليسار</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item" data-aos="fade-left" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">أمان متقدم</h3>
+                        <p class="feature-description">كود نظيف وآمن يتبع أفضل معايير الأمان والحماية في ووردبريس</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item" data-aos="fade-left" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">محسن للSEO</h3>
+                        <p class="feature-description">مبني وفقاً لأفضل ممارسات SEO لضمان ظهور موقعك في نتائج البحث</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item" data-aos="fade-left" data-aos-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">دعم فني مجاني</h3>
+                        <p class="feature-description">فريق دعم متخصص جاهز لمساعدتك في أي وقت وحل جميع استفساراتك</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الشهادات -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <i class="fas fa-quote-left"></i>
+                    <span>آراء العملاء</span>
+                </div>
+                <h2 class="section-title">ماذا يقول عملاؤنا؟</h2>
+                <p class="section-description">تجارب حقيقية من مستخدمين راضين</p>
+            </div>
+            
+            <div class="testimonials-slider" id="testimonials-slider">
+                <div class="testimonial-item active" data-aos="fade-up">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">
+                            "قوالب رائعة وسهلة الاستخدام. ساعدتني في إنشاء موقع احترافي بسرعة مذهلة. التصميم جميل والأداء ممتاز."
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://via.placeholder.com/60x60/3b82f6/ffffff?text=أ" alt="أحمد محمد" loading="lazy">
+                        </div>
+                        <div class="author-info">
+                            <h4 class="author-name">أحمد محمد</h4>
+                            <p class="author-title">مطور ويب</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-item" data-aos="fade-up">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">
+                            "تجربة ممتازة مع قوالب عربية. الدعم الفني سريع ومفيد، والقوالب محسنة بشكل رائع للمحتوى العربي."
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://via.placeholder.com/60x60/8b5cf6/ffffff?text=ف" alt="فاطمة أحمد" loading="lazy">
+                        </div>
+                        <div class="author-info">
+                            <h4 class="author-name">فاطمة أحمد</h4>
+                            <p class="author-title">مصممة جرافيك</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-item" data-aos="fade-up">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">
+                            "أفضل مصدر للقوالب العربية. تصاميم حديثة وعصرية تواكب أحدث الاتجاهات في تصميم المواقع."
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://via.placeholder.com/60x60/ec4899/ffffff?text=م" alt="محمد علي" loading="lazy">
+                        </div>
+                        <div class="author-info">
+                            <h4 class="author-name">محمد علي</h4>
+                            <p class="author-title">صاحب متجر إلكتروني</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonials-navigation">
+                <button class="nav-btn prev-btn" id="testimonials-prev">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="testimonials-dots" id="testimonials-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <button class="nav-btn next-btn" id="testimonials-next">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الاشتراك في النشرة البريدية -->
+    <section class="newsletter-section" id="newsletter">
+        <div class="newsletter-background">
+            <div class="newsletter-particles"></div>
+            <div class="newsletter-glow"></div>
+        </div>
+        
+        <div class="container">
+            <div class="newsletter-content">
+                <div class="newsletter-text" data-aos="fade-right">
+                    <h2 class="newsletter-title">ابق على اطلاع</h2>
+                    <p class="newsletter-description">
+                        احصل على أحدث القوالب والتحديثات مباشرة في بريدك الإلكتروني
+                    </p>
+                    <div class="newsletter-features">
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            <span>قوالب جديدة أسبوعياً</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            <span>نصائح وإرشادات مفيدة</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            <span>عروض حصرية للمشتركين</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="newsletter-form-container" data-aos="fade-left">
+                    <form class="newsletter-form" id="newsletter-form">
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="أدخل بريدك الإلكتروني" required class="newsletter-input">
+                            <button type="submit" class="newsletter-btn">
+                                <span class="btn-text">اشترك الآن</span>
+                                <i class="fas fa-paper-plane"></i>
+                                <div class="btn-loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="form-privacy">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>نحن نحترم خصوصيتك ولن نرسل لك رسائل غير مرغوب فيها</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </section>
 </main>
 
-<style>
-/* 🎬 الصفحة المركزة بدون تمرير */
+<!-- التذييل -->
+<footer class="main-footer" id="main-footer">
+    <div class="footer-background">
+        <div class="footer-particles"></div>
+        <div class="footer-glow"></div>
+    </div>
+    
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section footer-about">
+                <div class="footer-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h3>قوالب عربية</h3>
+                        <span>ووردبريس</span>
+                    </div>
+                </div>
+                <p class="footer-description">
+                    منصة متخصصة في تطوير وتوفير أجمل وأحدث قوالب ووردبريس المصممة خصيصاً للمواقع العربية الاحترافية.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-link" title="فيسبوك">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link" title="تويتر">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link" title="إنستغرام">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link" title="لينكد إن">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="social-link" title="يوتيوب">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section footer-links">
+                <h4 class="footer-title">روابط سريعة</h4>
+                <ul class="footer-menu">
+                    <li><a href="<?php echo home_url(); ?>">الرئيسية</a></li>
+                    <li><a href="<?php echo home_url('/themes/'); ?>">القوالب</a></li>
+                    <li><a href="<?php echo home_url('/categories/'); ?>">التصنيفات</a></li>
+                    <li><a href="<?php echo home_url('/about/'); ?>">من نحن</a></li>
+                    <li><a href="<?php echo home_url('/contact/'); ?>">اتصل بنا</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section footer-categories">
+                <h4 class="footer-title">التصنيفات الشائعة</h4>
+                <ul class="footer-menu">
+                    <?php
+                    $popular_categories = get_terms(array(
+                        'taxonomy' => 'theme_category',
+                        'number' => 5,
+                        'orderby' => 'count',
+                        'order' => 'DESC'
+                    ));
+                    
+                    if ($popular_categories && !is_wp_error($popular_categories)) :
+                        foreach ($popular_categories as $category) :
+                    ?>
+                    <li><a href="<?php echo get_term_link($category); ?>"><?php echo esc_html($category->name); ?></a></li>
+                    <?php endforeach; endif; ?>
+                </ul>
+            </div>
+            
+            <div class="footer-section footer-contact">
+                <h4 class="footer-title">تواصل معنا</h4>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@arabicthemes.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+966 50 123 4567</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>الرياض، المملكة العربية السعودية</span>
+                    </div>
+                </div>
+                
+                <div class="footer-newsletter">
+                    <h5>النشرة البريدية</h5>
+                    <form class="mini-newsletter-form">
+                        <input type="email" placeholder="بريدك الإلكتروني" required>
+                        <button type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <div class="copyright">
+                    <p>&copy; <?php echo date('Y'); ?> قوالب عربية ووردبريس. جميع الحقوق محفوظة.</p>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="<?php echo home_url('/privacy-policy/'); ?>">سياسة الخصوصية</a>
+                    <a href="<?php echo home_url('/terms/'); ?>">شروط الاستخدام</a>
+                    <a href="<?php echo home_url('/sitemap/'); ?>">خريطة الموقع</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 
-/* إعادة تعيين وإيقاف التمرير */
+<!-- زر العودة للأعلى -->
+<button id="back-to-top" class="back-to-top-btn" title="العودة للأعلى">
+    <i class="fas fa-arrow-up"></i>
+    <div class="btn-glow"></div>
+</button>
+
+<!-- نافذة التقييم والتحميل -->
+<div id="rating-modal" class="rating-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">تقييم القالب</h3>
+            <button class="modal-close" id="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="theme-info">
+                <div class="theme-preview-small">
+                    <img src="" alt="" id="modal-theme-image">
+                </div>
+                <div class="theme-details">
+                    <h4 id="modal-theme-title"></h4>
+                    <p id="modal-theme-description"></p>
+                </div>
+            </div>
+            
+            <div class="rating-section">
+                <p class="rating-label">قيم هذا القالب:</p>
+                <div class="rating-stars" id="rating-stars">
+                    <i class="far fa-star" data-rating="1"></i>
+                    <i class="far fa-star" data-rating="2"></i>
+                    <i class="far fa-star" data-rating="3"></i>
+                    <i class="far fa-star" data-rating="4"></i>
+                    <i class="far fa-star" data-rating="5"></i>
+                </div>
+                <p class="rating-text" id="rating-text">اختر تقييمك</p>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="btn-secondary" id="skip-rating">تخطي التقييم</button>
+            <button class="btn-primary" id="submit-rating" disabled>
+                <i class="fas fa-download"></i>
+                <span>تقييم وتحميل</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notifications Container -->
+<div id="toast-container" class="toast-container"></div>
+
+<style>
+/* 🎨 أنماط الصفحة الرئيسية الشاملة */
+
+/* إعادة تعيين وإعدادات أساسية */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-html, body {
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden !important; /* منع التمرير نهائياً */
-    scroll-behavior: smooth;
-    position: fixed; /* تثبيت المحتوى */
-    top: 0;
-    left: 0;
-}
-
-/* إخفاء جميع scroll bars */
-::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-}
-
 html {
-    -ms-overflow-style: none !important;
-    scrollbar-width: none !important;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-
-/* الصفحة الرئيسية المركزة */
-.homepage-focused {
-    height: 100vh;
-    width: 100vw;
-    background: #000011;
+body {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    line-height: 1.6;
     color: #ffffff;
+    background: #000011;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* متغيرات CSS */
+:root {
+    --primary-color: #3b82f6;
+    --secondary-color: #8b5cf6;
+    --accent-color: #ec4899;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --dark-bg: #000011;
+    --dark-surface: #1a1a2e;
+    --light-bg: #f8fafc;
+    --light-surface: #ffffff;
+    --text-light: #ffffff;
+    --text-dark: #1e293b;
+    --border-light: rgba(255, 255, 255, 0.1);
+    --border-dark: rgba(0, 0, 0, 0.1);
+    --shadow-light: rgba(59, 130, 246, 0.2);
+    --shadow-dark: rgba(0, 0, 0, 0.3);
+}
+
+/* شاشة التحميل المحسنة */
+.loading-screen {
     position: fixed;
     top: 0;
     left: 0;
-    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #000011 0%, #1a1a2e 50%, #16213e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 999999;
+    transition: opacity 1s ease, visibility 1s ease;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-container {
+    text-align: center;
+}
+
+.loader {
+    width: 80px;
+    height: 80px;
+    border: 4px solid rgba(59, 130, 246, 0.2);
+    border-left: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 2rem;
+}
+
+.loading-text h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.loading-text p {
+    color: #b8b9ba;
+    font-size: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Canvas الجسيمات */
@@ -362,7 +1194,7 @@ html {
     pointer-events: none;
 }
 
-/* خلفية Parallax */
+/* خلفية Parallax المتقدمة */
 .parallax-background {
     position: fixed;
     top: 0;
@@ -371,6 +1203,7 @@ html {
     height: 100%;
     z-index: 2;
     pointer-events: none;
+    overflow: hidden;
 }
 
 .parallax-layer {
@@ -383,9 +1216,22 @@ html {
     animation: parallaxFloat 20s ease-in-out infinite;
 }
 
-.parallax-layer:nth-child(1) { animation-delay: 0s; }
-.parallax-layer:nth-child(2) { animation-delay: -7s; }
-.parallax-layer:nth-child(3) { animation-delay: -14s; }
+.parallax-layer:nth-child(1) { animation-delay: 0s; background-size: 30px 30px; }
+.parallax-layer:nth-child(2) { animation-delay: -7s; background-size: 45px 45px; }
+.parallax-layer:nth-child(3) { animation-delay: -14s; background-size: 60px 60px; }
+
+.cosmic-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+    background-size: 100px 100px;
+    animation: gridMove 30s linear infinite;
+}
 
 @keyframes parallaxFloat {
     0%, 100% { transform: translate(0, 0) rotate(0deg); }
@@ -394,7 +1240,12 @@ html {
     75% { transform: translate(-5px, 10px) rotate(0.5deg); }
 }
 
-/* 🌀 البوابة السينمائية */
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(100px, 100px); }
+}
+
+/* البوابة السينمائية المحسنة */
 .cinematic-portal {
     position: fixed;
     top: 0;
@@ -424,6 +1275,39 @@ html {
     height: 100%;
     background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 17, 0.8) 70%);
     animation: portalBackgroundPulse 2s ease-in-out infinite alternate;
+    overflow: hidden;
+}
+
+.energy-waves {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    margin: -100px 0 0 -100px;
+    border: 2px solid rgba(59, 130, 246,0.3);
+    border-radius: 50%;
+    animation: energyWaves 3s ease-in-out infinite;
+}
+
+.plasma-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+    animation: plasmaField 4s ease-in-out infinite alternate;
+}
+
+@keyframes energyWaves {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.5); opacity: 0.7; }
+}
+
+@keyframes plasmaField {
+    0% { opacity: 0.1; }
+    100% { opacity: 0.3; }
 }
 
 .portal-wave {
@@ -443,7 +1327,7 @@ html {
     height: 300vw;
 }
 
-/* 🎪 العناصر العائمة */
+/* العناصر العائمة المحسنة */
 .floating-elements {
     position: absolute;
     width: 100%;
@@ -459,6 +1343,7 @@ html {
     animation: floatToCenter 3s ease-in-out;
     opacity: 0;
     pointer-events: none;
+    text-shadow: 0 0 20px currentColor;
 }
 
 .floating-letter {
@@ -467,20 +1352,27 @@ html {
     color: rgba(139, 92, 246, 0.6);
 }
 
-.floating-icon:nth-child(1) { top: 20%; left: 10%; animation-delay: 0.2s; }
-.floating-icon:nth-child(2) { top: 30%; right: 15%; animation-delay: 0.4s; }
-.floating-icon:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 0.6s; }
-.floating-icon:nth-child(4) { bottom: 30%; right: 10%; animation-delay: 0.8s; }
-.floating-icon:nth-child(5) { top: 15%; left: 50%; animation-delay: 1s; }
-.floating-icon:nth-child(6) { bottom: 15%; left: 50%; animation-delay: 1.2s; }
+.tech-icon:nth-child(1) { top: 20%; left: 10%; }
+.tech-icon:nth-child(2) { top: 30%; right: 15%; }
+.tech-icon:nth-child(3) { bottom: 20%; left: 20%; }
+.tech-icon:nth-child(4) { bottom: 30%; right: 10%; }
+.tech-icon:nth-child(5) { top: 15%; left: 50%; }
+.tech-icon:nth-child(6) { bottom: 15%; left: 50%; }
+.tech-icon:nth-child(7) { top: 25%; right: 30%; }
+.tech-icon:nth-child(8) { bottom: 25%; right: 40%; }
 
-.floating-letter:nth-child(7) { top: 25%; left: 30%; animation-delay: 0.3s; }
-.floating-letter:nth-child(8) { top: 35%; right: 25%; animation-delay: 0.5s; }
-.floating-letter:nth-child(9) { bottom: 25%; left: 35%; animation-delay: 0.7s; }
-.floating-letter:nth-child(10) { bottom: 35%; right: 30%; animation-delay: 0.9s; }
-.floating-letter:nth-child(11) { top: 10%; right: 50%; animation-delay: 1.1s; }
+.arabic-letter:nth-child(9) { top: 25%; left: 30%; }
+.arabic-letter:nth-child(10) { top: 35%; right: 25%; }
+.arabic-letter:nth-child(11) { bottom: 25%; left: 35%; }
+.arabic-letter:nth-child(12) { bottom: 35%; right: 30%; }
+.arabic-letter:nth-child(13) { top: 10%; right: 50%; }
+.arabic-letter:nth-child(14) { top: 45%; left: 15%; }
+.arabic-letter:nth-child(15) { bottom: 45%; right: 15%; }
+.arabic-letter:nth-child(16) { top: 60%; left: 60%; }
+.arabic-letter:nth-child(17) { bottom: 60%; left: 40%; }
+.arabic-letter:nth-child(18) { top: 70%; right: 60%; }
 
-/* ⚙️ مركز البوابة */
+/* مركز البوابة المحسن */
 .portal-center {
     position: relative;
     z-index: 10;
@@ -491,8 +1383,8 @@ html {
 
 .portal-rings {
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 350px;
+    height: 350px;
 }
 
 .ring {
@@ -500,6 +1392,7 @@ html {
     border: 2px solid;
     border-radius: 50%;
     animation: ringRotate linear infinite;
+    box-shadow: 0 0 20px currentColor;
 }
 
 .ring-1 {
@@ -544,25 +1437,57 @@ html {
     animation-direction: reverse;
 }
 
+.ring-5 {
+    width: 240px;
+    height: 240px;
+    top: 50%;
+    left: 50%;
+    margin: -120px 0 0 -120px;
+    border-color: #10b981;
+    animation-duration: 6s;
+}
+
 .portal-core {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 60px;
-    height: 60px;
-    margin: -30px 0 0 -30px;
+    width: 80px;
+    height: 80px;
+    margin: -40px 0 0 -40px;
     background: linear-gradient(45deg, #3b82f6, #8b5cf6);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 1.5rem;
+    font-size: 2rem;
     animation: portalCorePulse 1s ease-in-out infinite alternate;
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
+    overflow: hidden;
 }
 
-/* 📝 نص البوابة */
+.core-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.energy-pulse {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: energyPulse 2s ease-in-out infinite;
+}
+
+@keyframes energyPulse {
+    0%, 100% { transform: scale(0.8); opacity: 0.3; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+}
+
+/* نص البوابة المحسن */
 .portal-text {
     margin-top: 3rem;
     text-align: center;
@@ -570,43 +1495,420 @@ html {
     animation: portalTextAppear 1s ease-out 1s forwards;
 }
 
-.portal-text h2 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+.portal-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
     background: linear-gradient(45deg, #3b82f6, #8b5cf6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
 }
 
 .loading-progress {
-    width: 300px;
-    height: 4px;
+    width: 350px;
+    height: 6px;
     background: rgba(59, 130, 246, 0.2);
-    border-radius: 2px;
-    margin: 0 auto;
+    border-radius: 3px;
+    margin: 0 auto 1rem;
     overflow: hidden;
+    position: relative;
 }
 
 .progress-bar {
     width: 0%;
     height: 100%;
     background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-    border-radius: 2px;
+    border-radius: 3px;
     animation: progressLoad 2s ease-out;
+    position: relative;
 }
 
-/* 🌌 Hero Section الشاشة الكاملة */
-.hero-section-fullscreen {
-    position: relative;
-    height: 100vh;
-    width: 100vw;
+.progress-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: progressGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes progressGlow {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.portal-subtitle {
+    color: #b8b9ba;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* التأثيرات الإضافية */
+.portal-effects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.lightning-effect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 100px;
+    background: linear-gradient(to bottom, transparent, #3b82f6, transparent);
+    transform: translate(-50%, -50%);
+    animation: lightning 4s ease-in-out infinite;
+}
+
+.stardust-trail {
+    position: absolute;
+    top: 30%;
+    left: 20%;
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #8b5cf6, transparent);
+    animation: stardustTrail 3s ease-in-out infinite;
+}
+
+.quantum-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+    animation: quantumField 5s ease-in-out infinite;
+}
+
+@keyframes lightning {
+    0%, 90%, 100% { opacity: 0; }
+    5%, 85% { opacity: 1; transform: translate(-50%, -50%) scaleY(1); }
+    10%, 80% { opacity: 0.5; transform: translate(-50%, -50%) scaleY(1.2); }
+}
+
+@keyframes stardustTrail {
+    0% { transform: translateX(-100%) rotate(-15deg); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(300px) rotate(-15deg); opacity: 0; }
+}
+
+@keyframes quantumField {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+}
+
+/* التنقل العلوي */
+.main-navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(26, 26, 46, 0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    padding: 1rem 0;
+}
+
+.main-navigation.scrolled {
+    padding: 0.5rem 0;
+    background: rgba(26, 26, 46, 0.95);
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.brand-link:hover {
+    transform: scale(1.05);
+}
+
+.brand-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 1rem;
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+}
+
+.brand-icon i {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.brand-text h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.brand-name {
+    display: block;
+}
+
+.brand-tagline {
+    display: block;
+    font-size: 0.8rem;
+    color: #b8b9ba;
+    font-weight: 400;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #b8b9ba;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.nav-link:hover::before {
+    left: 100%;
+}
+
+.nav-link:hover,
+.nav-item.active .nav-link {
+    color: #ffffff;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-toggle,
+.menu-toggle {
+    width: 45px;
+    height: 45px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 50%;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.search-toggle:hover,
+.menu-toggle:hover {
+    background: rgba(59, 130, 246, 0.2);
+    transform: scale(1.1);
+}
+
+.menu-toggle {
+    flex-direction: column;
+    gap: 3px;
+    padding: 0;
+}
+
+.menu-toggle span {
+    width: 18px;
+    height: 2px;
+    background: #ffffff;
+    border-radius: 1px;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: translateY(5px) rotate(45deg);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: translateY(-5px) rotate(-45deg);
+}
+
+/* قائمة البحث */
+.search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 17, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.search-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.search-container {
+    position: relative;
+    max-width: 600px;
+    width: 90%;
+}
+
+.search-form {
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 1.5rem 5rem 1.5rem 2rem;
+    font-size: 1.5rem;
+    background: rgba(26, 26, 46, 0.9);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 50px;
+    color: #ffffff;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+}
+
+.search-input::placeholder {
+    color: #b8b9ba;
+}
+
+.search-submit {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-submit:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.search-close {
+    position: absolute;
+    top: -60px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+/* الصفحة الرئيسية */
+.main-content {
+    position: relative;
     z-index: 10;
+}
+
+.homepage-focused {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #000011 0%, #1a1a2e 50%, #16213e 100%);
+    color: #ffffff;
+}
+
+/* Hero Section المحسن */
+.hero-section-fullscreen {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     overflow: hidden;
+    padding-top: 100px;
 }
 
 .hero-cosmic-bg {
@@ -626,7 +1928,8 @@ html {
         radial-gradient(2px 2px at 20px 30px, #ffffff, transparent),
         radial-gradient(2px 2px at 40px 70px, rgba(59, 130, 246, 0.8), transparent),
         radial-gradient(1px 1px at 90px 40px, rgba(139, 92, 246, 0.6), transparent),
-        radial-gradient(1px 1px at 130px 80px, rgba(236, 72, 153, 0.4), transparent);
+        radial-gradient(1px 1px at 130px 80px, rgba(236, 72, 153, 0.4), transparent),
+        radial-gradient(1px 1px at 160px 30px, rgba(245, 158, 11, 0.3), transparent);
     background-repeat: repeat;
     background-size: 200px 200px;
     animation: starsFloat 20s linear infinite;
@@ -655,40 +1958,109 @@ html {
     animation: portalSpin 60s linear infinite;
 }
 
-/* 📦 Container مركز */
+.meteor-shower {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.meteor-shower::before,
+.meteor-shower::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 80px;
+    background: linear-gradient(to bottom, rgba(59, 130, 246, 0.8), transparent);
+    animation: meteorFall 8s linear infinite;
+}
+
+.meteor-shower::before {
+    top: -80px;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.meteor-shower::after {
+    top: -80px;
+    left: 80%;
+    animation-delay: 4s;
+}
+
+@keyframes meteorFall {
+    0% { transform: translateY(-80px) translateX(0); opacity: 1; }
+    100% { transform: translateY(100vh) translateX(-100px); opacity: 0; }
+}
+
+/* Container مركز */
 .container-centered {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 2rem;
     position: relative;
     z-index: 10;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .hero-content-main {
     width: 100%;
     max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* ✨ العنوان الضخم */
+/* العنوان المتحرك المحسن */
 .animated-title-container {
-    margin-bottom: 2.5rem;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.title-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.title-decoration.bottom {
+    margin-bottom: 0;
+    margin-top: 1rem;
+}
+
+.title-line {
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    position: relative;
+}
+
+.title-spark {
+    width: 8px;
+    height: 8px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    margin: 0 1rem;
+    box-shadow: 0 0 20px var(--primary-color);
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.5); opacity: 1; }
 }
 
 .hero-title-mega {
-    font-size: 5rem;
+    font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 800;
     line-height: 1.2;
     margin-bottom: 0;
+    position: relative;
 }
 
 .title-static {
     display: block;
     color: #b8b9ba;
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     font-weight: 400;
     margin-bottom: 0.5rem;
     animation: fadeInUp 1s ease 0.5s both;
@@ -702,21 +2074,23 @@ html {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: gradientShift 3s ease infinite, typewriter 4s steps(25) 1s both;
-    border-right: 2px solid transparent;
+    border-left: 2px solid transparent;
+    text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
 }
 
 .title-cursor {
-    color: #3b82f6;
+    color: var(--primary-color);
     animation: blink 1s infinite;
-    margin-left: 5px;
+    margin-right: 5px;
+    text-shadow: 0 0 10px currentColor;
 }
 
-/* 🪄 النص السحري المحسن */
+/* النص السحري المحسن */
 .hero-description-enhanced {
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
     line-height: 1.8;
     margin-bottom: 4rem;
-    max-width: 800px;
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -727,6 +2101,13 @@ html {
     animation: magicAppear 0.8s ease forwards;
     margin: 0 0.4rem;
     position: relative;
+    transition: all 0.3s ease;
+}
+
+.magic-word:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+    text-shadow: 0 0 10px currentColor;
 }
 
 .magic-word:nth-child(1) { animation-delay: 2s; }
@@ -739,6 +2120,7 @@ html {
 .magic-word:nth-child(8) { animation-delay: 3.4s; }
 .magic-word:nth-child(9) { animation-delay: 3.6s; }
 .magic-word:nth-child(10) { animation-delay: 3.8s; }
+.magic-word:nth-child(11) { animation-delay: 4s; }
 
 .magic-word::before {
     content: '';
@@ -749,11 +2131,12 @@ html {
     bottom: 0;
     background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.3), transparent);
     transform: translateX(-100%);
-    animation: shimmer 2s ease infinite;
+    animation: shimmer 3s ease infinite;
     animation-delay: inherit;
+    border-radius: 4px;
 }
 
-/* 🚀 الأزرار المحسنة */
+/* الأزرار المحسنة */
 .hero-actions-enhanced {
     display: flex;
     gap: 2rem;
@@ -807,24 +2190,39 @@ html {
     animation: particlesBgMove 10s linear infinite;
 }
 
+.btn-energy-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: energyField 3s ease-in-out infinite;
+}
+
+@keyframes energyField {
+    0%, 100% { opacity: 0.1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.05); }
+}
+
 .btn-content {
     position: relative;
     z-index: 2;
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1.8rem 4rem;
+    padding: 2rem 4rem;
     background: rgba(0, 0, 17, 0.9);
-    margin: 2px;
-    border-radius: 48px;
+    margin: 3px;
+    border-radius: 47px;
     transition: all 0.3s ease;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: #ffffff;
 }
 
 .btn-icon {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     animation: iconFloat 2s ease-in-out infinite alternate;
 }
 
@@ -843,54 +2241,45 @@ html {
 
 .btn-aura {
     position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
     background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
     border-radius: 50px;
     opacity: 0;
     animation: auraGlow 3s ease-in-out infinite;
 }
 
-/* إصلاح تضارب الأنيميشن */
-.cosmic-stars {
-    animation: starsFloat 20s linear infinite !important;
+.btn-glow {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background: conic-gradient(from 0deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2), rgba(59, 130, 246, 0.2));
+    border-radius: 50px;
+    opacity: 0;
+    animation: glowRotate 4s linear infinite;
 }
 
-.cosmic-nebula {
-    animation: nebulaShift 30s ease-in-out infinite !important;
-}
-
-.cosmic-portal {
-    animation: portalSpin 60s linear infinite !important;
-}
-
-.floating-shapes-enhanced > div {
-    animation: shapeFloat 15s ease-in-out infinite !important;
-}
-
-/* إصلاح canvas الجسيمات */
-#particles-canvas {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    z-index: 1 !important;
-    pointer-events: none !important;
-    display: block !important;
+@keyframes glowRotate {
+    0% { transform: rotate(0deg); opacity: 0; }
+    50% { opacity: 0.3; }
+    100% { transform: rotate(360deg); opacity: 0; }
 }
 
 /* الزر الثانوي */
 .btn-secondary-cosmic {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
     padding: 0;
     text-decoration: none;
     color: #ffffff;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     border-radius: 50px;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -913,14 +2302,27 @@ html {
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    padding: 1.2rem 2.5rem;
+    padding: 1.5rem 3rem;
     transition: all 0.3s ease;
 }
 
+.btn-secondary-ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.6s ease;
+    pointer-events: none;
+}
+
 .btn-secondary-cosmic:hover {
-    transform: translateY(-3px);
-    border-color: #3b82f6;
-    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.3);
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
 }
 
 .btn-secondary-cosmic:hover .btn-secondary-bg {
@@ -929,8 +2331,8 @@ html {
 
 /* تأثيرات هوفر الزر الرئيسي */
 .cinematic-portal-btn-main:hover {
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 25px 70px rgba(59, 130, 246, 0.4);
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 30px 80px rgba(59, 130, 246, 0.4);
 }
 
 .cinematic-portal-btn-main:hover .btn-content {
@@ -946,26 +2348,70 @@ html {
     height: 400px;
 }
 
-/* 📊 إحصائيات ضخمة */
+/* إحصائيات ضخمة محسنة */
 .hero-stats-enhanced {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    margin-bottom: 3rem;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .stat-item-mega {
     text-align: center;
     background: rgba(26, 26, 46, 0.7);
-    padding: 2.5rem 2rem;
+    padding: 3rem 2rem;
     border-radius: 25px;
     border: 2px solid rgba(59, 130, 246, 0.3);
     backdrop-filter: blur(20px);
     position: relative;
     overflow: hidden;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    min-width: 180px;
+    cursor: pointer;
+}
+
+.stat-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.stat-glow-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.5s ease;
+}
+
+.stat-particle-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    animation: particleFieldMove 20s linear infinite;
+}
+
+@keyframes particleFieldMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(20px, 20px); }
+}
+
+.stat-content {
+    position: relative;
+    z-index: 2;
 }
 
 .stat-item-mega::before {
@@ -984,38 +2430,48 @@ html {
 }
 
 .stat-item-mega:hover {
-    transform: translateY(-15px) scale(1.05);
-    box-shadow: 0 30px 80px rgba(59, 130, 246, 0.4);
-    border-color: #3b82f6;
+    transform: translateY(-20px) scale(1.05);
+    box-shadow: 0 40px 100px rgba(59, 130, 246, 0.4);
+    border-color: var(--primary-color);
+}
+
+.stat-item-mega:hover .stat-glow-bg {
+    width: 200px;
+    height: 200px;
+    opacity: 0.3;
 }
 
 .stat-icon-enhanced {
-    font-size: 3rem;
+    font-size: 3.5rem;
     margin-bottom: 1.5rem;
     background: linear-gradient(45deg, #3b82f6, #8b5cf6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: iconPulse 2s ease-in-out infinite;
+    animation: iconPulse 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.3));
 }
 
 .stat-number-huge {
     display: block;
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: 900;
     background: linear-gradient(45deg, #3b82f6, #8b5cf6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     line-height: 1;
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
 }
 
 .stat-label-enhanced {
     display: block;
     color: #b8b9ba;
     font-weight: 600;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .stat-glow {
@@ -1032,34 +2488,127 @@ html {
 }
 
 .stat-item-mega:hover .stat-glow {
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     opacity: 1;
 }
 
-/* 🌟 نص التذييل */
-.hero-footer-text {
-    margin-top: 3rem;
-    opacity: 0;
-    animation: fadeInUp 1s ease 4s both;
+/* الميزات السريعة */
+.quick-features {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
 }
 
-.slogan-text {
-    font-size: 1.3rem;
-    color: #b8b9ba;
-    font-weight: 500;
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.5rem;
+    background: rgba(26, 26, 46, 0.5);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+}
+
+.feature-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    color: white;
+    font-size: 1.2rem;
 }
 
-.slogan-text i {
+.feature-text {
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+/* نص التذييل المحسن */
+.hero-footer-text {
+    margin-top: 4rem;
+    opacity: 0;
+    animation: fadeInUp 1s ease 5s both;
+}
+
+.slogan-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.slogan-decoration {
     color: #fbbf24;
+    font-size: 1.5rem;
     animation: starTwinkle 2s ease-in-out infinite alternate;
 }
 
-/* 🎨 أشكال خلفية إضافية */
+.slogan-text {
+    font-size: 1.5rem;
+    color: #b8b9ba;
+    font-weight: 600;
+    text-align: center;
+    background: linear-gradient(45deg, #b8b9ba, #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.scroll-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.scroll-indicator:hover {
+    transform: translateY(-5px);
+}
+
+.scroll-arrow {
+    width: 50px;
+    height: 50px;
+    border: 2px solid rgba(59, 130, 246, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    animation: scrollBounce 2s ease-in-out infinite;
+}
+
+.scroll-text {
+    color: #b8b9ba;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+@keyframes scrollBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* أشكال خلفية إضافية متطورة */
 .floating-shapes-enhanced {
     position: absolute;
     top: 0;
@@ -1070,14 +2619,12 @@ html {
     z-index: 3;
 }
 
-.shape-1,
-.shape-2,
-.shape-3,
-.shape-4 {
+.floating-shape {
     position: absolute;
     border-radius: 50%;
     background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
-    animation: shapeFloat 15s ease-in-out infinite;
+    animation: shapeFloat 20s ease-in-out infinite;
+    filter: blur(1px);
 }
 
 .shape-1 {
@@ -1112,1149 +2659,500 @@ html {
     animation-delay: -15s;
 }
 
-/* 🎭 الحركات والتأثيرات */
-@keyframes starsFloat {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    25% { transform: translate(-5px, -5px) rotate(90deg); }
-    50% { transform: translate(5px, -3px) rotate(180deg); }
-    75% { transform: translate(-3px, 5px) rotate(270deg); }
-    100% { transform: translate(0, 0) rotate(360deg); }
+.shape-5 {
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 20%;
+    animation-delay: -20s;
 }
 
-@keyframes nebulaShift {
-    0%, 100% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.1) rotate(180deg); }
+.shape-6 {
+    width: 140px;
+    height: 140px;
+    top: 60%;
+    right: 25%;
+    animation-delay: -25s;
 }
 
-@keyframes portalSpin {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
+/* القوالب المميزة */
+.featured-themes-section {
+    padding: 8rem 0;
+    position: relative;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.5) 0%, rgba(16, 21, 62, 0.5) 100%);
 }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
 }
 
-@keyframes typewriter {
-    from { width: 0; }
-    to { width: 100%; }
+.section-header {
+    text-align: center;
+    margin-bottom: 5rem;
 }
 
-@keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+.section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 50px;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
 }
 
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+.section-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #ffffff, #b8b9ba);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-@keyframes magicAppear {
-    0% { opacity: 0; transform: translateY(20px) scale(0.8); }
-    50% { transform: translateY(-5px) scale(1.1); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
+.section-description {
+    font-size: 1.3rem;
+    color: #b8b9ba;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
 }
 
-@keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+.section-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
 }
 
-@keyframes iconPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+.decoration-line {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
 }
 
-@keyframes starTwinkle {
-    0% { transform: scale(1) rotate(0deg); }
-    100% { transform: scale(1.2) rotate(180deg); }
+.decoration-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--primary-color);
 }
 
-@keyframes shapeFloat {
-    0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-    25% { transform: translate(-20px, -20px) scale(1.1) rotate(90deg); }
-    50% { transform: translate(20px, -10px) scale(0.9) rotate(180deg); }
-    75% { transform: translate(-10px, 20px) scale(1.05) rotate(270deg); }
+.themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+    margin-bottom: 4rem;
 }
 
-/* حركات البوابة السينمائية */
-@keyframes portalBackgroundPulse {
-    0% { opacity: 0.8; }
-    100% { opacity: 1; }
+.theme-card {
+    background: rgba(26, 26, 46, 0.8);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    backdrop-filter: blur(20px);
 }
 
-@keyframes floatToCenter {
-    0% { opacity: 0; transform: scale(0.5) translate(0, 0); }
-    30% { opacity: 1; transform: scale(1) translate(0, -20px); }
-    70% { opacity: 1; transform: scale(1.2) translate(calc(50vw - 50%), calc(50vh - 50%)); }
-    100% { opacity: 0; transform: scale(0) translate(calc(50vw - 50%), calc(50vh - 50%)); }
+.featured-card {
+    border: 2px solid rgba(59, 130, 246, 0.4);
 }
 
-@keyframes portalCenterAppear {
-    0% { opacity: 0; transform: scale(0) rotate(0deg); }
-    50% { opacity: 0.5; transform: scale(0.5) rotate(180deg); }
-    100% { opacity: 1; transform: scale(1) rotate(360deg); }
+.card-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
-@keyframes ringRotate {
-    0% { transform: rotate(0deg); border-color: currentColor; }
-    25% { border-color: #8b5cf6; }
-    50% { transform: rotate(180deg); border-color: #ec4899; }
-    75% { border-color: #f59e0b; }
-    100% { transform: rotate(360deg); border-color: currentColor; }
+.card-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.5s ease;
 }
 
-@keyframes portalCorePulse {
-    0% { transform: scale(1); box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
-    100% { transform: scale(1.1); box-shadow: 0 0 50px rgba(59, 130, 246, 1), 0 0 80px rgba(139, 92, 246, 0.5); }
+.card-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+    animation: cardParticles 15s linear infinite;
 }
 
-@keyframes portalTextAppear {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
+@keyframes cardParticles {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(30px, 30px); }
 }
 
-@keyframes progressLoad {
-    0% { width: 0%; }
-    100% { width: 100%; }
+.theme-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--primary-color);
+    box-shadow: 0 30px 80px rgba(59, 130, 246, 0.3);
 }
 
-@keyframes iconFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+.theme-card:hover .card-glow {
+    width: 200px;
+    height: 200px;
+    opacity: 0.3;
 }
 
-@keyframes particlesBgMove {
-    0% { background-position: 0 0; }
-    100% { background-position: 20px 20px; }
+.theme-badges {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-@keyframes auraGlow {
-    0%, 100% { opacity: 0; transform: scale(0.8); }
-    50% { opacity: 1; transform: scale(1.2); }
+.badge {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-@keyframes buttonPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); filter: brightness(1.3); }
-    100% { transform: scale(1); }
+.badge-featured {
+    background: linear-gradient(45deg, #f59e0b, #d97706);
+    color: white;
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
 }
 
-/* 📱 التصميم المتجاوب للشاشة الواحدة */
-@media (max-width: 1024px) {
-    .hero-title-mega { font-size: 4rem; }
-    .title-static { font-size: 2rem; }
-    .hero-stats-enhanced { gap: 2rem; }
-    .stat-item-mega { min-width: 160px; padding: 2rem 1.5rem; }
-    .theme-toggle-sidebar { right: 20px; }
-    .theme-toggle-btn { width: 50px; height: 50px; }
-    .container-centered { padding: 0 1rem; }
+.badge-free {
+    background: linear-gradient(45deg, #10b981, #059669);
+    color: white;
+    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
 }
 
-@media (max-width: 768px) {
-    .hero-title-mega { font-size: 3rem; }
-    .title-static { font-size: 1.5rem; }
-    .hero-description-enhanced { font-size: 1.2rem; margin-bottom: 3rem; }
-    .hero-stats-enhanced { 
-        flex-direction: column; 
-        align-items: center; 
-        gap: 1.5rem; 
-        margin-bottom: 2rem;
-    }
-    .stat-item-mega { width: 220px; min-width: auto; }
-    .hero-actions-enhanced { 
-        flex-direction: column; 
-        gap: 1.5rem; 
-        margin-bottom: 3rem;
-    }
-    .btn-content { padding: 1.5rem 3rem; font-size: 1.1rem; }
-    .theme-toggle-sidebar { right: 15px; }
-    .theme-toggle-btn { width: 45px; height: 45px; }
-    .floating-shapes-enhanced { display: none; }
+.theme-preview {
+    position: relative;
+    overflow: hidden;
+    height: 250px;
 }
 
-@media (max-width: 480px) {
-    .hero-title-mega { font-size: 2.5rem; }
-    .title-static { font-size: 1.2rem; }
-    .hero-description-enhanced { font-size: 1rem; }
-    .stat-item-mega { width: 180px; padding: 1.5rem; }
-    .stat-number-huge { font-size: 2.8rem; }
-    .stat-icon-enhanced { font-size: 2.5rem; }
-    .btn-content { padding: 1.2rem 2rem; font-size: 1rem; }
-    .btn-secondary-text { padding: 1rem 2rem; font-size: 1rem; }
-    .theme-toggle-sidebar { right: 10px; }
-    .theme-toggle-btn { width: 40px; height: 40px; }
-    .toggle-icon { width: 18px; height: 18px; }
-    .sun-icon, .moon-icon { font-size: 14px; }
-    .container-centered { padding: 0 0.5rem; }
+.preview-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
-/* 🌐 دعم RTL */
-[dir="rtl"] .title-cursor { margin-left: 0; margin-right: 5px; }
-[dir="rtl"] .hero-actions-enhanced { flex-direction: row-reverse; }
-[dir="rtl"] .btn-content, [dir="rtl"] .btn-secondary-text { flex-direction: row-reverse; }
-[dir="rtl"] .slogan-text { flex-direction: row-reverse; }
-
-
-/* ⚡ تحسينات الأداء */
-.stat-item-mega, .cinematic-portal-btn-main, .btn-secondary-cosmic, .theme-toggle-btn {
-    will-change: transform, box-shadow;
-    contain: layout style paint;
+.theme-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.5s ease;
 }
 
-.cosmic-stars, .cosmic-nebula, .floating-shapes-enhanced {
-    will-change: transform;
+.no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+    color: #b8b9ba;
 }
 
-/* 📱 تأثيرات خاصة للمس */
-@media (hover: none) {
-    .stat-item-mega:hover { transform: translateY(-8px) scale(1.02); }
-    .cinematic-portal-btn-main:hover { transform: translateY(-4px) scale(1.02); }
-    .theme-toggle-btn:hover { transform: scale(1.05); }
+.no-image i {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
 }
 
-/* 🖥️ تحسينات للعرض الكامل */
-@media (min-width: 1440px) {
-    .container-centered { max-width: 1600px; }
-    .hero-title-mega { font-size: 6rem; }
-    .title-static { font-size: 3rem; }
-    .theme-toggle-sidebar { right: 50px; }
-    .theme-toggle-btn { width: 70px; height: 70px; }
+.preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(139, 92, 246, 0.8));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
 }
 
-@media (min-width: 2560px) {
-    .container-centered { max-width: 2000px; }
-    .hero-title-mega { font-size: 7rem; }
-    .cinematic-portal-btn-main { transform: scale(1.2); }
-    .theme-toggle-sidebar { right: 80px; }
-    .theme-toggle-btn { width: 80px; height: 80px; }
+.theme-card:hover .preview-overlay {
+    opacity: 1;
 }
 
-/* 🎛️ تحسينات للأجهزة الضعيفة */
-@media (max-width: 768px) {
-    #particles-canvas { opacity: 0.5; }
-    .theme-toggle-btn::before { display: none; }
-    .floating-shapes-enhanced { display: none; }
+.theme-card:hover .theme-image {
+    transform: scale(1.1);
 }
 
-@media (prefers-reduced-motion: reduce) {
-    * { animation-duration: 0.1s !important; animation-iteration-count: 1 !important; transition-duration: 0.1s !important; }
-    .cinematic-portal { animation: none !important; }
-    .theme-toggle-btn::before { animation: none !important; }
-}
-</style>
-
-<script>
-// 🎬 JavaScript السينمائي للصفحة المركزة
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎬 الصفحة المركزة جاهزة!');
-    
-    // منع التمرير نهائياً
-    disableScrolling();
-    
-    // تهيئة جميع التأثيرات - MAKE SURE ALL ARE CALLED
-    initParticles();
-    initAnimatedText();
-    initCinematicPortal();
-    initCounters();
-    initCosmicEffects();
-    // initThemeToggle(); // Remove this line if you added global toggle
-    initMouseEffects();
-    initAOS();
-    
-    // FORCE RE-START ANIMATIONS
-    setTimeout(() => {
-        forceRestartAnimations();
-    }, 1000);
-});
-
-// إضافة دالة لإعادة تشغيل الأنيميشن
-function forceRestartAnimations() {
-    // إعادة تشغيل الجسيمات
-    const canvas = document.getElementById('particles-canvas');
-    if (canvas && !window.particlesRunning) {
-        console.log('🔄 إعادة تشغيل الجسيمات...');
-        initParticles();
-        window.particlesRunning = true;
-    }
-    
-    // إعادة تشغيل النجوم
-    const cosmicStars = document.querySelector('.cosmic-stars');
-    if (cosmicStars) {
-        cosmicStars.style.animation = 'starsFloat 20s linear infinite';
-    }
-    
-    // إعادة تشغيل السديم
-    const cosmicNebula = document.querySelector('.cosmic-nebula');
-    if (cosmicNebula) {
-        cosmicNebula.style.animation = 'nebulaShift 30s ease-in-out infinite';
-    }
-    
-    // إعادة تشغيل البوابة الكونية
-    const cosmicPortal = document.querySelector('.cosmic-portal');
-    if (cosmicPortal) {
-        cosmicPortal.style.animation = 'portalSpin 60s linear infinite';
-    }
-    
-    console.log('✅ تم إعادة تشغيل جميع الأنيميشن');
+.preview-actions {
+    display: flex;
+    gap: 1rem;
 }
 
-// 🚫 منع التمرير نهائياً
-function disableScrolling() {
-    // منع التمرير بالعجلة
-    window.addEventListener('wheel', preventDefault, { passive: false });
-    
-    // منع التمرير باللمس
-    window.addEventListener('touchmove', preventDefault, { passive: false });
-    
-    // منع مفاتيح التمرير
-    window.addEventListener('keydown', preventDefaultForScrollKeys, false);
-    
-    function preventDefault(e) {
-        e.preventDefault();
-    }
-    
-    function preventDefaultForScrollKeys(e) {
-        const scrollKeys = [32, 33, 34, 35, 36, 37, 38, 39, 40];
-        if (scrollKeys.includes(e.keyCode)) {
-            preventDefault(e);
-            return false;
-        }
-    }
-    
-    // منع التمرير في CSS
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
+.preview-btn {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
-    
-    function applyTheme(theme) {
-        document.body.classList.remove('dark-mode', 'light-mode');
-        document.body.classList.add(theme + '-mode');
-        
-        // تحديث meta theme-color
-        let metaThemeColor = document.querySelector('meta[name="theme-color"]');
-        if (!metaThemeColor) {
-            metaThemeColor = document.createElement('meta');
-            metaThemeColor.name = 'theme-color';
-            document.head.appendChild(metaThemeColor);
-        }
-        
-        metaThemeColor.content = theme === 'dark' ? '#000011' : '#f8fafc';
-        
-        // تحديث الجسيمات لتتناسب مع المظهر
-        updateParticlesForTheme(theme);
-    }
-    
-    function triggerToggleRipple(button) {
-        const ripple = button.querySelector('.toggle-ripple');
-        ripple.style.width = '120px';
-        ripple.style.height = '120px';
-        
-        setTimeout(() => {
-            ripple.style.width = '0';
-            ripple.style.height = '0';
-        }, 600);
-    }
-    
-    function updateParticlesForTheme(theme) {
-        if (window.particleSystem) {
-            window.particleSystem.updateTheme(theme);
-        }
-    }
+.preview-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.5);
 }
 
-// 🔤 النص المتحرك المحدث
-function initAnimatedText() {
-    const animatedText = document.getElementById('animated-text');
-    if (!animatedText) return;
-    
-    const phrases = [
-        'قوالب عربية ووردبريس',
-        'تصاميم حديثة ومبتكرة',
-        'إبداع لا محدود',
-        'جودة احترافية عالية',
-        'مستقبل الويب العربي'
-    ];
-    
-    let currentPhrase = 0;
-    let currentChar = 0;
-    let isDeleting = false;
-    let isWaiting = false;
-    
-    function typeText() {
-        const current = phrases[currentPhrase];
-        
-        if (isWaiting) {
-            setTimeout(() => {
-                isWaiting = false;
-                isDeleting = true;
-                typeText();
-            }, 2000);
-            return;
-        }
-        
-        if (isDeleting) {
-            animatedText.textContent = current.substring(0, currentChar - 1);
-            currentChar--;
-            
-            if (currentChar === 0) {
-                isDeleting = false;
-                currentPhrase = (currentPhrase + 1) % phrases.length;
-            }
-        } else {
-            animatedText.textContent = current.substring(0, currentChar + 1);
-            currentChar++;
-            
-            if (currentChar === current.length) {
-                isWaiting = true;
-            }
-        }
-        
-        const speed = isDeleting ? 50 : 100;
-        setTimeout(typeText, speed);
-    }
-    
-    // بدء التأثير بعد 4 ثوانٍ
-    setTimeout(typeText, 4000);
+.theme-content {
+    padding: 2rem;
+    position: relative;
+    z-index: 2;
 }
 
-// 🌀 البوابة السينمائية المتطورة
-function initCinematicPortal() {
-    const portalTrigger = document.getElementById('portal-trigger');
-    const cinematicPortal = document.getElementById('cinematic-portal');
-    
-    if (!portalTrigger || !cinematicPortal) return;
-    
-    // معالج النقر على الزر - UPDATED
-    portalTrigger.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // منع النقرات المتعددة
-        if (this.classList.contains('disabled')) return;
-        this.classList.add('disabled');
-        
-        // تشغيل تأثير الزر
-        triggerButtonEffects(this);
-        
-        // التنقل المباشر بدلاً من التأثيرات (للاختبار)
-        setTimeout(() => {
-            window.location.href = '/themes/'; // أو المسار الصحيح
-        }, 1500);
-    });
-    
-    // 💥 تأثيرات الزر
-    function triggerButtonEffects(button) {
-        // نبضة الزر
-        button.style.animation = 'buttonPulse 0.3s ease-out';
-        
-        // تأثير الريبل
-        const ripple = button.querySelector('.btn-ripple-effect');
-        ripple.style.width = '400px';
-        ripple.style.height = '400px';
-        
-        // إضافة جسيمات متفجرة
-        createButtonExplosion(button);
-        
-        setTimeout(() => {
-            button.style.opacity = '0';
-            button.style.transform = 'scale(0.8)';
-        }, 200);
-    }
-    
-    // 🎆 انفجار الجسيمات من الزر
-    function createButtonExplosion(button) {
-        const rect = button.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        
-        for (let i = 0; i < 25; i++) {
-            const particle = document.createElement('div');
-            particle.style.cssText = `
-                position: fixed;
-                left: ${centerX}px;
-                top: ${centerY}px;
-                width: 8px;
-                height: 8px;
-                background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 9999;
-                transform: translate(-50%, -50%);
-            `;
-            
-            document.body.appendChild(particle);
-            
-            const angle = (Math.PI * 2 * i) / 25;
-            const velocity = 120 + Math.random() * 120;
-            const endX = centerX + Math.cos(angle) * velocity;
-            const endY = centerY + Math.sin(angle) * velocity;
-            
-            particle.animate([
-                { 
-                    left: centerX + 'px', 
-                    top: centerY + 'px', 
-                    opacity: 1, 
-                    transform: 'translate(-50%, -50%) scale(1)' 
-                },
-                { 
-                    left: endX + 'px', 
-                    top: endY + 'px', 
-                    opacity: 0, 
-                    transform: 'translate(-50%, -50%) scale(0)' 
-                }
-            ], {
-                duration: 1200,
-                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-            }).onfinish = () => particle.remove();
-        }
-    }
-    
-    // 🎬 تفعيل البوابة السينمائية
-    function activateCinematicPortal() {
-        // إظهار البوابة
-        cinematicPortal.classList.add('active');
-        
-        // تعتيم الخلفية
-        document.body.style.transition = 'filter 0.5s ease';
-        document.body.style.filter = 'blur(4px) brightness(0.2)';
-        
-        // بدء تسلسل التأثيرات
-        setTimeout(() => startPortalSequence(), 200);
-    }
-    
-    // 🎭 تسلسل تأثيرات البوابة
-    function startPortalSequence() {
-        const portalWave = cinematicPortal.querySelector('.portal-wave');
-        const floatingElements = cinematicPortal.querySelectorAll('.floating-icon, .floating-letter');
-        
-        // المرحلة 1: إطلاق الموجة
-        cinematicPortal.classList.add('portal-expanding');
-        portalWave.classList.add('expanding');
-        
-        // المرحلة 2: تحريك العناصر العائمة
-        setTimeout(() => {
-            floatingElements.forEach((element, index) => {
-                element.style.opacity = '1';
-                element.style.animation = `floatToCenter 3s ease-in-out ${index * 0.1}s forwards`;
-            });
-        }, 300);
-        
-        // المرحلة 3: إظهار مركز البوابة
-        setTimeout(() => {
-            const portalCenter = cinematicPortal.querySelector('.portal-center');
-            portalCenter.style.opacity = '1';
-            portalCenter.style.transform = 'scale(1)';
-        }, 800);
-        
-        // المرحلة 4: النص والتقدم
-        setTimeout(() => {
-            const portalText = cinematicPortal.querySelector('.portal-text');
-            portalText.style.opacity = '1';
-            
-            // بدء شريط التقدم
-            const progressBar = cinematicPortal.querySelector('.progress-bar');
-            progressBar.style.width = '100%';
-        }, 1200);
-        
-        // المرحلة 5: التكبير النهائي والانتقال
-        setTimeout(() => {
-            startFinalTransition();
-        }, 3500);
-    }
-    
-    // 🚀 الانتقال النهائي - FIXED VERSION
-    function startFinalTransition() {
-    const portalCenter = cinematicPortal.querySelector('.portal-center');
-    
-    // تكبير مركز البوابة
-    portalCenter.style.animation += ', finalZoomEffect 1s ease-in forwards';
-    
-    // تأثير التكبير العام
-    cinematicPortal.style.animation = 'portalZoomIn 1s ease-in forwards';
-    
-    // انتقال الصفحة
-    setTimeout(() => {
-        document.body.style.animation = 'pageTransition 1s ease-in-out forwards';
-        
-        // الانتقال الفعلي - FIXED
-        setTimeout(() => {
-            // تحديد الرابط الصحيح
-            const archiveUrl = window.location.origin + '/themes/'; // أو المسار الصحيح لصفحة الأرشيف
-            
-            // التنقل المباشر
-            window.location.href = archiveUrl;
-        }, 1000);
-    }, 500);
+.theme-title {
+    margin-bottom: 1rem;
 }
 
-// ⭐ نظام الجسيمات المتحركة المحسن
-function initParticles() {
-    const canvas = document.getElementById('particles-canvas');
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let animationId;
-    
-    // تحديد حجم Canvas
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    
-    // 🌟 فئة الجسيم المحسنة
-    class Particle {
-        constructor() {
-            this.reset();
-        }
-        
-        reset() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 4 + 1;
-            this.speedX = (Math.random() - 0.5) * 1;
-            this.speedY = (Math.random() - 0.5) * 1;
-            this.color = this.getRandomColor();
-            this.opacity = Math.random() * 0.6 + 0.3;
-            this.pulse = Math.random() * 0.02 + 0.01;
-            this.life = 1.0;
-            this.decay = Math.random() * 0.005 + 0.001;
-            this.angle = Math.random() * Math.PI * 2;
-            this.angleSpeed = (Math.random() - 0.5) * 0.02;
-        }
-        
-        getRandomColor() {
-            const isDark = document.body.classList.contains('dark-mode');
-            if (isDark) {
-                const colors = [
-                    `hsl(${200 + Math.random() * 60}, 80%, 65%)`,
-                    `hsl(${250 + Math.random() * 60}, 80%, 65%)`,
-                    `hsl(${300 + Math.random() * 60}, 80%, 65%)`
-                ];
-                return colors[Math.floor(Math.random() * colors.length)];
-            } else {
-                const colors = [
-                    `hsl(${200 + Math.random() * 60}, 70%, 55%)`,
-                    `hsl(${250 + Math.random() * 60}, 70%, 55%)`,
-                    `hsl(${300 + Math.random() * 60}, 70%, 55%)`
-                ];
-                return colors[Math.floor(Math.random() * colors.length)];
-            }
-        }
-        
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            this.angle += this.angleSpeed;
-            
-            // إعادة تدوير الجسيمات
-            if (this.x > canvas.width) this.x = 0;
-            if (this.x < 0) this.x = canvas.width;
-            if (this.y > canvas.height) this.y = 0;
-            if (this.y < 0) this.y = canvas.height;
-            
-            // تأثير النبض
-            this.opacity += this.pulse;
-            if (this.opacity > 0.8 || this.opacity < 0.2) {
-                this.pulse *= -1;
-            }
-            
-            // دورة الحياة
-            this.life -= this.decay;
-            if (this.life <= 0) {
-                this.reset();
-            }
-        }
-        
-        draw() {
-            ctx.save();
-            ctx.globalAlpha = this.opacity * this.life;
-            ctx.fillStyle = this.color;
-            
-            // رسم جسيم مع دوران
-            ctx.translate(this.x, this.y);
-            ctx.rotate(this.angle);
-            
-            ctx.beginPath();
-            ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // تأثير الهالة المحسن
-            ctx.shadowBlur = 20;
-            ctx.shadowColor = this.color;
-            ctx.fill();
-            
-            ctx.restore();
-        }
-        
-        updateTheme(theme) {
-            this.color = this.getRandomColor();
-        }
-    }
-    
-    // إنشاء الجسيمات
-    for (let i = 0; i < 150; i++) {
-        particles.push(new Particle());
-    }
-    
-    // نظام الجسيمات العالمي
-    window.particleSystem = {
-        updateTheme: function(theme) {
-            particles.forEach(particle => particle.updateTheme(theme));
-        }
-    };
-    
-    // حلقة الرسم المحسنة
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        particles.forEach(particle => {
-            particle.update();
-            particle.draw();
-        });
-        
-        // رسم خطوط الاتصال المحسنة
-        drawAdvancedConnections();
-        
-        animationId = requestAnimationFrame(animate);
-    }
-    
-    // 🌐 رسم خطوط الاتصال المتقدمة
-    function drawAdvancedConnections() {
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < 180) {
-                    ctx.save();
-                    const opacity = (180 - distance) / 180 * 0.5;
-                    ctx.globalAlpha = opacity;
-                    
-                    // تدرج لوني للخط
-                    const gradient = ctx.createLinearGradient(
-                        particles[i].x, particles[i].y,
-                        particles[j].x, particles[j].y
-                    );
-                    gradient.addColorStop(0, '#3b82f6');
-                    gradient.addColorStop(0.5, '#8b5cf6');
-                    gradient.addColorStop(1, '#ec4899');
-                    
-                    ctx.strokeStyle = gradient;
-                    ctx.lineWidth = 1.5;
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
-                    ctx.restore();
-                }
-            }
-        }
-    }
-    
-    animate();
-    
-    // تنظيف الذاكرة عند إلغاء تحميل الصفحة
-    window.addEventListener('beforeunload', () => {
-        if (animationId) {
-            cancelAnimationFrame(animationId);
-        }
-    });
+.theme-title a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    background: linear-gradient(45deg, #ffffff, #b8b9ba);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-// 📊 العدادات المتحركة المحسنة
-function initCounters() {
-    const counters = document.querySelectorAll('.stat-number-huge[data-target]');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateCounter(entry.target);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.3 });
-    
-    counters.forEach(counter => observer.observe(counter));
-    
-    function animateCounter(element) {
-        const target = parseInt(element.dataset.target);
-        const duration = 3000;
-        const startTime = performance.now();
-        
-        function updateCounter(currentTime) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            
-            // تأثير Easing متقدم
-            const easeOutElastic = progress === 1 ? 1 : 
-                1 - Math.pow(2, -10 * progress) * Math.sin((progress * 10 - 0.75) * (2 * Math.PI) / 3);
-            
-            const current = Math.floor(target * easeOutElastic);
-            
-            element.textContent = current.toLocaleString('ar');
-            
-            // تأثير لوني أثناء العد
-            const hue = 200 + (progress * 120);
-            element.style.filter = `hue-rotate(${hue}deg)`;
-            
-            // تأثير التكبير أثناء العد
-            const scale = 1 + (Math.sin(progress * Math.PI * 4) * 0.1);
-            element.style.transform = `scale(${scale})`;
-            
-            if (progress < 1) {
-                requestAnimationFrame(updateCounter);
-            } else {
-                element.textContent = target.toLocaleString('ar');
-                element.style.filter = '';
-                element.style.transform = 'scale(1)';
-                
-                // تأثير نهائي محسن
-                element.style.animation = 'counterFinish 1s ease, counterGlow 3s ease-in-out infinite';
-                
-                // تفعيل الهالة
-                const statGlow = element.parentElement.querySelector('.stat-glow');
-                if (statGlow) {
-                    statGlow.style.opacity = '1';
-                    statGlow.style.width = '250px';
-                    statGlow.style.height = '250px';
-                }
-            }
-        }
-        
-        requestAnimationFrame(updateCounter);
-    }
+.theme-title a:hover {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-// 🌌 التأثيرات الكونية المحسنة
-function initCosmicEffects() {
-    // تأثير النجوم المتلألئة المحسن
-    createAdvancedStars();
-    
-    // تأثير الأشكال العائمة
-    animateFloatingShapes();
-    
-    // تأثير التحريك التلقائي للخلفية
-    animateCosmicBackground();
+.theme-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
 }
 
-// ⭐ إنشاء نجوم متقدمة
-function createAdvancedStars() {
-    const container = document.querySelector('.hero-section-fullscreen');
-    if (!container) return;
-    
-    for (let i = 0; i < 50; i++) {
-        const star = document.createElement('div');
-        star.className = 'advanced-floating-star';
-        
-        const size = Math.random() * 4 + 1;
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        const delay = Math.random() * 10;
-        const duration = 6 + Math.random() * 8;
-        const color = `hsl(${200 + Math.random() * 120}, 80%, ${70 + Math.random() * 20}%)`;
-        
-        star.style.cssText = `
-            position: absolute;
-            width: ${size}px;
-            height: ${size}px;
-            background: ${color};
-            border-radius: 50%;
-            left: ${x}%;
-            top: ${y}%;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 4;
-            box-shadow: 0 0 ${size * 4}px ${color}, 0 0 ${size * 8}px ${color};
-            animation: advancedStarFloat ${duration}s ease-in-out infinite ${delay}s;
-        `;
-        
-        container.appendChild(star);
-    }
+.theme-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-// 🎨 تحريك الأشكال العائمة
-function animateFloatingShapes() {
-    const shapes = document.querySelectorAll('.floating-shapes-enhanced > div');
-    
-    shapes.forEach((shape, index) => {
-        let angle = 0;
-        const radius = 50 + index * 20;
-        const speed = 0.01 + index * 0.005;
-        
-        function animate() {
-            angle += speed;
-            const x = Math.cos(angle) * radius;
-            const y = Math.sin(angle) * radius;
-            
-            shape.style.transform = `translate(${x}px, ${y}px) rotate(${angle * 57.3}deg)`;
-            
-            requestAnimationFrame(animate);
-        }
-        
-        animate();
-    });
+.rating-stars {
+    display: flex;
+    gap: 0.2rem;
 }
 
-// 🌌 تحريك الخلفية الكونية
-function animateCosmicBackground() {
-    const cosmicPortal = document.querySelector('.cosmic-portal');
-    const cosmicNebula = document.querySelector('.cosmic-nebula');
-    
-    if (cosmicPortal || cosmicNebula) {
-        let time = 0;
-        
-        function animate() {
-            time += 0.01;
-            
-            if (cosmicPortal) {
-                const rotate = Math.sin(time) * 5;
-                const scale = 1 + Math.sin(time * 0.5) * 0.1;
-                cosmicPortal.style.transform = `translate(-50%, -50%) rotate(${rotate}deg) scale(${scale})`;
-            }
-            
-            if (cosmicNebula) {
-                const opacity = 0.8 + Math.sin(time * 2) * 0.2;
-                cosmicNebula.style.opacity = opacity;
-            }
-            
-            requestAnimationFrame(animate);
-        }
-        
-        animate();
-    }
+.rating-stars i {
+    color: #fbbf24;
+    font-size: 0.9rem;
 }
 
-// 🖱️ تأثيرات الماوس المحسنة
-function initMouseEffects() {
-    let mouseX = 0;
-    let mouseY = 0;
-    
-    document.addEventListener('mousemove', function(e) {
-        mouseX = e.clientX / window.innerWidth;
-        mouseY = e.clientY / window.innerHeight;
-        
-        // تحديث موقع الخلفية الكونية
-        const cosmicPortal = document.querySelector('.cosmic-portal');
-        if (cosmicPortal) {
-            const moveX = (mouseX - 0.5) * 40;
-            const moveY = (mouseY - 0.5) * 40;
-            cosmicPortal.style.transform += ` translate(${moveX}px, ${moveY}px)`;
-        }
-        
-        // تأثير الشعاع المتبع المحسن
-        if (Math.random() < 0.15) {
-            createEnhancedMouseTrail(e.clientX, e.clientY);
-        }
-        
-        // تأثير الإضاءة على البطاقات
-        updateStatsLighting(e.clientX, e.clientY);
-    });
-    
-    // تحديث إضاءة الإحصائيات
-    function updateStatsLighting(mouseX, mouseY) {
-        const statItems = document.querySelectorAll('.stat-item-mega');
-        
-        statItems.forEach(item => {
-            const rect = item.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            
-            const distance = Math.sqrt(
-                Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2)
-            );
-            
-            if (distance < 200) {
-                const intensity = (200 - distance) / 200;
-                item.style.boxShadow = `0 0 ${30 * intensity}px rgba(59, 130, 246, ${0.5 * intensity})`;
-            } else {
-                item.style.boxShadow = '';
-            }
-        });
-    }
+.rating-value {
+    color: #b8b9ba;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
-
-
-// ✨ شعاع متبع محسن للماوس
-function createEnhancedMouseTrail(x, y) {
-    const trail = document.createElement('div');
-    const size = Math.random() * 12 + 6;
-    const colors = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b'];
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    
-    trail.style.cssText = `
-        position: fixed;
-        left: ${x}px;
-        top: ${y}px;
-        width: ${size}px;
-        height: ${size}px;
-        background: radial-gradient(circle, ${color}, transparent);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        animation: enhancedTrailFade 2s ease-out forwards;
-    `;
-    
-    document.body.appendChild(trail);
-    
-    setTimeout(() => trail.remove(), 2000);
+.theme-stats {
+    display: flex;
+    gap: 1rem;
 }
 
-// 🎬 تهيئة AOS محسن
-function initAOS() {
-    if (typeof AOS !== 'undefined') {
-        AOS.init({
-            duration: 1500,
-            easing: 'ease-out-cubic',
-            once: true,
-            offset: 50,
-            delay: 200,
-            anchorPlacement: 'top-bottom'
-        });
-    }
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #b8b9ba;
+    font-size: 0.9rem;
 }
 
-// 🚀 تأثير تحميل الصفحة محسن
-window.addEventListener('load', function() {
-    document.body.classList.remove('page-loading');
-    document.body.classList.add('page-loaded');
-    
-    // تأثير الترحيب المحسن
-    setTimeout(() => {
-        const title = document.querySelector('.title-animated');
-        if (title) {
-            title.style.animation += ', welcomePulse 4s ease-in-out';
-        }
-        
-        // إضافة تأثير خاص للصفحة
-        document.body.style.animation = 'pageWelcome 3s ease-out';
-        
-        // تفعيل التأثيرات التلقائية
-        startAutoEffects();
-    }, 4000);
-});
-
-// 🎯 تأثيرات تلقائية
-function startAutoEffects() {
-    // تأثير نبضة دورية للأزرار
-    setInterval(() => {
-        const mainButton = document.querySelector('.cinematic-portal-btn-main');
-        if (mainButton && !mainButton.classList.contains('disabled')) {
-            mainButton.style.animation = 'buttonPulse 2s ease-in-out';
-            setTimeout(() => {
-                mainButton.style.animation = '';
-            }, 2000);
-        }
-    }, 10000);
-    
-    // تأثير وميض دوري للإحصائيات
-    setInterval(() => {
-        const stats = document.querySelectorAll('.stat-item-mega');
-        stats.forEach((stat, index) => {
-            setTimeout(() => {
-                stat.style.animation = 'iconPulse 1s ease-in-out';
-                setTimeout(() => {
-                    stat.style.animation = '';
-                }, 1000);
-            }, index * 200);
-        });
-    }, 15000);
+.stat-item i {
+    color: var(--primary-color);
 }
 
-// 🎯 CSS إضافي للتأثيرات الجديدة
-const enhancedAnimations = `
-<style>
-@keyframes counterFinish {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.3); color: #3b82f6; }
-    100% { transform: scale(1); }
+.theme-excerpt {
+    color: #b8b9ba;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
 }
 
-@keyframes counterGlow {
-    0%, 100% { text-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
-    50% { text-shadow: 0 0 30px rgba(59, 130, 246, 1), 0 0 50px rgba(139, 92, 246, 0.7); }
+.theme-categories {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
 }
 
-@keyframes advancedStarFloat {
-    0% { opacity: 0; transform: translateY(30px) scale(0) rotate(0deg); }
-    15% { opacity: 1; transform: translateY(0) scale(1) rotate(180deg); }
-    85% { opacity: 1; transform: translateY(-40px) scale(1.3) rotate(360deg); }
-    100% { opacity: 0; transform: translateY(-70px) scale(0) rotate(540deg); }
+.category-tag {
+    padding: 0.3rem 0.8rem;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 15px;
+    color: var(--primary-color);
+    font-size: 0.8rem;
+    font-weight: 500;
 }
 
-@keyframes enhancedTrailFade {
-    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0px); }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(3); filter: blur(8px); }
+.theme-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
 
-@keyframes finalZoomEffect {
-    0% { transform: scale(1); border-radius: 50%; }
-    100% { transform: scale(15); border-radius: 0%; }
+.btn-primary {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-@keyframes portalZoomIn {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(3); opacity: 0; }
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
 }
 
-@keyframes pageTransition {
-    0% { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0px); }
-    50% { transform: scale(0.7) rotate(8deg); opacity: 0.3; filter: blur(8px); }
-    100% { transform: scale(0.2) rotate(20deg); opacity: 0; filter: blur(25px); }
+.btn-secondary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    background: transparent;
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 25px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
-@keyframes pageWelcome {
-    0% { filter: hue-rotate(0deg) brightness(1); }
-    25% { filter: hue-rotate(90deg) brightness(1.1); }
-    50% { filter: hue-rotate(180deg) brightness(1.2); }
-    75% { filter: hue-rotate(270deg) brightness(1.1); }
-    100% { filter: hue-rotate(360deg) brightness(1); }
+.btn-secondary:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
 }
 
-@keyframes welcomePulse {
-    0%, 100% { transform: scale(1); }
-    20% { transform: scale(1.05); filter: brightness(1.2); }
-    40% { transform: scale(1.08); filter: brightness(1.4); }
-    60% { transform: scale(1.05); filter: brightness(1.2); }
-    80% { transform: scale(1.02); filter: brightness(1.1); }
+.btn-ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.6s ease;
+    pointer-events: none;
 }
 
-.advanced-floating-star {
-    will-change: transform, opacity;
+.btn-primary:active .btn-ripple {
+    width: 300px;
+    height: 300px;
 }
 
-.stat-item-mega {
-    will-change: transform, box-shadow;
+.section-footer {
+    text-align: center;
 }
-</style>
-`;
 
-// إضافة الأنماط المحسنة
-document.head.insertAdjacentHTML('beforeend', enhancedAnimations);
+.btn-view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 3rem;
+    background: rgba(26, 26, 46, 0.8);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 50px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+}
 
-// 🎨 رسائل الطباعة للمطورين
-console.log('🎬 الصفحة المركزة جاهزة!');
-console.log('✨ تأثيرات متقدمة مُفعلة!');
-console.log('🌓 نظام تبديل المظهر نشط!');
-console.log('🚫 التمرير مُعطل نهائياً!');
-console.log('🎯 تجربة مركزة 100%!');
-console.log('🚀 الأداء محسن للجميع!');
-console.log('🎨 إبداع لا محدود!');
-console.log('🌟 قوالب عربية ووردبريس - مستقبل الويب العربي!');
-console.log('👨‍💻 تم التطوير بواسطة: Tahactw');
-console.log('📅 تاريخ التطوير: 2025-05-28');
-</script>
+.btn-view-all:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 20px 60px rgba(59, 130, 246, 0.3);
+}
 
-<?php wp_footer(); ?>
-</body>
-</html>
+.btn-view-all .btn-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.btn-view-all:hover .btn-glow {
+    transform: translateX(100%);
+}
+
+/* قسم التصنيفات */
+.categories-section {
+    padding: 8rem 0;
+    position: relative;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 
