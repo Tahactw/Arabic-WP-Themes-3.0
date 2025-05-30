@@ -19,16 +19,117 @@
 </head>
 <body <?php body_class(); ?>>
 
-<!-- أيقونة Dark/Light Mode في الجانب -->
-<div class="theme-toggle-sidebar">
-    <button id="theme-toggle" class="theme-toggle-btn" title="تغيير المظهر">
-        <div class="toggle-icon">
-            <i class="fas fa-sun sun-icon"></i>
-            <i class="fas fa-moon moon-icon"></i>
-        </div>
-        <div class="toggle-ripple"></div>
-    </button>
-</div>
+
+
+<style>
+/* إصلاح عكس أنماط المظهر - Global Fix */
+html.dark-mode,
+body.dark-mode {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+html.light-mode,
+body.light-mode {
+    background: #f8fafc !important;
+    color: #1e293b !important;
+}
+
+/* إصلاح خلفيات الصفحات */
+html.dark-mode .archive-themes-page,
+body.dark-mode .archive-themes-page,
+html.dark-mode main,
+body.dark-mode main {
+    background: linear-gradient(135deg, #000011 0%, #1a1a2e 50%, #16213e 100%) !important;
+    color: #ffffff !important;
+}
+
+html.light-mode .archive-themes-page,
+body.light-mode .archive-themes-page,
+html.light-mode main,
+body.light-mode main {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    color: #1e293b !important;
+}
+
+/* إصلاح البطاقات والعناصر */
+html.light-mode .theme-card,
+body.light-mode .theme-card {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #1e293b !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+html.dark-mode .theme-card,
+body.dark-mode .theme-card {
+    background: rgba(26, 26, 46, 0.8) !important;
+    color: #ffffff !important;
+    border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+/* إصلاح صناديق البحث والفلاتر */
+html.light-mode .search-box,
+body.light-mode .search-box,
+html.light-mode .filter-select,
+body.light-mode .filter-select {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #1e293b !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+html.dark-mode .search-box,
+body.dark-mode .search-box,
+html.dark-mode .filter-select,
+body.dark-mode .filter-select {
+    background: rgba(26, 26, 46, 0.8) !important;
+    color: #ffffff !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+/* إصلاح العناوين والنصوص */
+html.light-mode .theme-title a,
+body.light-mode .theme-title a {
+    color: #1e293b !important;
+    background: linear-gradient(45deg, #1e293b, #3b82f6) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+html.dark-mode .theme-title a,
+body.dark-mode .theme-title a {
+    color: #ffffff !important;
+    background: linear-gradient(45deg, #ffffff, #3b82f6) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+/* إصلاح أقسام البحث */
+html.light-mode .main-search-section,
+body.light-mode .main-search-section {
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+html.dark-mode .main-search-section,
+body.dark-mode .main-search-section {
+    background: rgba(26, 26, 46, 0.3) !important;
+    border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+/* إصلاح عناصر التحكم */
+html.light-mode .view-controls,
+body.light-mode .view-controls {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+html.dark-mode .view-controls,
+body.dark-mode .view-controls {
+    background: rgba(26, 26, 46, 0.6) !important;
+    border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+</style>
 
 <!-- Canvas للجسيمات المتحركة -->
 <canvas id="particles-canvas"></canvas>
@@ -237,119 +338,6 @@ html {
     scrollbar-width: none !important;
 }
 
-/* 🌓 أيقونة Dark/Light Mode في الجانب */
-.theme-toggle-sidebar {
-    position: fixed;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 9999;
-}
-
-.theme-toggle-btn {
-    width: 60px;
-    height: 60px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(26, 26, 46, 0.9);
-    border: 2px solid rgba(59, 130, 246, 0.3);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(20px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.theme-toggle-btn:hover {
-    transform: scale(1.1);
-    border-color: #3b82f6;
-    box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
-}
-
-.theme-toggle-btn:active {
-    transform: scale(0.95);
-}
-
-.toggle-icon {
-    position: relative;
-    width: 24px;
-    height: 24px;
-    transition: all 0.3s ease;
-}
-
-.sun-icon,
-.moon-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 18px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.sun-icon {
-    color: #fbbf24;
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg) scale(1);
-}
-
-.moon-icon {
-    color: #60a5fa;
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(180deg) scale(0);
-}
-
-/* Dark mode */
-body.dark-mode .sun-icon {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(-180deg) scale(0);
-}
-
-body.dark-mode .moon-icon {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg) scale(1);
-}
-
-.toggle-ripple {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: all 0.6s ease;
-    pointer-events: none;
-}
-
-.theme-toggle-btn:active .toggle-ripple {
-    width: 120px;
-    height: 120px;
-}
-
-/* تأثير الهالة */
-.theme-toggle-btn::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    background: conic-gradient(from 0deg, transparent, rgba(59, 130, 246, 0.4), transparent);
-    border-radius: 50%;
-    opacity: 0;
-    animation: toggleAura 3s ease-in-out infinite;
-}
-
-@keyframes toggleAura {
-    0%, 100% { opacity: 0; transform: rotate(0deg); }
-    50% { opacity: 1; transform: rotate(180deg); }
-}
 
 /* الصفحة الرئيسية المركزة */
 .homepage-focused {
@@ -865,6 +853,35 @@ body.dark-mode .moon-icon {
     animation: auraGlow 3s ease-in-out infinite;
 }
 
+/* إصلاح تضارب الأنيميشن */
+.cosmic-stars {
+    animation: starsFloat 20s linear infinite !important;
+}
+
+.cosmic-nebula {
+    animation: nebulaShift 30s ease-in-out infinite !important;
+}
+
+.cosmic-portal {
+    animation: portalSpin 60s linear infinite !important;
+}
+
+.floating-shapes-enhanced > div {
+    animation: shapeFloat 15s ease-in-out infinite !important;
+}
+
+/* إصلاح canvas الجسيمات */
+#particles-canvas {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    display: block !important;
+}
+
 /* الزر الثانوي */
 .btn-secondary-cosmic {
     position: relative;
@@ -1279,64 +1296,8 @@ body.dark-mode .moon-icon {
 [dir="rtl"] .title-cursor { margin-left: 0; margin-right: 5px; }
 [dir="rtl"] .hero-actions-enhanced { flex-direction: row-reverse; }
 [dir="rtl"] .btn-content, [dir="rtl"] .btn-secondary-text { flex-direction: row-reverse; }
-[dir="rtl"] .theme-toggle-sidebar { right: auto; left: 30px; }
 [dir="rtl"] .slogan-text { flex-direction: row-reverse; }
 
-/* 🌓 Dark Mode Styles */
-body.dark-mode {
-    background: #000000;
-}
-
-body.dark-mode .homepage-focused {
-    background: #000000;
-}
-
-body.dark-mode .stat-item-mega {
-    background: rgba(10, 10, 20, 0.8);
-    border-color: rgba(139, 92, 246, 0.4);
-}
-
-body.dark-mode .theme-toggle-btn {
-    background: rgba(10, 10, 20, 0.95);
-    border-color: rgba(139, 92, 246, 0.4);
-}
-
-/* Light Mode Styles */
-body.light-mode {
-    background: #f8fafc;
-}
-
-body.light-mode .homepage-focused {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    color: #1e293b;
-}
-
-body.light-mode .cosmic-stars {
-    background: 
-        radial-gradient(2px 2px at 20px 30px, #3b82f6, transparent),
-        radial-gradient(2px 2px at 40px 70px, rgba(59, 130, 246, 0.6), transparent),
-        radial-gradient(1px 1px at 90px 40px, rgba(139, 92, 246, 0.4), transparent),
-        radial-gradient(1px 1px at 130px 80px, rgba(236, 72, 153, 0.3), transparent);
-}
-
-body.light-mode .stat-item-mega {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: rgba(59, 130, 246, 0.3);
-    color: #1e293b;
-}
-
-body.light-mode .theme-toggle-btn {
-    background: rgba(255, 255, 255, 0.95);
-    border-color: rgba(59, 130, 246, 0.3);
-}
-
-body.light-mode .slogan-text {
-    color: #64748b;
-}
-
-body.light-mode .parallax-layer {
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
-}
 
 /* ⚡ تحسينات الأداء */
 .stat-item-mega, .cinematic-portal-btn-main, .btn-secondary-cosmic, .theme-toggle-btn {
@@ -1394,16 +1355,52 @@ document.addEventListener('DOMContentLoaded', function() {
     // منع التمرير نهائياً
     disableScrolling();
     
-    // تهيئة جميع التأثيرات
+    // تهيئة جميع التأثيرات - MAKE SURE ALL ARE CALLED
     initParticles();
     initAnimatedText();
     initCinematicPortal();
     initCounters();
     initCosmicEffects();
-    initThemeToggle();
+    // initThemeToggle(); // Remove this line if you added global toggle
     initMouseEffects();
     initAOS();
+    
+    // FORCE RE-START ANIMATIONS
+    setTimeout(() => {
+        forceRestartAnimations();
+    }, 1000);
 });
+
+// إضافة دالة لإعادة تشغيل الأنيميشن
+function forceRestartAnimations() {
+    // إعادة تشغيل الجسيمات
+    const canvas = document.getElementById('particles-canvas');
+    if (canvas && !window.particlesRunning) {
+        console.log('🔄 إعادة تشغيل الجسيمات...');
+        initParticles();
+        window.particlesRunning = true;
+    }
+    
+    // إعادة تشغيل النجوم
+    const cosmicStars = document.querySelector('.cosmic-stars');
+    if (cosmicStars) {
+        cosmicStars.style.animation = 'starsFloat 20s linear infinite';
+    }
+    
+    // إعادة تشغيل السديم
+    const cosmicNebula = document.querySelector('.cosmic-nebula');
+    if (cosmicNebula) {
+        cosmicNebula.style.animation = 'nebulaShift 30s ease-in-out infinite';
+    }
+    
+    // إعادة تشغيل البوابة الكونية
+    const cosmicPortal = document.querySelector('.cosmic-portal');
+    if (cosmicPortal) {
+        cosmicPortal.style.animation = 'portalSpin 60s linear infinite';
+    }
+    
+    console.log('✅ تم إعادة تشغيل جميع الأنيميشن');
+}
 
 // 🚫 منع التمرير نهائياً
 function disableScrolling() {
@@ -1433,34 +1430,6 @@ function disableScrolling() {
     document.documentElement.style.overflow = 'hidden';
 }
 
-// 🌓 نظام تبديل المظهر المحسن
-function initThemeToggle() {
-    const themeToggle = document.getElementById('theme-toggle');
-    if (!themeToggle) return;
-    
-    // قراءة المظهر المحفوظ
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    applyTheme(savedTheme);
-    
-    // معالج النقر
-    themeToggle.addEventListener('click', function() {
-        const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        // تأثير انتقالي سلس
-        document.body.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-        
-        applyTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
-        
-        // تأثير ريبل للزر
-        triggerToggleRipple(this);
-        
-        // إزالة التأثير الانتقالي بعد اكتماله
-        setTimeout(() => {
-            document.body.style.transition = '';
-        }, 500);
-    });
     
     function applyTheme(theme) {
         document.body.classList.remove('dark-mode', 'light-mode');
@@ -1560,7 +1529,7 @@ function initCinematicPortal() {
     
     if (!portalTrigger || !cinematicPortal) return;
     
-    // معالج النقر على الزر
+    // معالج النقر على الزر - UPDATED
     portalTrigger.addEventListener('click', function(e) {
         e.preventDefault();
         
@@ -1571,10 +1540,10 @@ function initCinematicPortal() {
         // تشغيل تأثير الزر
         triggerButtonEffects(this);
         
-        // تشغيل البوابة السينمائية
+        // التنقل المباشر بدلاً من التأثيرات (للاختبار)
         setTimeout(() => {
-            activateCinematicPortal();
-        }, 300);
+            window.location.href = '/themes/'; // أو المسار الصحيح
+        }, 1500);
     });
     
     // 💥 تأثيرات الزر
@@ -1697,32 +1666,29 @@ function initCinematicPortal() {
         }, 3500);
     }
     
-    // 🚀 الانتقال النهائي
+    // 🚀 الانتقال النهائي - FIXED VERSION
     function startFinalTransition() {
-        const portalCenter = cinematicPortal.querySelector('.portal-center');
+    const portalCenter = cinematicPortal.querySelector('.portal-center');
+    
+    // تكبير مركز البوابة
+    portalCenter.style.animation += ', finalZoomEffect 1s ease-in forwards';
+    
+    // تأثير التكبير العام
+    cinematicPortal.style.animation = 'portalZoomIn 1s ease-in forwards';
+    
+    // انتقال الصفحة
+    setTimeout(() => {
+        document.body.style.animation = 'pageTransition 1s ease-in-out forwards';
         
-        // تكبير مركز البوابة
-        portalCenter.style.animation += ', finalZoomEffect 1s ease-in forwards';
-        
-        // تأثير التكبير العام
-        cinematicPortal.style.animation = 'portalZoomIn 1s ease-in forwards';
-        
-        // انتقال الصفحة
+        // الانتقال الفعلي - FIXED
         setTimeout(() => {
-            document.body.style.animation = 'pageTransition 1s ease-in-out forwards';
+            // تحديد الرابط الصحيح
+            const archiveUrl = window.location.origin + '/themes/'; // أو المسار الصحيح لصفحة الأرشيف
             
-            // الانتقال الفعلي
-            setTimeout(() => {
-                // الحصول على رابط القوالب
-                const themesLink = document.querySelector('[href*="wp_themes"]')?.href || 
-                                  document.querySelector('.btn-quantum')?.href ||
-                                  '/wp_themes/';
-                
-                window.location.href = '/themes/';
-
-            }, 1000);
-        }, 500);
-    }
+            // التنقل المباشر
+            window.location.href = archiveUrl;
+        }, 1000);
+    }, 500);
 }
 
 // ⭐ نظام الجسيمات المتحركة المحسن
@@ -2115,6 +2081,8 @@ function initMouseEffects() {
         });
     }
 }
+
+
 
 // ✨ شعاع متبع محسن للماوس
 function createEnhancedMouseTrail(x, y) {
