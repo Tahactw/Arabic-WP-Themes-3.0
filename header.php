@@ -24,13 +24,6 @@
 <div id="page" class="site">
     <!-- Header مبسط -->
     <header id="masthead" class="site-header">
-        <!-- زر تغيير المظهر -->
-        <div class="theme-switcher">
-            <button id="theme-toggle" class="theme-toggle-btn" title="تغيير المظهر">
-                <i class="fas fa-moon dark-icon"></i>
-                <i class="fas fa-sun light-icon"></i>
-            </button>
-        </div>
     </header>
 
     <div id="content" class="site-content">
