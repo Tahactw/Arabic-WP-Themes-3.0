@@ -128,6 +128,52 @@ function arabic_themes_scripts() {
 }
 add_action('wp_enqueue_scripts', 'arabic_themes_scripts');
 
+function disable_main_theme_on_archive() {
+    if (is_post_type_archive('wp_themes')) {
+        // Remove main theme styles
+        wp_dequeue_style('arabic-themes-style');
+        wp_dequeue_style('theme-cards');
+        wp_dequeue_style('font-awesome');
+        
+        // Remove main theme scripts
+        wp_dequeue_script('arabic-themes-interactive');
+        wp_dequeue_script('arabic-themes-performance');
+        wp_dequeue_script('arabic-themes-main');
+        
+        // Remove conflicting actions
+        remove_action('wp_enqueue_scripts', 'arabic_themes_scripts');
+    }
+}
+add_action('wp_enqueue_scripts', 'disable_main_theme_on_archive', 5);
+
+/**
+ * AJAX Handlers for Archive Page
+ */
+// Load more themes
+add_action('wp_ajax_load_more_themes', 'handle_load_more_themes');
+add_action('wp_ajax_nopriv_load_more_themes', 'handle_load_more_themes');
+
+function handle_load_more_themes() {
+    // Include the AJAX file
+    include get_template_directory() . '/template-parts/archive/ajax/load-more.php';
+}
+
+// Filter themes  
+add_action('wp_ajax_filter_themes', 'handle_filter_themes');
+add_action('wp_ajax_nopriv_filter_themes', 'handle_filter_themes');
+
+function handle_filter_themes() {
+    include get_template_directory() . '/template-parts/archive/ajax/filter-themes.php';
+}
+
+// Search themes
+add_action('wp_ajax_search_themes', 'handle_search_themes'); 
+add_action('wp_ajax_nopriv_search_themes', 'handle_search_themes');
+
+function handle_search_themes() {
+    include get_template_directory() . '/template-parts/archive/ajax/search-themes.php';
+}
+
 /**
  * تسجيل نوع محتوى مخصص للقوالب
  */
@@ -924,6 +970,382 @@ function arabic_themes_add_sample_data() {
         }
     }
 }
+
+/**
+ * نظام تبديل المظهر الشامل - Global Theme Toggle System
+ * يعمل في جميع صفحات الموقع
+ */
+function arabic_themes_global_theme_toggle() {
+    ?>
+    <!-- نظام تبديل المظهر الشامل -->
+    <div id="global-theme-toggle" class="global-theme-toggle">
+        <button id="theme-toggle" class="theme-toggle-btn" title="تغيير المظهر" aria-label="تبديل المظهر">
+            <div class="toggle-icon">
+                <i class="fas fa-sun sun-icon"></i>
+                <i class="fas fa-moon moon-icon"></i>
+            </div>
+            <div class="toggle-ripple"></div>
+        </button>
+    </div>
+
+    <style id="global-theme-toggle-styles">
+        /* نظام تبديل المظهر الشامل */
+        .global-theme-toggle {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 99999;
+            pointer-events: none;
+        }
+
+        .theme-toggle-btn {
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            pointer-events: auto;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.1);
+            border-color: #3b82f6;
+            box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
+        }
+
+        .theme-toggle-btn:active {
+            transform: scale(0.95);
+        }
+
+        .toggle-icon {
+            position: relative;
+            width: 24px;
+            height: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .sun-icon,
+        .moon-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sun-icon {
+            color: #fbbf24;
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        }
+
+        .moon-icon {
+            color: #60a5fa;
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(180deg) scale(0);
+        }
+
+        .toggle-ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+            pointer-events: none;
+        }
+
+        .theme-toggle-btn:active .toggle-ripple {
+            width: 120px;
+            height: 120px;
+        }
+
+        /* تأثير الهالة */
+        .theme-toggle-btn::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: conic-gradient(from 0deg, transparent, rgba(59, 130, 246, 0.4), transparent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: toggleAura 3s ease-in-out infinite;
+        }
+
+        @keyframes toggleAura {
+            0%, 100% { opacity: 0; transform: rotate(0deg); }
+            50% { opacity: 1; transform: rotate(180deg); }
+        }
+
+        /* حالات المظهر */
+        body.dark-mode .sun-icon,
+        html.dark-mode .sun-icon {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        }
+
+        body.dark-mode .moon-icon,
+        html.dark-mode .moon-icon {
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(180deg) scale(0);
+        }
+
+        body.light-mode .sun-icon,
+        html.light-mode .sun-icon {
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(-180deg) scale(0);
+        }
+
+        body.light-mode .moon-icon,
+        html.light-mode .moon-icon {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        }
+
+        body.light-mode .theme-toggle-btn,
+        html.light-mode .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);
+        }
+
+        body.light-mode .theme-toggle-btn:hover,
+        html.light-mode .theme-toggle-btn:hover {
+            box-shadow: 0 12px 40px rgba(59, 130, 246, 0.3);
+        }
+
+        /* تحسينات للهواتف المحمولة */
+        @media (max-width: 768px) {
+            .global-theme-toggle {
+                right: 15px;
+            }
+            
+            .theme-toggle-btn {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .toggle-icon {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .sun-icon, .moon-icon {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .global-theme-toggle {
+                right: 10px;
+            }
+            
+            .theme-toggle-btn {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .sun-icon, .moon-icon {
+                font-size: 14px;
+            }
+        }
+
+        /* تأثيرات خاصة للمس */
+        @media (hover: none) {
+            .theme-toggle-btn:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        /* إخفاء النسخ المحلية من الأزرار */
+        .theme-toggle-sidebar,
+        .local-theme-toggle {
+            display: none !important;
+        }
+    </style>
+
+    <script id="global-theme-toggle-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🌓 تهيئة نظام المظهر الشامل...');
+            
+            // تهيئة النظام الشامل
+            initGlobalThemeSystem();
+        });
+
+        function initGlobalThemeSystem() {
+            const themeToggle = document.getElementById('theme-toggle');
+            if (!themeToggle) {
+                console.error('❌ لم يتم العثور على زر تغيير المظهر');
+                return;
+            }
+
+            console.log('✅ تم العثور على زر تغيير المظهر الشامل');
+
+            // قراءة المظهر المحفوظ
+            const savedTheme = localStorage.getItem('global-theme') || 
+                             localStorage.getItem('theme') || 
+                             localStorage.getItem('arabic-theme') || 'dark';
+            
+            applyGlobalTheme(savedTheme);
+
+            // معالج النقر
+            themeToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                console.log('🖱️ تم النقر على زر تغيير المظهر');
+
+                const currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+                console.log(`🔄 التبديل من ${currentTheme} إلى ${newTheme}`);
+
+                // تأثير انتقالي سلس
+                document.body.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+
+                applyGlobalTheme(newTheme);
+                saveThemeToAllStorages(newTheme);
+
+                // تأثير ريبل للزر
+                triggerGlobalToggleRipple(this);
+
+                // إظهار toast إذا كانت الدالة متوفرة
+                if (typeof showToast === 'function') {
+                    const message = newTheme === 'dark' ? 'تم التبديل إلى المظهر المظلم' : 'تم التبديل إلى المظهر الفاتح';
+                    showToast(message, 'success');
+                }
+
+                // إزالة التأثير الانتقالي بعد اكتماله
+                setTimeout(() => {
+                    document.body.style.transition = '';
+                }, 500);
+            });
+
+            // تأثير hover إضافي
+            themeToggle.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1) rotate(5deg)';
+            });
+
+            themeToggle.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1) rotate(0deg)';
+            });
+
+            function applyGlobalTheme(theme) {
+                console.log(`🎨 تطبيق المظهر الشامل: ${theme}`);
+
+                // إزالة الفئات السابقة
+                document.body.classList.remove('dark-mode', 'light-mode');
+                document.documentElement.classList.remove('dark-mode', 'light-mode');
+
+                // إضافة الفئة الجديدة
+                document.body.classList.add(theme + '-mode');
+                document.documentElement.classList.add(theme + '-mode');
+
+                // تحديث meta theme-color
+                updateMetaThemeColor(theme);
+
+                // تحديث الجسيمات إذا كانت متوفرة
+                updateParticlesForGlobalTheme(theme);
+
+                console.log(`✅ تم تطبيق المظهر الشامل: ${theme}`);
+            }
+
+            function saveThemeToAllStorages(theme) {
+                // حفظ في جميع مفاتيح التخزين المحتملة
+                localStorage.setItem('global-theme', theme);
+                localStorage.setItem('theme', theme);
+                localStorage.setItem('arabic-theme', theme);
+            }
+
+            function updateMetaThemeColor(theme) {
+                let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+                if (!metaThemeColor) {
+                    metaThemeColor = document.createElement('meta');
+                    metaThemeColor.name = 'theme-color';
+                    document.head.appendChild(metaThemeColor);
+                }
+                metaThemeColor.content = theme === 'dark' ? '#000011' : '#f8fafc';
+            }
+
+            function triggerGlobalToggleRipple(button) {
+                const ripple = button.querySelector('.toggle-ripple');
+                if (ripple) {
+                    ripple.style.width = '120px';
+                    ripple.style.height = '120px';
+
+                    setTimeout(() => {
+                        ripple.style.width = '0';
+                        ripple.style.height = '0';
+                    }, 600);
+                }
+            }
+
+            function updateParticlesForGlobalTheme(theme) {
+                if (window.particleSystem) {
+                    window.particleSystem.updateTheme(theme);
+                }
+            }
+
+            console.log('🎉 تم تهيئة نظام المظهر الشامل بنجاح!');
+        }
+
+        // دالة مساعدة لإنشاء toast بسيط إذا لم تكن متوفرة
+        if (typeof showToast === 'undefined') {
+            window.showToast = function(message, type = 'info') {
+                console.log(`${type.toUpperCase()}: ${message}`);
+                
+                // إنشاء toast بسيط
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#10b981' : '#3b82f6'};
+                    color: white;
+                    padding: 12px 24px;
+                    border-radius: 8px;
+                    z-index: 999999;
+                    font-family: 'Cairo', sans-serif;
+                    font-size: 14px;
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                `;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                // إظهار Toast
+                setTimeout(() => {
+                    toast.style.transform = 'translateX(0)';
+                }, 100);
+
+                // إخفاء Toast
+                setTimeout(() => {
+                    toast.style.transform = 'translateX(100%)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            };
+        }
+    </script>
+    <?php
+}
+add_action('wp_footer', 'arabic_themes_global_theme_toggle', 10);
 
 // نهاية الملف - لا تضع أي كود بعد هذا السطر
 ?>
