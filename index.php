@@ -2252,5 +2252,861 @@ $site_stats = get_site_statistics();
                         
                         <h2 id="newsletter-title" class="newsletter-title">ابق على اطلاع دائم</h2>
                         <p class="newsletter-description">
-                            اشترك في نشرتنا الإخبارية للحصول على أحدث القوالب والعروض الحصرية 
-                            والنص
+                        والنصائح المفيدة مباشرة في بريدك الإلكتروني
+                        </p>
+                        
+                        <div class="newsletter-benefits">
+                            <div class="benefit-item">
+                                <i class="fas fa-gift" aria-hidden="true"></i>
+                                <span>قوالب حصرية مجانية</span>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-percent" aria-hidden="true"></i>
+                                <span>خصومات وعروض خاصة</span>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-bell" aria-hidden="true"></i>
+                                <span>إشعارات القوالب الجديدة</span>
+                            </div>
+                        </div>
+                    </header>
+                    
+                    <form class="newsletter-form" id="newsletter-form" action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post">
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <input type="email" 
+                                       id="newsletter-email" 
+                                       name="newsletter_email" 
+                                       class="newsletter-input"
+                                       placeholder="أدخل بريدك الإلكتروني"
+                                       required
+                                       aria-label="البريد الإلكتروني للاشتراك في النشرة">
+                                <div class="input-icon">
+                                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                                </div>
+                                <div class="input-focus-effect"></div>
+                            </div>
+                            
+                            <button type="submit" class="newsletter-submit" aria-label="اشتراك في النشرة الإخبارية">
+                                <span class="btn-text">اشتراك</span>
+                                <span class="btn-loading">
+                                    <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                                </span>
+                                <span class="btn-success">
+                                    <i class="fas fa-check" aria-hidden="true"></i>
+                                </span>
+                                <div class="btn-ripple"></div>
+                            </button>
+                        </div>
+                        
+                        <div class="privacy-notice">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" 
+                                       id="privacy-agreement" 
+                                       name="privacy_agreement" 
+                                       required>
+                                <span class="checkmark">
+                                    <i class="fas fa-check" aria-hidden="true"></i>
+                                </span>
+                                <span class="checkbox-text">
+                                    أوافق على 
+                                    <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>" target="_blank">سياسة الخصوصية</a>
+                                    و
+                                    <a href="<?php echo esc_url(home_url('/terms/')); ?>" target="_blank">شروط الاستخدام</a>
+                                </span>
+                            </label>
+                        </div>
+                        
+                        <input type="hidden" name="action" value="newsletter_subscribe">
+                        <?php wp_nonce_field('newsletter_subscribe', 'newsletter_nonce'); ?>
+                        
+                        <div class="form-message" id="newsletter-message" role="alert" aria-live="polite"></div>
+                    </form>
+                    
+                    <div class="newsletter-stats">
+                        <div class="stat">
+                            <span class="stat-number"><?php echo number_format($site_stats['subscribers']); ?>+</span>
+                            <span class="stat-label">مشترك</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">5</span>
+                            <span class="stat-label">نجوم تقييم</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">رسائل مزعجة</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section Enhanced -->
+        <section class="blog-section" id="blog" aria-labelledby="blog-title">
+            <div class="container">
+                <header class="section-header" data-aos="fade-up">
+                    <div class="section-badge">
+                        <i class="fas fa-blog" aria-hidden="true"></i>
+                        <span>مدونة</span>
+                    </div>
+                    <h2 id="blog-title" class="section-title">أحدث المقالات والشروحات</h2>
+                    <p class="section-description">تعلم واكتشف أحدث النصائح والحيل في تطوير المواقع والتصميم</p>
+                </header>
+                
+                <div class="blog-grid">
+                    <?php
+                    $recent_posts = new WP_Query(array(
+                        'post_type' => 'post',
+                        'posts_per_page' => 6,
+                        'post_status' => 'publish',
+                        'meta_query' => array(
+                            array(
+                                'key' => '_featured_post',
+                                'value' => '1',
+                                'compare' => '='
+                            )
+                        )
+                    ));
+                    
+                    if ($recent_posts->have_posts()) :
+                        $delay = 0;
+                        while ($recent_posts->have_posts()) : 
+                            $recent_posts->the_post();
+                            $reading_time = calculate_reading_time(get_the_content());
+                            $delay += 100;
+                    ?>
+                    <article class="blog-card" 
+                             data-aos="fade-up" 
+                             data-aos-delay="<?php echo $delay; ?>"
+                             itemscope 
+                             itemtype="https://schema.org/BlogPosting">
+                        
+                        <div class="blog-image-wrapper">
+                            <?php if (has_post_thumbnail()) : ?>
+                                <img src="<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID(), 'medium_large')); ?>" 
+                                     alt="<?php echo esc_attr(get_the_title()); ?>" 
+                                     class="blog-image"
+                                     loading="lazy"
+                                     itemprop="image"
+                                     width="400"
+                                     height="250">
+                            <?php else : ?>
+                                <div class="no-image-placeholder">
+                                    <i class="fas fa-image" aria-hidden="true"></i>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <div class="blog-overlay">
+                                <div class="blog-category">
+                                    <?php 
+                                    $categories = get_the_category();
+                                    if (!empty($categories)) :
+                                        $category = $categories[0];
+                                    ?>
+                                        <span class="category-tag" itemprop="articleSection">
+                                            <i class="fas fa-tag" aria-hidden="true"></i>
+                                            <span><?php echo esc_html($category->name); ?></span>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                                
+                                <div class="blog-reading-time">
+                                    <i class="fas fa-clock" aria-hidden="true"></i>
+                                    <span><?php echo $reading_time; ?> دقيقة قراءة</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="blog-content">
+                            <header class="blog-header">
+                                <h3 class="blog-title" itemprop="headline">
+                                    <a href="<?php the_permalink(); ?>" itemprop="url">
+                                        <?php the_title(); ?>
+                                    </a>
+                                </h3>
+                                
+                                <div class="blog-meta">
+                                    <div class="author-info" itemprop="author" itemscope itemtype="https://schema.org/Person">
+                                        <div class="author-avatar">
+                                            <?php echo get_avatar(get_the_author_meta('ID'), 32, '', '', array('class' => 'avatar-img')); ?>
+                                        </div>
+                                        <span class="author-name" itemprop="name"><?php the_author(); ?></span>
+                                    </div>
+                                    
+                                    <time class="blog-date" 
+                                          datetime="<?php echo get_the_date('c'); ?>" 
+                                          itemprop="datePublished">
+                                        <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                                        <span><?php echo get_the_date('j F Y'); ?></span>
+                                    </time>
+                                </div>
+                            </header>
+                            
+                            <div class="blog-excerpt" itemprop="description">
+                                <?php echo wp_trim_words(get_the_excerpt(), 25, '...'); ?>
+                            </div>
+                            
+                            <footer class="blog-footer">
+                                <div class="blog-stats">
+                                    <div class="stat-item">
+                                        <i class="fas fa-eye" aria-hidden="true"></i>
+                                        <span><?php echo get_post_views(get_the_ID()); ?></span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <i class="fas fa-comment" aria-hidden="true"></i>
+                                        <span><?php comments_number('0', '1', '%'); ?></span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <i class="fas fa-heart" aria-hidden="true"></i>
+                                        <span><?php echo get_post_likes(get_the_ID()); ?></span>
+                                    </div>
+                                </div>
+                                
+                                <a href="<?php the_permalink(); ?>" 
+                                   class="read-more-btn"
+                                   aria-label="قراءة المقال كاملاً: <?php the_title(); ?>">
+                                    <span>قراءة المزيد</span>
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                                </a>
+                            </footer>
+                        </div>
+                        
+                        <!-- Schema.org structured data -->
+                        <meta itemprop="dateModified" content="<?php echo get_the_modified_date('c'); ?>">
+                        <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+                            <meta itemprop="name" content="<?php bloginfo('name'); ?>">
+                            <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                                <meta itemprop="url" content="<?php echo esc_url(get_site_icon_url()); ?>">
+                            </div>
+                        </div>
+                    </article>
+                    <?php 
+                        endwhile; 
+                        wp_reset_postdata(); 
+                    else :
+                    ?>
+                    <div class="no-posts-message" data-aos="fade-up">
+                        <div class="message-icon">
+                            <i class="fas fa-blog" aria-hidden="true"></i>
+                        </div>
+                        <h3>لا توجد مقالات حالياً</h3>
+                        <p>نعمل على إضافة محتوى جديد ومفيد قريباً</p>
+                    </div>
+                    <?php endif; ?>
+                </div>
+                
+                <div class="blog-footer" data-aos="fade-up" data-aos-delay="600">
+                    <a href="<?php echo esc_url(home_url('/blog/')); ?>" 
+                       class="btn-view-all-blog"
+                       aria-label="عرض جميع المقالات">
+                        <span>عرض جميع المقالات</span>
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                        <div class="btn-glow"></div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section Enhanced -->
+        <section class="faq-section" id="faq" aria-labelledby="faq-title">
+            <div class="container">
+                <header class="section-header" data-aos="fade-up">
+                    <div class="section-badge">
+                        <i class="fas fa-question-circle" aria-hidden="true"></i>
+                        <span>أسئلة شائعة</span>
+                    </div>
+                    <h2 id="faq-title" class="section-title">الأسئلة الأكثر شيوعاً</h2>
+                    <p class="section-description">إجابات شاملة على أكثر الأسئلة التي يطرحها عملاؤنا</p>
+                </header>
+                
+                <div class="faq-container">
+                    <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+                        
+                        <!-- FAQ Item 1 -->
+                        <div class="faq-item" 
+                             data-aos="fade-up" 
+                             data-aos-delay="100"
+                             itemscope 
+                             itemtype="https://schema.org/Question">
+                            <button class="faq-question" 
+                                    aria-expanded="false" 
+                                    aria-controls="faq-answer-1"
+                                    itemprop="name">
+                                <span>هل القوالب مجانية تماماً؟</span>
+                                <div class="faq-icon">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </div>
+                            </button>
+                            <div class="faq-answer" 
+                                 id="faq-answer-1"
+                                 itemscope 
+                                 itemtype="https://schema.org/Answer">
+                                <div class="answer-content" itemprop="text">
+                                    <p>
+                                        نعم، معظم قوالبنا مجانية تماماً ولا تتطلب أي رسوم للتحميل أو الاستخدام. 
+                                        لدينا أيضاً مجموعة من القوالب المتميزة التي تحتوي على مزايا إضافية مقابل رسوم رمزية. 
+                                        جميع القوالب المجانية تأتي مع دعم أساسي وتحديثات منتظمة.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ Item 2 -->
+                        <div class="faq-item" 
+                             data-aos="fade-up" 
+                             data-aos-delay="200"
+                             itemscope 
+                             itemtype="https://schema.org/Question">
+                            <button class="faq-question" 
+                                    aria-expanded="false" 
+                                    aria-controls="faq-answer-2"
+                                    itemprop="name">
+                                <span>كيف أقوم بتثبيت القالب على موقعي؟</span>
+                                <div class="faq-icon">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </div>
+                            </button>
+                            <div class="faq-answer" 
+                                 id="faq-answer-2"
+                                 itemscope 
+                                 itemtype="https://schema.org/Answer">
+                                <div class="answer-content" itemprop="text">
+                                    <p>
+                                        عملية التثبيت بسيطة جداً:
+                                    </p>
+                                    <ol>
+                                        <li>قم بتحميل ملف القالب من موقعنا</li>
+                                        <li>ادخل إلى لوحة تحكم ووردبريس</li>
+                                        <li>اذهب إلى المظهر > قوالب > إضافة جديد</li>
+                                        <li>اختر رفع قالب وحدد الملف الذي حملته</li>
+                                        <li>قم بتفعيل القالب</li>
+                                    </ol>
+                                    <p>نوفر أيضاً دليل تثبيت مفصل مع كل قالب وفيديوهات تعليمية.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ Item 3 -->
+                        <div class="faq-item" 
+                             data-aos="fade-up" 
+                             data-aos-delay="300"
+                             itemscope 
+                             itemtype="https://schema.org/Question">
+                            <button class="faq-question" 
+                                    aria-expanded="false" 
+                                    aria-controls="faq-answer-3"
+                                    itemprop="name">
+                                <span>هل يمكنني تخصيص القالب حسب احتياجاتي؟</span>
+                                <div class="faq-icon">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </div>
+                            </button>
+                            <div class="faq-answer" 
+                                 id="faq-answer-3"
+                                 itemscope 
+                                 itemtype="https://schema.org/Answer">
+                                <div class="answer-content" itemprop="text">
+                                    <p>
+                                        بالطبع! جميع قوالبنا قابلة للتخصيص بالكامل. يمكنك تغيير:
+                                    </p>
+                                    <ul>
+                                        <li>الألوان والخطوط</li>
+                                        <li>تخطيط الصفحات والأقسام</li>
+                                        <li>الشعار والصور</li>
+                                        <li>القوائم والروابط</li>
+                                        <li>إعدادات الصفحة الرئيسية</li>
+                                    </ul>
+                                    <p>نوفر أداة تخصيص مرئية سهلة الاستخدام تمكنك من إجراء التغييرات دون الحاجة لخبرة في البرمجة.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ Item 4 -->
+                        <div class="faq-item" 
+                             data-aos="fade-up" 
+                             data-aos-delay="400"
+                             itemscope 
+                             itemtype="https://schema.org/Question">
+                            <button class="faq-question" 
+                                    aria-expanded="false" 
+                                    aria-controls="faq-answer-4"
+                                    itemprop="name">
+                                <span>هل القوالب متوافقة مع جميع إضافات ووردبريس؟</span>
+                                <div class="faq-icon">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </div>
+                            </button>
+                            <div class="faq-answer" 
+                                 id="faq-answer-4"
+                                 itemscope 
+                                 itemtype="https://schema.org/Answer">
+                                <div class="answer-content" itemprop="text">
+                                    <p>
+                                        قوالبنا مصممة لتكون متوافقة مع معظم إضافات ووردبريس الشائعة، بما في ذلك:
+                                    </p>
+                                    <ul>
+                                        <li>WooCommerce للمتاجر الإلكترونية</li>
+                                        <li>Yoast SEO لتحسين محركات البحث</li>
+                                        <li>Contact Form 7 لنماذج الاتصال</li>
+                                        <li>Elementor و Gutenberg للتحرير المرئي</li>
+                                        <li>WPML للمواقع متعددة اللغات</li>
+                                    </ul>
+                                    <p>في حالة وجود مشكلة توافق، فريق الدعم جاهز لمساعدتك في حلها.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ Item 5 -->
+                        <div class="faq-item" 
+                             data-aos="fade-up" 
+                             data-aos-delay="500"
+                             itemscope 
+                             itemtype="https://schema.org/Question">
+                            <button class="faq-question" 
+                                    aria-expanded="false" 
+                                    aria-controls="faq-answer-5"
+                                    itemprop="name">
+                                <span>ما نوع الدعم الفني المتوفر؟</span>
+                                <div class="faq-icon">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </div>
+                            </button>
+                            <div class="faq-answer" 
+                                 id="faq-answer-5"
+                                 itemscope 
+                                 itemtype="https://schema.org/Answer">
+                                <div class="answer-content" itemprop="text">
+                                    <p>
+                                        نوفر عدة مستويات من الدعم الفني:
+                                    </p>
+                                    <ul>
+                                        <li><strong>الدعم المجاني:</strong> متاح لجميع المستخدمين عبر المنتدى والبريد الإلكتروني</li>
+                                        <li><strong>التوثيق الشامل:</strong> دليل مفصل لكل قالب مع شروحات خطوة بخطوة</li>
+                                        <li><strong>الفيديوهات التعليمية:</strong> شروحات مرئية لتثبيت وتخصيص القوالب</li>
+                                        <li><strong>الدعم المتميز:</strong> للقوالب المدفوعة مع أولوية في الرد والدعم المباشر</li>
+                                    </ul>
+                                    <p>متوسط وقت الرد على الاستفسارات هو أقل من 24 ساعة.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ Item 6 -->
+                        <div class="faq-item" 
+                             data-aos="fade-up" 
+                             data-aos-delay="600"
+                             itemscope 
+                             itemtype="https://schema.org/Question">
+                            <button class="faq-question" 
+                                    aria-expanded="false" 
+                                    aria-controls="faq-answer-6"
+                                    itemprop="name">
+                                <span>هل يمكنني استخدام القالب في مشاريع تجارية؟</span>
+                                <div class="faq-icon">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </div>
+                            </button>
+                            <div class="faq-answer" 
+                                 id="faq-answer-6"
+                                 itemscope 
+                                 itemtype="https://schema.org/Answer">
+                                <div class="answer-content" itemprop="text">
+                                    <p>
+                                        نعم، يمكنك استخدام قوالبنا في المشاريع التجارية بحرية تامة. رخصة الاستخدام تسمح بـ:
+                                    </p>
+                                    <ul>
+                                        <li>الاستخدام في المواقع التجارية</li>
+                                        <li>تخصيص القالب لعملائك</li>
+                                        <li>إنشاء مواقع للعملاء باستخدام قوالبنا</li>
+                                        <li>التعديل والتطوير على القالب</li>
+                                    </ul>
+                                    <p>الشرط الوحيد هو عدم إعادة توزيع أو بيع القالب كما هو لأطراف أخرى.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Support -->
+                    <div class="faq-contact" data-aos="fade-up" data-aos-delay="700">
+                        <div class="contact-content">
+                            <h3>لم تجد الإجابة التي تبحث عنها؟</h3>
+                            <p>لا تتردد في التواصل معنا، فريق الدعم جاهز لمساعدتك</p>
+                            <a href="<?php echo esc_url(home_url('/contact/')); ?>" 
+                               class="btn-contact-support"
+                               aria-label="التواصل مع فريق الدعم">
+                                <i class="fas fa-headset" aria-hidden="true"></i>
+                                <span>تواصل مع الدعم</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Call to Action Section Enhanced -->
+    <section class="cta-section" id="cta" aria-labelledby="cta-title">
+        <div class="cta-background" aria-hidden="true">
+            <div class="cta-particles"></div>
+            <div class="cta-glow"></div>
+            <div class="cta-geometric-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="cta-content" data-aos="zoom-in">
+                <header class="cta-header">
+                    <h2 id="cta-title" class="cta-title">ابدأ رحلتك الرقمية اليوم</h2>
+                    <p class="cta-description">
+                        انضم إلى آلاف المستخدمين الذين اختاروا قوالبنا لإنشاء مواقع استثنائية ومتميزة
+                    </p>
+                </header>
+                
+                <div class="cta-actions">
+                    <a href="<?php echo esc_url(home_url('/themes/')); ?>" 
+                       class="btn-cta-primary"
+                       aria-label="تصفح القوالب المجانية">
+                        <span class="btn-bg"></span>
+                        <span class="btn-content">
+                            <i class="fas fa-download" aria-hidden="true"></i>
+                            <span>تصفح القوالب المجانية</span>
+                        </span>
+                        <span class="btn-shine"></span>
+                    </a>
+                    
+                    <a href="<?php echo esc_url(home_url('/contact/')); ?>" 
+                       class="btn-cta-secondary"
+                       aria-label="طلب قالب مخصص">
+                        <span class="btn-content">
+                            <i class="fas fa-palette" aria-hidden="true"></i>
+                            <span>طلب قالب مخصص</span>
+                        </span>
+                    </a>
+                </div>
+                
+                <div class="cta-stats">
+                    <div class="stat-item">
+                        <span class="stat-number"><?php echo number_format($site_stats['themes']); ?>+</span>
+                        <span class="stat-label">قالب متاح</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number"><?php echo number_format($site_stats['users']); ?>+</span>
+                        <span class="stat-label">مستخدم نشط</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number"><?php echo number_format($site_stats['downloads']); ?>+</span>
+                        <span class="stat-label">تحميل</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">4.9</span>
+                        <span class="stat-label">نجوم تقييم</span>
+                    </div>
+                </div>
+                
+                <div class="cta-social-proof">
+                    <p class="social-proof-text">انضم إلى مجتمعنا على وسائل التواصل الاجتماعي</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="متابعتنا على فيسبوك">
+                            <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="متابعتنا على تويتر">
+                            <i class="fab fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="متابعتنا على انستغرام">
+                            <i class="fab fa-instagram" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="متابعتنا على لينكد إن">
+                            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="قناتنا على يوتيوب">
+                            <i class="fab fa-youtube" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <?php 
+    get_footer(); 
+    
+    // Include additional scripts for homepage functionality
+    ?>
+    
+    <!-- Homepage specific scripts -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize homepage animations
+        initHomepageAnimations();
+        
+        // Initialize hero slider
+        initHeroSlider();
+        
+        // Initialize testimonials slider
+        initTestimonialsSlider();
+        
+        // Initialize theme filters
+        initThemeFilters();
+        
+        // Initialize newsletter form
+        initNewsletterForm();
+        
+        // Initialize FAQ accordion
+        initFAQAccordion();
+        
+        // Initialize statistics counter
+        initStatsCounter();
+        
+        // Initialize smooth scrolling
+        initSmoothScrolling();
+        
+        // Initialize lazy loading
+        initLazyLoading();
+        
+        // Initialize theme interactions
+        initThemeInteractions();
+    });
+    
+    // Homepage animations
+    function initHomepageAnimations() {
+        // Floating shapes animation
+        const shapes = document.querySelectorAll('.floating-shape');
+        shapes.forEach((shape, index) => {
+            const animationDelay = Math.random() * 2;
+            const animationDuration = 3 + Math.random() * 2;
+            shape.style.animationDelay = `${animationDelay}s`;
+            shape.style.animationDuration = `${animationDuration}s`;
+        });
+        
+        // Particle effects
+        initParticleEffects();
+        
+        // Background animations
+        initBackgroundAnimations();
+    }
+    
+    // Hero slider functionality
+    function initHeroSlider() {
+        const slider = document.getElementById('hero-slider');
+        if (!slider) return;
+        
+        const slides = slider.querySelectorAll('.hero-slide');
+        const prevBtn = document.getElementById('hero-prev');
+        const nextBtn = document.getElementById('hero-next');
+        const indicators = document.querySelectorAll('.slide-indicator');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            
+            indicators.forEach((indicator, i) => {
+                indicator.classList.toggle('active', i === index);
+                indicator.setAttribute('aria-selected', i === index);
+            });
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+        
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        }
+        
+        // Event listeners
+        nextBtn?.addEventListener('click', nextSlide);
+        prevBtn?.addEventListener('click', prevSlide);
+        
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentSlide = index;
+                showSlide(currentSlide);
+            });
+        });
+        
+        // Auto-play
+        let autoPlay = setInterval(nextSlide, 5000);
+        
+        slider.addEventListener('mouseenter', () => clearInterval(autoPlay));
+        slider.addEventListener('mouseleave', () => {
+            autoPlay = setInterval(nextSlide, 5000);
+        });
+        
+        // Keyboard navigation
+        slider.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') nextSlide();
+            if (e.key === 'ArrowRight') prevSlide();
+        });
+    }
+    
+    // Theme interactions
+    function initThemeInteractions() {
+        // Download theme functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.download-theme-btn')) {
+                e.preventDefault();
+                const btn = e.target.closest('.download-theme-btn');
+                const themeId = btn.dataset.themeId;
+                
+                if (themeId) {
+                    handleThemeDownload(themeId, btn);
+                }
+            }
+            
+            // Favorite theme functionality
+            if (e.target.closest('.favorite-btn')) {
+                e.preventDefault();
+                const btn = e.target.closest('.favorite-btn');
+                const themeId = btn.dataset.themeId;
+                
+                if (themeId) {
+                    handleFavoriteToggle(themeId, btn);
+                }
+            }
+            
+            // Share theme functionality
+            if (e.target.closest('.share-btn')) {
+                e.preventDefault();
+                const btn = e.target.closest('.share-btn');
+                const themeId = btn.dataset.themeId;
+                
+                if (themeId) {
+                    handleThemeShare(themeId);
+                }
+            }
+        });
+    }
+    
+    // Handle theme download
+    async function handleThemeDownload(themeId, btn) {
+        const originalText = btn.querySelector('.btn-text')?.textContent || 'تحميل';
+        const loadingElement = btn.querySelector('.btn-loading');
+        const successElement = btn.querySelector('.btn-success');
+        
+        try {
+            // Show loading state
+            btn.classList.add('loading');
+            btn.disabled = true;
+            
+            const response = await fetch(ajax_object.ajax_url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    action: 'download_theme',
+                    theme_id: themeId,
+                    nonce: ajax_object.download_nonce
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Show success state
+                btn.classList.remove('loading');
+                btn.classList.add('success');
+                
+                // Trigger download
+                if (data.data.download_url) {
+                    const link = document.createElement('a');
+                    link.href = data.data.download_url;
+                    link.download = data.data.filename || '';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+                
+                // Update download count if provided
+                if (data.data.download_count) {
+                    const countElements = document.querySelectorAll(`[data-theme-id="${themeId}"] .download-count`);
+                    countElements.forEach(el => {
+                        el.textContent = data.data.download_count;
+                    });
+                }
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    btn.classList.remove('success');
+                    btn.disabled = false;
+                }, 2000);
+                
+            } else {
+                throw new Error(data.data?.message || 'حدث خطأ أثناء التحميل');
+            }
+            
+        } catch (error) {
+            console.error('Download error:', error);
+            
+            // Show error state
+            btn.classList.remove('loading');
+            btn.classList.add('error');
+            
+            // Show error message
+            showNotification('حدث خطأ أثناء تحميل القالب. يرجى المحاولة مرة أخرى.', 'error');
+            
+            // Reset button
+            setTimeout(() => {
+                btn.classList.remove('error');
+                btn.disabled = false;
+            }, 3000);
+        }
+    }
+    
+    // Show notification
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            </div>
+            <button class="notification-close" aria-label="إغلاق الإشعار">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
+        
+        // Remove on click
+        notification.querySelector('.notification-close').addEventListener('click', () => {
+            notification.remove();
+        });
+    }
+    </script>
+
+    <?php
+    // Additional meta tags for homepage
+    add_action('wp_head', function() {
+        echo '<script type="application/ld+json">';
+        echo json_encode(array(
+            '@context' => 'https://schema.org',
+            '@type' => 'WebSite',
+            'name' => get_bloginfo('name'),
+            'description' => get_bloginfo('description'),
+            'url' => home_url(),
+            'potentialAction' => array(
+                '@type' => 'SearchAction',
+                'target' => home_url('/?s={search_term_string}'),
+                'query-input' => 'required name=search_term_string'
+            )
+        ), JSON_UNESCAPED_UNICODE);
+        echo '</script>';
+    });
+    ?>
