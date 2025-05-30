@@ -3151,8 +3151,1197 @@ body {
 .categories-section {
     padding: 8rem 0;
     position: relative;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+    overflow: hidden;
+}
+
+.categories-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .categories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+    margin-top: 4rem;
+}
+
+.category-card {
+    background: rgba(26, 26, 46, 0.6);
+    border: 2px solid rgba(59, 130, 246, 0.2);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    backdrop-filter: blur(15px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    transition: left 0.8s ease;
+}
+
+.category-card:hover::before {
+    left: 100%;
+}
+
+.category-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    border-color: #3b82f6;
+    box-shadow: 0 25px 60px rgba(59, 130, 246, 0.3);
+    background: rgba(26, 26, 46, 0.8);
+}
+
+.category-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 2rem;
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+    position: relative;
+    transition: all 0.4s ease;
+}
+
+.category-card:hover .category-icon {
+    transform: scale(1.1) rotate(10deg);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+}
+
+.category-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #ffffff, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.category-description {
+    color: #b8b9ba;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.category-count {
+    display: inline-block;
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* قسم المميزات */
+.features-section {
+    padding: 8rem 0;
+    position: relative;
+    background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 4rem;
+    margin-top: 5rem;
+}
+
+.feature-item {
+    text-align: center;
+    position: relative;
+    padding: 2rem;
+}
+
+.feature-icon-wrapper {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 2.5rem;
+    position: relative;
+}
+
+.feature-icon-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: conic-gradient(from 0deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b, #3b82f6);
+    border-radius: 50%;
+    animation: iconRotate 10s linear infinite;
+    opacity: 0.7;
+}
+
+.feature-icon-inner {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    background: rgba(26, 26, 46, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #3b82f6;
+    backdrop-filter: blur(10px);
+}
+
+.feature-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+}
+
+.feature-description {
+    color: #b8b9ba;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+/* قسم الشهادات */
+.testimonials-section {
+    padding: 8rem 0;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.3) 0%, rgba(59, 130, 246, 0.1) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonials-container {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.testimonial-card {
+    background: rgba(26, 26, 46, 0.7);
+    border: 2px solid rgba(59, 130, 246, 0.2);
+    border-radius: 25px;
+    padding: 4rem 3rem;
+    text-align: center;
+    backdrop-filter: blur(20px);
+    position: relative;
+    margin: 2rem 0;
+}
+
+.testimonial-quote {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: #e2e8f0;
+    margin-bottom: 3rem;
+    font-style: italic;
+    position: relative;
+}
+
+.testimonial-quote::before,
+.testimonial-quote::after {
+    content: '"';
+    font-size: 4rem;
+    color: #3b82f6;
+    position: absolute;
+    font-family: serif;
+}
+
+.testimonial-quote::before {
+    top: -20px;
+    left: -30px;
+}
+
+.testimonial-quote::after {
+    bottom: -60px;
+    right: -30px;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.author-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    font-weight: 700;
+}
+
+.author-info h4 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.author-info p {
+    color: #3b82f6;
+    font-size: 0.9rem;
+}
+
+/* قسم النشرة الإخبارية */
+.newsletter-section {
+    padding: 8rem 0;
+    background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+    position: relative;
+}
+
+.newsletter-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    background: rgba(26, 26, 46, 0.6);
+    padding: 5rem 3rem;
+    border-radius: 30px;
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+}
+
+.newsletter-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.newsletter-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, #ffffff, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.newsletter-description {
+    font-size: 1.2rem;
+    color: #b8b9ba;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+}
+
+.newsletter-input {
+    flex: 1;
+    padding: 1.2rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 50px;
+    color: #ffffff;
+    font-size: 1rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.newsletter-input::placeholder {
+    color: #b8b9ba;
+}
+
+.newsletter-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.newsletter-btn {
+    padding: 1.2rem 2.5rem;
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.newsletter-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+    background: linear-gradient(45deg, #8b5cf6, #ec4899);
+}
+
+/* التذييل المحسن */
+.enhanced-footer {
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+    padding: 6rem 0 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.enhanced-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #3b82f6, #8b5cf6, #ec4899, transparent);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 4rem;
+    margin-bottom: 4rem;
+}
+
+.footer-section h3 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 1rem;
+}
+
+.footer-links a {
+    color: #b8b9ba;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-links a:hover {
+    color: #3b82f6;
+    transform: translateX(5px);
+}
+
+.footer-links a i {
+    font-size: 0.9rem;
+    width: 16px;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.social-link {
+    width: 50px;
+    height: 50px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3b82f6;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: #3b82f6;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(59, 130, 246, 0.2);
+    padding-top: 2rem;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-copy {
+    color: #b8b9ba;
+    font-size: 0.9rem;
+}
+
+.footer-copy a {
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+.footer-copy a:hover {
+    color: #8b5cf6;
+}
+
+/* حركات إضافية */
+@keyframes iconRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes floatingAnimation {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(1deg); }
+    50% { transform: translateY(-5px) rotate(-1deg); }
+    75% { transform: translateY(-15px) rotate(0.5deg); }
+}
+
+@keyframes glowAnimation {
+    0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6), 0 0 60px rgba(139, 92, 246, 0.3); }
+}
+
+/* Light Mode للمحتوى الإضافي */
+body.light-mode .categories-section {
+    background: linear-gradient(135deg, rgba(248, 250, 252, 0.8) 0%, rgba(59, 130, 246, 0.05) 100%);
+}
+
+body.light-mode .category-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: #1e293b;
+}
+
+body.light-mode .category-card:hover {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+body.light-mode .category-title {
+    background: linear-gradient(45deg, #1e293b, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body.light-mode .category-description {
+    color: #64748b;
+}
+
+body.light-mode .feature-title {
+    color: #1e293b;
+}
+
+body.light-mode .feature-description {
+    color: #64748b;
+}
+
+body.light-mode .feature-icon-inner {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+body.light-mode .testimonial-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+body.light-mode .testimonial-quote {
+    color: #1e293b;
+}
+
+body.light-mode .testimonial-author h4 {
+    color: #1e293b;
+}
+
+body.light-mode .newsletter-container {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+body.light-mode .newsletter-title {
+    background: linear-gradient(45deg, #1e293b, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body.light-mode .newsletter-description {
+    color: #64748b;
+}
+
+body.light-mode .newsletter-input {
+    background: rgba(59, 130, 246, 0.1);
+    color: #1e293b;
+}
+
+body.light-mode .newsletter-input::placeholder {
+    color: #64748b;
+}
+
+body.light-mode .enhanced-footer {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    color: #1e293b;
+}
+
+body.light-mode .footer-section h3 {
+    color: #1e293b;
+}
+
+body.light-mode .footer-links a {
+    color: #64748b;
+}
+
+body.light-mode .footer-links a:hover {
+    color: #3b82f6;
+}
+
+body.light-mode .footer-copy {
+    color: #64748b;
+}
+
+/* تحسينات الاستجابة للمحتوى الجديد */
+@media (max-width: 768px) {
+    .categories-section,
+    .features-section,
+    .testimonials-section,
+    .newsletter-section {
+        padding: 4rem 0;
+    }
+    
+    .categories-grid,
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .category-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .category-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+    
+    .feature-icon-wrapper {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .feature-icon-inner {
+        font-size: 2rem;
+    }
+    
+    .testimonial-card {
+        padding: 2.5rem 2rem;
+    }
+    
+    .testimonial-quote {
+        font-size: 1.1rem;
+    }
+    
+    .newsletter-container {
+        padding: 3rem 2rem;
+        margin: 0 1rem;
+    }
+    
+    .newsletter-form {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .newsletter-title {
+        font-size: 2rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem;
+    }
+    
+    .category-title {
+        font-size: 1.3rem;
+    }
+    
+    .feature-title {
+        font-size: 1.5rem;
+    }
+    
+    .newsletter-title {
+        font-size: 1.8rem;
+    }
+    
+    .newsletter-container {
+        margin: 0 0.5rem;
+        padding: 2rem 1.5rem;
+    }
+}
+
+/* تحسينات الأداء */
+.category-card,
+.feature-item,
+.testimonial-card,
+.newsletter-container {
+    will-change: transform, box-shadow;
+    contain: layout style paint;
+}
+
+.feature-icon-bg,
+.floating-shapes-enhanced > div {
+    will-change: transform;
+}
+
+/* تأثيرات خاصة للمس للمحتوى الجديد */
+@media (hover: none) {
+    .category-card:hover {
+        transform: translateY(-8px) scale(1.01);
+    }
+    
+    .social-link:hover {
+        transform: translateY(-1px);
+    }
+}
+
+/* تحسينات للحركة المخفضة */
+@media (prefers-reduced-motion: reduce) {
+    .feature-icon-bg {
+        animation: none !important;
+    }
+    
+    .category-card,
+    .feature-item,
+    .testimonial-card {
+        transition-duration: 0.1s !important;
+    }
+}
+</style>
+
+<!-- المحتوى الإضافي للصفحة الرئيسية -->
+
+<!-- قسم التصنيفات -->
+<section class="categories-section" id="categories-section">
+    <div class="container-centered">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">تصنيفات القوالب</h2>
+            <p class="section-subtitle">اكتشف القوالب حسب نوع موقعك واحتياجاتك</p>
+        </div>
+        
+        <div class="categories-grid">
+            <div class="category-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="category-icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <h3 class="category-title">متاجر إلكترونية</h3>
+                <p class="category-description">قوالب متطورة للتجارة الإلكترونية مع دعم كامل للدفع الإلكتروني</p>
+                <span class="category-count">12 قالب</span>
+            </div>
+            
+            <div class="category-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="category-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3 class="category-title">مواقع شركات</h3>
+                <p class="category-description">قوالب احترافية للشركات والمؤسسات التجارية</p>
+                <span class="category-count">8 قوالب</span>
+            </div>
+            
+            <div class="category-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="category-icon">
+                    <i class="fas fa-blog"></i>
+                </div>
+                <h3 class="category-title">مدونات شخصية</h3>
+                <p class="category-description">قوالب أنيقة للمدونات الشخصية والمحتوى الإبداعي</p>
+                <span class="category-count">15 قالب</span>
+            </div>
+            
+            <div class="category-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="category-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <h3 class="category-title">معارض أعمال</h3>
+                <p class="category-description">قوالب مصممة خصيصاً لعرض الأعمال والمشاريع</p>
+                <span class="category-count">6 قوالب</span>
+            </div>
+            
+            <div class="category-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="category-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3 class="category-title">مواقع تعليمية</h3>
+                <p class="category-description">قوالب للمؤسسات التعليمية والدورات التدريبية</p>
+                <span class="category-count">7 قوالب</span>
+            </div>
+            
+            <div class="category-card" data-aos="fade-up" data-aos-delay="600">
+                <div class="category-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h3 class="category-title">مطاعم ومقاهي</h3>
+                <p class="category-description">قوالب متخصصة للمطاعم والمقاهي مع قوائم الطعام</p>
+                <span class="category-count">4 قوالب</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- قسم المميزات -->
+<section class="features-section" id="features-section">
+    <div class="container-centered">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">لماذا تختار قوالبنا؟</h2>
+            <p class="section-subtitle">مميزات حصرية تجعل موقعك يتفوق على المنافسين</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-item" data-aos="zoom-in" data-aos-delay="100">
+                <div class="feature-icon-wrapper">
+                    <div class="feature-icon-bg"></div>
+                    <div class="feature-icon-inner">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+                <h3 class="feature-title">تصميم متجاوب</h3>
+                <p class="feature-description">جميع قوالبنا مصممة لتعمل بشكل مثالي على جميع الأجهزة والشاشات من الهواتف الذكية إلى أجهزة الكمبيوتر المكتبية</p>
+            </div>
+            
+            <div class="feature-item" data-aos="zoom-in" data-aos-delay="200">
+                <div class="feature-icon-wrapper">
+                    <div class="feature-icon-bg"></div>
+                    <div class="feature-icon-inner">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                </div>
+                <h3 class="feature-title">سرعة فائقة</h3>
+                <p class="feature-description">مُحسنة للسرعة والأداء مع تقنيات التحميل السريع وضغط الصور وتحسين الكود لضمان تجربة مستخدم سلسة</p>
+            </div>
+            
+            <div class="feature-item" data-aos="zoom-in" data-aos-delay="300">
+                <div class="feature-icon-wrapper">
+                    <div class="feature-icon-bg"></div>
+                    <div class="feature-icon-inner">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <h3 class="feature-title">محسنة لمحركات البحث</h3>
+                <p class="feature-description">بنية صديقة لـ SEO مع رموز منظمة وعلامات meta محسنة وسرعة تحميل عالية لتصدر نتائج البحث</p>
+            </div>
+            
+            <div class="feature-item" data-aos="zoom-in" data-aos-delay="400">
+                <div class="feature-icon-wrapper">
+                    <div class="feature-icon-bg"></div>
+                    <div class="feature-icon-inner">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                </div>
+                <h3 class="feature-title">تخصيص سهل</h3>
+                <p class="feature-description">واجهة تخصيص بديهية تتيح لك تغيير الألوان والخطوط والتخطيط دون الحاجة لخبرة في البرمجة</p>
+            </div>
+            
+            <div class="feature-item" data-aos="zoom-in" data-aos-delay="500">
+                <div class="feature-icon-wrapper">
+                    <div class="feature-icon-bg"></div>
+                    <div class="feature-icon-inner">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                </div>
+                <h3 class="feature-title">أمان عالي</h3>
+                <p class="feature-description">مطورة وفقاً لأفضل ممارسات الأمان مع حماية من الثغرات الشائعة وتحديثات أمنية دورية</p>
+            </div>
+            
+            <div class="feature-item" data-aos="zoom-in" data-aos-delay="600">
+                <div class="feature-icon-wrapper">
+                    <div class="feature-icon-bg"></div>
+                    <div class="feature-icon-inner">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                </div>
+                <h3 class="feature-title">دعم فني متميز</h3>
+                <p class="feature-description">فريق دعم متخصص جاهز لمساعدتك على مدار الساعة مع توثيق شامل وفيديوهات تعليمية</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- قسم الشهادات -->
+<section class="testimonials-section" id="testimonials-section">
+    <div class="container-centered">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">ماذا يقول عملاؤنا؟</h2>
+            <p class="section-subtitle">شهادات حقيقية من عملاء راضين عن خدماتنا</p>
+        </div>
+        
+        <div class="testimonials-container">
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="testimonial-quote">
+                    قوالب رائعة بجودة عالية وتصميم احترافي. ساعدتني في إنشاء موقع متجري الإلكتروني بسهولة تامة. فريق الدعم متعاون جداً ويرد على الاستفسارات بسرعة.
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">أح</div>
+                    <div class="author-info">
+                        <h4>أحمد محمد</h4>
+                        <p>صاحب متجر إلكتروني</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="testimonial-quote">
+                    استخدمت عدة قوالب من المتجر لمشاريع مختلفة وكانت النتائج مذهلة في كل مرة. التصميمات حديثة والكود نظيف والسرعة ممتازة. أنصح بها بشدة.
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">سع</div>
+                    <div class="author-info">
+                        <h4>سعد العتيبي</h4>
+                        <p>مطور ويب</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="600">
+                <div class="testimonial-quote">
+                    بصراحة فاقت توقعاتي! القالب سهل التخصيص ومرن جداً. تمكنت من إنشاء موقع شركتي في وقت قياسي وبمظهر احترافي يليق بالعلامة التجارية.
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">فط</div>
+                    <div class="author-info">
+                        <h4>فاطمة الزهراني</h4>
+                        <p>مديرة تسويق</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- قسم النشرة الإخبارية -->
+<section class="newsletter-section" id="newsletter-section">
+    <div class="container-centered">
+        <div class="newsletter-container" data-aos="zoom-in">
+            <h2 class="newsletter-title">ابق على اطلاع دائم</h2>
+            <p class="newsletter-description">
+                اشترك في نشرتنا الإخبارية للحصول على أحدث القوالب والعروض الحصرية والنصائح المفيدة لتطوير موقعك
+            </p>
+            <form class="newsletter-form" id="newsletter-form">
+                <input 
+                    type="email" 
+                    class="newsletter-input" 
+                    placeholder="أدخل بريدك الإلكتروني..." 
+                    required
+                    name="newsletter_email"
+                >
+                <button type="submit" class="newsletter-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    اشتراك
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- التذييل المحسن -->
+<footer class="enhanced-footer">
+    <div class="container-centered">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>قوالب عربية ووردبريس</h3>
+                <p style="color: #b8b9ba; line-height: 1.6; margin-bottom: 2rem;">
+                    منصة متخصصة في تقديم قوالب ووردبريس عربية عالية الجودة ومصممة خصيصاً للمواقع العربية.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="فيسبوك">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="تويتر">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="إنستغرام">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="لينكد إن">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="#hero-section"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="<?php echo home_url('/themes/'); ?>"><i class="fas fa-th-large"></i> جميع القوالب</a></li>
+                    <li><a href="#categories-section"><i class="fas fa-tags"></i> التصنيفات</a></li>
+                    <li><a href="#features-section"><i class="fas fa-star"></i> المميزات</a></li>
+                    <li><a href="<?php echo home_url('/about/'); ?>"><i class="fas fa-info-circle"></i> من نحن</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>الدعم والمساعدة</h3>
+                <ul class="footer-links">
+                    <li><a href="<?php echo home_url('/contact/'); ?>"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+                    <li><a href="<?php echo home_url('/support/'); ?>"><i class="fas fa-headset"></i> الدعم الفني</a></li>
+                    <li><a href="<?php echo home_url('/docs/'); ?>"><i class="fas fa-book"></i> التوثيق</a></li>
+                    <li><a href="<?php echo home_url('/faq/'); ?>"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</a></li>
+                    <li><a href="<?php echo home_url('/tutorials/'); ?>"><i class="fas fa-play-circle"></i> الدروس التعليمية</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>الشروط والأحكام</h3>
+                <ul class="footer-links">
+                    <li><a href="<?php echo home_url('/terms/'); ?>"><i class="fas fa-file-contract"></i> شروط الاستخدام</a></li>
+                    <li><a href="<?php echo home_url('/privacy-policy/'); ?>"><i class="fas fa-shield-alt"></i> سياسة الخصوصية</a></li>
+                    <li><a href="<?php echo home_url('/refund-policy/'); ?>"><i class="fas fa-undo"></i> سياسة الاستردادإ</a></li>
+                    <li><a href="<?php echo home_url('/license/'); ?>"><i class="fas fa-certificate"></i> ترخيص الاستخدام</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-copy">
+                <p>&copy; <?php echo date('Y'); ?> <a href="<?php echo home_url(); ?>">قوالب عربية ووردبريس</a>. جميع الحقوق محفوظة.</p>
+            </div>
+            <div class="footer-copy">
+                <p>تطوير بواسطة <a href="#" target="_blank">Tahactw</a> بكل ❤️</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+// 📧 نظام النشرة الإخبارية
+document.addEventListener('DOMContentLoaded', function() {
+    const newsletterForm = document.getElementById('newsletter-form');
+    
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = this.querySelector('input[name="newsletter_email"]').value;
+            const submitBtn = this.querySelector('.newsletter-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            // تأثير التحميل
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            submitBtn.disabled = true;
+            
+            // محاكاة إرسال البيانات
+            setTimeout(() => {
+                // في التطبيق الحقيقي، سترسل البيانات عبر AJAX
+                console.log('Newsletter subscription:', email);
+                
+                // رسالة نجاح
+                if (typeof showToast === 'function') {
+                    showToast('تم الاشتراك بنجاح! ستصلك أحدث القوالب عبر البريد الإلكتروني.', 'success');
+                } else {
+                    alert('تم الاشتراك بنجاح!');
+                }
+                
+                // إعادة تعيين النموذج
+                this.reset();
+                
+                // إعادة تعيين الزر
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+            }, 2000);
+        });
+    }
+    
+    // تأثيرات إضافية للتفاعل
+    initAdditionalInteractions();
+});
+
+// 🎭 تأثيرات التفاعل الإضافية
+function initAdditionalInteractions() {
+    // تأثير النقر على بطاقات التصنيفات
+    const categoryCards = document.querySelectorAll('.category-card');
+    categoryCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // إضافة تأثير نبضة
+            this.style.animation = 'buttonPulse 0.6s ease-out';
+            
+            // إزالة التأثير بعد انتهائه
+            setTimeout(() => {
+                this.style.animation = '';
+            }, 600);
+            
+            // في التطبيق الحقيقي، سينتقل لصفحة التصنيف
+            console.log('Category clicked:', this.querySelector('.category-title').textContent);
+            
+            if (typeof showToast === 'function') {
+                showToast('جاري تحضير قوالب هذا التصنيف...', 'info');
+            }
+        });
+    });
+    
+    // تأثير hover متقدم للشهادات
+    const testimonialCards = document.querySelectorAll('.testimonial-card');
+    testimonialCards.forEach((card, index) => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+            this.style.zIndex = '10';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+            this.style.zIndex = '1';
+        });
+    });
+    
+    // تأثير تدوير أيقونات المميزات عند hover
+    const featureIcons = document.querySelectorAll('.feature-icon-wrapper');
+    featureIcons.forEach(icon => {
+        icon.addEventListener('mouseenter', function() {
+            const iconBg = this.querySelector('.feature-icon-bg');
+            if (iconBg) {
+                iconBg.style.animationDuration = '2s';
+            }
+        });
+        
+        icon.addEventListener('mouseleave', function() {
+            const iconBg = this.querySelector('.feature-icon-bg');
+            if (iconBg) {
+                iconBg.style.animationDuration = '10s';
+            }
+        });
+    });
+    
+    // تأثيرات الروابط الاجتماعية
+    const socialLinks = document.querySelectorAll('.social-link');
+    socialLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // تأثير نبضة
+            this.style.animation = 'buttonPulse 0.4s ease-out';
+            
+            // رسالة للمطور
+            console.log('Social link clicked:', this.getAttribute('aria-label'));
+            
+            if (typeof showToast === 'function') {
+                showToast(`تابعنا على ${this.getAttribute('aria-label')}!`, 'info');
+            }
+            
+            setTimeout(() => {
+                this.style.animation = '';
+            }, 400);
+        });
+    });
+}
+
+// 🎬 تأثيرات تحميل المحتوى التدريجي
+function initProgressiveLoading() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // إضافة تأثير ظهور تدريجي
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                
+                // إضافة تأثيرات خاصة لعناصر معينة
+                if (entry.target.classList.contains('feature-icon-bg')) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+                
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+    
+    // مراقبة العناصر
+    document.querySelectorAll('.category-card, .feature-item, .testimonial-card').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+}
+
+// تشغيل التأثيرات التدريجية
+setTimeout(initProgressiveLoading, 1000);
+
+// 🌟 رسائل ترحيبية إضافية
+console.log('🎉 الصفحة الرئيسية محملة بالكامل!');
+console.log('📱 التصميم متجاوب تماماً!');
+console.log('🚀 الأداء محسن للسرعة القصوى!');
+console.log('🎨 التأثيرات البصرية نشطة!');
+console.log('💼 المحتوى الإضافي جاهز للتفاعل!');
+
+// تحديث العدادات إذا لم تكن محملة
+if (typeof initCounters === 'function') {
+    setTimeout(initCounters, 2000);
+}
+
+</script>
+
+<?php wp_footer(); ?>
+</body>
+</html>
