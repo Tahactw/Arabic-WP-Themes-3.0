@@ -1,30 +1,19 @@
 <?php
 /**
- * الأرشيف المتكامل للقوالب العربية - ووردبريس
- * تجربة سينمائية مع جميع التأثيرات المدمجة
+ * صفحة أرشيف القوالب المدمجة - قوالب عربية ووردبريس
+ * تدمج جميع ملفات الأرشيف في ملف واحد متكامل
  * 
  * @package ArabicThemes
  * @author Tahactw
  * @date 2025-05-30
  */
 
-get_header();
+// منع الوصول المباشر
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-// منع تحميل الملفات الرئيسية للثيم
-wp_dequeue_style('arabic-themes-style');
-wp_dequeue_style('arabic-themes-interactive');
-wp_dequeue_style('theme-cards');
-wp_dequeue_script('arabic-themes-interactive');
-wp_dequeue_script('arabic-themes-performance');
-wp_dequeue_script('arabic-themes-main');
-
-// تمرير البيانات للجافا سكريبت
-wp_localize_script('jquery', 'ArchiveData', [
-    'ajaxUrl' => admin_url('admin-ajax.php'),
-    'nonce' => wp_create_nonce('arabic_themes_nonce'),
-    'homeUrl' => home_url(),
-]);
-?>
+get_header(); ?>
 
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -63,11 +52,36 @@ wp_localize_script('jquery', 'ArchiveData', [
     <div class="parallax-layer" data-speed="0.5"></div>
 </div>
 
-<!-- شاشة التحميل -->
-<div id="archive-loader" class="archive-loader">
-    <div class="loader-content">
-        <div class="loader-spinner"></div>
-        <h3>جاري تحميل مكتبة القوالب...</h3>
+<!-- البوابة السينمائية -->
+<div id="cinematic-portal" class="cinematic-portal">
+    <div class="portal-background"></div>
+    <div class="portal-wave"></div>
+    <div class="floating-elements">
+        <!-- عناصر متحركة -->
+        <div class="floating-icon" data-icon="🎨"></div>
+        <div class="floating-icon" data-icon="📱"></div>
+        <div class="floating-icon" data-icon="💻"></div>
+        <div class="floating-icon" data-icon="🚀"></div>
+        <div class="floating-icon" data-icon="⭐"></div>
+        <div class="floating-icon" data-icon="🎯"></div>
+        
+        <!-- حروف عربية -->
+        <div class="floating-letter">ق</div>
+        <div class="floating-letter">و</div>
+        <div class="floating-letter">ا</div>
+        <div class="floating-letter">ل</div>
+        <div class="floating-letter">ب</div>
+    </div>
+    <div class="portal-center">
+        <div class="portal-rings">
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+            <div class="ring ring-3"></div>
+            <div class="ring ring-4"></div>
+        </div>
+        <div class="portal-core">
+            <i class="fas fa-rocket"></i>
+        </div>
     </div>
 </div>
 
@@ -75,65 +89,73 @@ wp_localize_script('jquery', 'ArchiveData', [
 <main class="archive-main" id="archive-main">
     
     <!-- البحث الرئيسي -->
-    <section class="search-section">
+    <section class="main-search-section">
         <div class="container-fluid">
-            <div class="search-container-main">
-                <div class="search-box-enhanced">
-                    <i class="fas fa-search search-icon"></i>
-                    <input 
-                        type="text" 
-                        id="theme-search" 
-                        placeholder="ابحث في مكتبة القوالب العربية..." 
-                        autocomplete="off"
-                    >
-                    <button type="button" class="search-clear" id="search-clear">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- شريط التحكم -->
-    <section class="controls-section">
-        <div class="container-fluid">
-            <div class="controls-wrapper">
-                
-                <!-- فلاتر سريعة -->
-                <div class="quick-filters">
-                    <button class="filter-btn active" data-filter="all">
-                        <i class="fas fa-th"></i>
-                        جميع القوالب
-                    </button>
-                    <button class="filter-btn" data-filter="featured">
-                        <i class="fas fa-star"></i>
-                        مميزة
-                    </button>
-                    <button class="filter-btn" data-filter="new">
-                        <i class="fas fa-plus"></i>
-                        جديدة
-                    </button>
-                    <button class="filter-btn" data-filter="popular">
-                        <i class="fas fa-fire"></i>
-                        شائعة
-                    </button>
-                </div>
-                
-                <!-- تبديل أنماط العرض -->
-                <div class="view-controls">
-                    <div class="view-toggle">
-                        <button class="view-btn active" data-view="grid">
-                            <i class="fas fa-th-large"></i>
-                            <span>شبكة</span>
-                        </button>
-                        <button class="view-btn" data-view="list">
-                            <i class="fas fa-list"></i>
-                            <span>قائمة</span>
+            <div class="search-wrapper">
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input 
+                            type="text" 
+                            id="theme-search" 
+                            placeholder="ابحث في مكتبة القوالب..." 
+                            autocomplete="off"
+                            data-search="themes"
+                        >
+                        <button type="button" class="search-clear" id="search-clear">
+                            <i class="fas fa-times"></i>
                         </button>
                     </div>
+                    <div class="search-suggestions" id="search-suggestions"></div>
+                </div>
+                
+                <!-- فلاتر متقدمة -->
+                <div class="filters-row">
                     
-                    <div class="results-info">
-                        <span id="results-count">جاري العد...</span>
+                    <!-- فلتر التصنيفات -->
+                    <div class="filter-group">
+                        <label for="category-filter" class="filter-label">
+                            <i class="fas fa-tags"></i>
+                            التصنيف
+                        </label>
+                        <select id="category-filter" class="filter-select">
+                            <option value="">جميع التصنيفات</option>
+                            <?php
+                            $categories = get_terms([
+                                'taxonomy' => 'theme_category',
+                                'hide_empty' => true,
+                                'orderby' => 'count',
+                                'order' => 'DESC'
+                            ]);
+                            
+                            if (!is_wp_error($categories) && !empty($categories)) :
+                                foreach ($categories as $category) :
+                            ?>
+                                <option value="<?php echo esc_attr($category->slug); ?>">
+                                    <?php echo esc_html($category->name); ?> 
+                                    (<?php echo $category->count; ?>)
+                                </option>
+                            <?php 
+                                endforeach;
+                            endif;
+                            ?>
+                        </select>
+                    </div>
+
+                    <!-- فلتر الترتيب -->
+                    <div class="filter-group">
+                        <label for="sort-filter" class="filter-label">
+                            <i class="fas fa-sort"></i>
+                            الترتيب
+                        </label>
+                        <select id="sort-filter" class="filter-select">
+                            <option value="date-desc">الأحدث أولاً</option>
+                            <option value="date-asc">الأقدم أولاً</option>
+                            <option value="title-asc">الاسم (أ-ي)</option>
+                            <option value="title-desc">الاسم (ي-أ)</option>
+                            <option value="downloads-desc">الأكثر تحميلاً</option>
+                            <option value="rating-desc">الأعلى تقييماً</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -143,6 +165,25 @@ wp_localize_script('jquery', 'ArchiveData', [
     <!-- عرض القوالب -->
     <section class="themes-section" id="themes-section">
         <div class="container-fluid">
+            
+            <!-- تبديل أنماط العرض -->
+            <div class="view-controls">
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid">
+                        <i class="fas fa-th-large"></i>
+                        <span>شبكة</span>
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <i class="fas fa-list"></i>
+                        <span>قائمة</span>
+                    </button>
+                </div>
+                
+                <div class="results-info">
+                    <span id="results-count">جاري العد...</span>
+                </div>
+            </div>
+
             <!-- حاوي القوالب -->
             <div class="themes-container">
                 <div class="themes-grid" id="themes-grid">
@@ -167,156 +208,136 @@ wp_localize_script('jquery', 'ArchiveData', [
                             
                             // الحصول على بيانات القالب
                             $theme_id = get_the_ID();
-                            $download_count = 0;
-                            $theme_rating = 0;
+                            $download_count = get_post_meta($theme_id, '_download_count', true) ?: 0;
+                            $theme_rating = get_post_meta($theme_id, '_theme_rating', true) ?: 0;
+                            $is_featured = get_post_meta($theme_id, '_is_featured', true);
                             
-                            // الحصول على عدد التحميلات
-                            if (function_exists('arabic_themes_get_download_count')) {
-                                $download_count = arabic_themes_get_download_count($theme_id);
-                            } else {
-                                $download_count = get_post_meta($theme_id, '_download_count', true) ?: 0;
-                            }
-                            
-                            // الحصول على التقييم
+                            // حساب التقييم من التقييمات الفعلية
                             if (function_exists('arabic_themes_calculate_average_rating')) {
                                 $theme_rating = arabic_themes_calculate_average_rating($theme_id);
-                            } else {
-                                $theme_rating = get_post_meta($theme_id, '_theme_rating', true) ?: 0;
                             }
-                            
-                            $is_featured = get_post_meta($theme_id, '_is_featured', true);
-                            $theme_version = get_post_meta($theme_id, '_theme_version', true) ?: '1.0';
-                            $last_updated = get_the_modified_date('c');
                             
                             // الحصول على التصنيفات
                             $categories = get_the_terms($theme_id, 'theme_category');
                             $category_names = $categories ? wp_list_pluck($categories, 'name') : [];
                             $category_slugs = $categories ? wp_list_pluck($categories, 'slug') : [];
                             
-                            // تحديد نوعية القالب
-                            $theme_type = 'normal';
-                            $days_since_publish = floor((time() - get_the_time('U')) / (60 * 60 * 24));
-                            if ($is_featured) $theme_type = 'featured';
-                            elseif ($days_since_publish <= 7) $theme_type = 'new';
-                            elseif ($download_count > 100) $theme_type = 'popular';
-                    ?>
-                        <div class="theme-card-wrapper" 
-                             data-theme-id="<?php echo $theme_id; ?>"
-                             data-title="<?php echo esc_attr(get_the_title()); ?>"
-                             data-categories="<?php echo esc_attr(implode(',', $category_slugs)); ?>"
-                             data-date="<?php echo get_the_date('c'); ?>"
-                             data-downloads="<?php echo $download_count; ?>"
-                             data-rating="<?php echo $theme_rating; ?>"
-                             data-featured="<?php echo $is_featured ? 'true' : 'false'; ?>"
-                             data-type="<?php echo $theme_type; ?>">
-                             
-                            <article class="theme-card">
-                                
-                                <!-- شارات القالب -->
-                                <div class="theme-badges">
-                                    <?php if ($is_featured) : ?>
-                                        <span class="badge badge-featured">
-                                            <i class="fas fa-star"></i>
-                                            مميز
-                                        </span>
-                                    <?php endif; ?>
+                            ?>
+                            <div class="theme-card-wrapper" 
+                                 data-theme-id="<?php echo $theme_id; ?>"
+                                 data-title="<?php echo esc_attr(get_the_title()); ?>"
+                                 data-categories="<?php echo esc_attr(implode(',', $category_slugs)); ?>"
+                                 data-date="<?php echo get_the_date('c'); ?>"
+                                 data-downloads="<?php echo $download_count; ?>"
+                                 data-rating="<?php echo $theme_rating; ?>"
+                                 data-featured="<?php echo $is_featured ? 'true' : 'false'; ?>">
+                                 
+                                <article class="theme-card" onclick="window.location.href='<?php echo get_permalink(); ?>'">
                                     
-                                    <?php if ($days_since_publish <= 7) : ?>
-                                        <span class="badge badge-new">
-                                            <i class="fas fa-plus"></i>
-                                            جديد
-                                        </span>
-                                    <?php endif; ?>
-                                </div>
+                                    <!-- شارات القالب -->
+                                    <div class="theme-badges">
+                                        <?php if ($is_featured) : ?>
+                                            <span class="badge badge-featured">
+                                                <i class="fas fa-star"></i>
+                                                مميز
+                                            </span>
+                                        <?php endif; ?>
+                                        
+                                        <?php
+                                        $days_since_publish = floor((time() - get_the_time('U')) / (60 * 60 * 24));
+                                        if ($days_since_publish <= 7) :
+                                        ?>
+                                            <span class="badge badge-new">
+                                                <i class="fas fa-plus"></i>
+                                                جديد
+                                            </span>
+                                        <?php endif; ?>
+                                    </div>
 
-                                <!-- معاينة القالب -->
-                                <div class="theme-preview">
-                                    <?php if (has_post_thumbnail()) : ?>
-                                        <img src="<?php echo get_the_post_thumbnail_url(get_the_ID(), 'large'); ?>" 
-                                             alt="<?php echo esc_attr(get_the_title()); ?>">
-                                    <?php else : ?>
-                                        <div class="no-image">
-                                            <i class="fas fa-image"></i>
-                                            <span>لا توجد صورة</span>
-                                        </div>
-                                    <?php endif; ?>
-                                    <div class="theme-preview-overlay"></div>
-                                </div>
+                                    <!-- معاينة القالب -->
+                                    <div class="theme-preview">
+                                        <?php if (has_post_thumbnail()) : ?>
+                                            <img src="<?php echo get_the_post_thumbnail_url(get_the_ID(), 'large'); ?>" 
+                                                 alt="<?php echo esc_attr(get_the_title()); ?>"
+                                                 loading="lazy">
+                                        <?php else : ?>
+                                            <div class="no-image">
+                                                <i class="fas fa-image"></i>
+                                                <span>لا توجد صورة</span>
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="theme-preview-overlay"></div>
+                                    </div>
 
-                                <!-- محتوى القالب -->
-                                <div class="theme-content">
-                                    <h3 class="theme-title">
-                                        <a href="<?php echo get_permalink(); ?>">
-                                            <?php the_title(); ?>
-                                        </a>
-                                    </h3>
-                                    
-                                    <!-- تقييم النجوم -->
-                                    <div class="theme-rating">
-                                        <div class="rating-stars">
-                                            <?php
-                                            if ($theme_rating > 0) {
-                                                // عرض النجوم بناءً على التقييم الفعلي
-                                                if (function_exists('arabic_themes_rating_stars')) {
-                                                    echo arabic_themes_rating_stars($theme_rating);
-                                                } else {
-                                                    for ($i = 1; $i <= 5; $i++) {
-                                                        if ($i <= $theme_rating) {
-                                                            echo '<i class="fas fa-star"></i>';
-                                                        } else {
-                                                            echo '<i class="far fa-star"></i>';
+                                    <!-- محتوى القالب -->
+                                    <div class="theme-content">
+                                        <h3 class="theme-title">
+                                            <a href="<?php echo get_permalink(); ?>">
+                                                <?php the_title(); ?>
+                                            </a>
+                                        </h3>
+                                        
+                                        <!-- تقييم النجوم -->
+                                        <div class="theme-rating">
+                                            <div class="rating-stars">
+                                                <?php
+                                                if ($theme_rating > 0) {
+                                                    // عرض النجوم بناءً على التقييم الفعلي
+                                                    if (function_exists('arabic_themes_rating_stars')) {
+                                                        echo arabic_themes_rating_stars($theme_rating);
+                                                    } else {
+                                                        $full_stars = floor($theme_rating);
+                                                        $has_half = ($theme_rating - $full_stars) >= 0.5;
+                                                        
+                                                        for ($i = 1; $i <= 5; $i++) {
+                                                            if ($i <= $full_stars) {
+                                                                echo '<i class="fas fa-star"></i>';
+                                                            } elseif ($i == $full_stars + 1 && $has_half) {
+                                                                echo '<i class="fas fa-star-half-alt"></i>';
+                                                            } else {
+                                                                echo '<i class="far fa-star"></i>';
+                                                            }
                                                         }
                                                     }
+                                                    echo '<span class="rating-value">(' . number_format($theme_rating, 1) . ')</span>';
+                                                } else {
+                                                    echo '<span class="no-rating">لا توجد تقييمات</span>';
                                                 }
-                                                echo '<span class="rating-value">(' . $theme_rating . ')</span>';
-                                            } else {
-                                                echo '<span class="no-rating">لا توجد تقييمات</span>';
-                                            }
-                                            ?>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="theme-meta">
-                                        <div class="theme-downloads">
-                                            <i class="fas fa-download"></i>
-                                            <span><?php echo number_format($download_count); ?> تحميل</span>
+                                                ?>
+                                            </div>
                                         </div>
                                         
-                                        <div class="theme-categories">
-                                            <?php foreach (array_slice($category_names, 0, 2) as $category) : ?>
-                                                <span class="category-tag"><?php echo esc_html($category); ?></span>
-                                            <?php endforeach; ?>
+                                        <div class="theme-meta">
+                                            <div class="theme-downloads">
+                                                <i class="fas fa-download"></i>
+                                                <span><?php echo number_format($download_count); ?> تحميل</span>
+                                            </div>
+                                            
+                                            <div class="theme-categories">
+                                                <?php if (!empty($category_names)) : ?>
+                                                    <span class="category-tag"><?php echo esc_html($category_names[0]); ?></span>
+                                                <?php endif; ?>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </article>
-                        </div>
-                    <?php 
+                                </article>
+                            </div>
+                            <?php
                         endwhile;
                         wp_reset_postdata();
-                    else : 
+                    else :
+                        echo '<div class="no-themes">لم يتم العثور على قوالب</div>';
+                    endif;
                     ?>
-                        <div class="no-themes">
-                            <div class="no-themes-content">
-                                <i class="fas fa-search"></i>
-                                <h3>لم يتم العثور على قوالب</h3>
-                                <p>جرب البحث بكلمة مختلفة أو تحقق من الفلاتر المطبقة</p>
-                            </div>
-                        </div>
-                    <?php endif; ?>
                 </div>
                 
                 <!-- تحميل المزيد -->
-                <?php if ($themes_query->max_num_pages > 1) : ?>
                 <div class="load-more-section">
-                    <button id="load-more-btn" class="load-more-btn" data-page="1" data-max-pages="<?php echo $themes_query->max_num_pages; ?>">
+                    <button id="load-more-btn" class="load-more-btn">
                         <span class="btn-text">تحميل المزيد</span>
-                        <div class="btn-loader">
-                            <i class="fas fa-spinner fa-spin"></i>
-                        </div>
+                        <div class="btn-loader"></div>
                     </button>
                 </div>
-                <?php endif; ?>
             </div>
         </div>
     </section>
@@ -327,19 +348,11 @@ wp_localize_script('jquery', 'ArchiveData', [
 <div id="toast-container" class="toast-container"></div>
 
 <style>
-/* ================================
-   أنماط الأرشيف المتكاملة
-================================ */
-
-/* إعادة تعيين أساسية */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* المتغيرات الأساسية */
+/* ========================
+   الأساسيات والمتغيرات
+======================== */
 :root {
+    /* الألوان الأساسية */
     --primary-color: #3b82f6;
     --secondary-color: #8b5cf6;
     --accent-color: #10b981;
@@ -347,6 +360,7 @@ wp_localize_script('jquery', 'ArchiveData', [
     --error-color: #ef4444;
     --success-color: #22c55e;
     
+    /* الألوان المحايدة */
     --dark-900: #0f172a;
     --dark-800: #1e293b;
     --dark-700: #334155;
@@ -358,7 +372,25 @@ wp_localize_script('jquery', 'ArchiveData', [
     --dark-100: #f1f5f9;
     --white: #ffffff;
     
-    --font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* التدرجات */
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --gradient-dark: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    
+    /* الخطوط */
+    --font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+    --font-size-4xl: 2.25rem;
+    --font-size-5xl: 3rem;
+    
+    /* المسافات */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
@@ -367,34 +399,49 @@ wp_localize_script('jquery', 'ArchiveData', [
     --spacing-2xl: 3rem;
     --spacing-3xl: 4rem;
     
+    /* الحدود والزوايا */
     --border-radius-sm: 0.375rem;
     --border-radius-md: 0.5rem;
     --border-radius-lg: 0.75rem;
     --border-radius-xl: 1rem;
     --border-radius-2xl: 1.5rem;
+    --border-radius-full: 9999px;
     
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    /* الظلال */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
     
+    /* الانتقالات */
     --transition-fast: 0.15s ease;
     --transition-normal: 0.3s ease;
     --transition-slow: 0.5s ease;
 }
 
-/* الصفحة الأساسية */
-body.archive-themes-page {
+/* إعادة تعيين وإيقاف التمرير */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
     font-family: var(--font-family);
-    background: var(--dark-900);
-    color: var(--white);
-    min-height: 100vh;
-    direction: rtl;
+    background: #000011;
+    color: #ffffff;
     overflow-x: hidden;
 }
 
-/* 🌓 تبديل المظهر */
+/* الصفحة المحتوى */
+.archive-themes-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #000011 0%, #1a1a2e 50%, #16213e 100%);
+    position: relative;
+}
+
+/* أيقونة Dark/Light Mode */
 .theme-toggle-sidebar {
     position: fixed;
     right: 30px;
@@ -431,6 +478,7 @@ body.archive-themes-page {
     position: relative;
     width: 24px;
     height: 24px;
+    transition: all 0.3s ease;
 }
 
 .sun-icon,
@@ -479,6 +527,11 @@ body.dark-mode .moon-icon {
     pointer-events: none;
 }
 
+.theme-toggle-btn:active .toggle-ripple {
+    width: 120px;
+    height: 120px;
+}
+
 /* Canvas الجسيمات */
 #particles-canvas {
     position: fixed;
@@ -522,237 +575,225 @@ body.dark-mode .moon-icon {
     75% { transform: translate(-5px, 10px) rotate(0.5deg); }
 }
 
-/* شاشة التحميل */
-.archive-loader {
+/* البوابة السينمائية */
+.cinematic-portal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(15, 23, 42, 0.95);
-    display: flex;
+    background: rgba(0, 0, 17, 0.95);
+    display: none;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     z-index: 10000;
-    transition: opacity 0.5s ease;
+    backdrop-filter: blur(0px);
+    transition: backdrop-filter 2s ease;
 }
 
-.archive-loader.fade-out {
-    opacity: 0;
-}
-
-.loader-content {
-    text-align: center;
-}
-
-.loader-spinner {
-    width: 60px;
-    height: 60px;
-    border: 3px solid rgba(59, 130, 246, 0.3);
-    border-top: 3px solid #3b82f6;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 1rem;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.cinematic-portal.active {
+    display: flex;
+    backdrop-filter: blur(20px);
 }
 
 /* المحتوى الرئيسي */
 .archive-main {
     position: relative;
     z-index: 10;
-    min-height: 100vh;
-    padding-top: 2rem;
+    padding: 2rem 0;
 }
 
 .container-fluid {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 var(--spacing-lg);
+    padding: 0 2rem;
 }
 
-/* قسم البحث */
-.search-section {
-    padding: var(--spacing-3xl) 0 var(--spacing-xl);
+/* قسم البحث الرئيسي */
+.main-search-section {
+    padding: var(--spacing-3xl) 0;
+    background: rgba(26, 26, 46, 0.3);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+    margin-bottom: var(--spacing-3xl);
+}
+
+.search-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
     text-align: center;
 }
 
-.search-container-main {
-    max-width: 800px;
-    margin: 0 auto;
+.search-container {
+    position: relative;
+    margin-bottom: var(--spacing-xl);
 }
 
-.search-box-enhanced {
+.search-box {
     position: relative;
     background: rgba(26, 26, 46, 0.8);
-    border-radius: 50px;
-    padding: 4px;
     border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: var(--border-radius-2xl);
+    padding: 1.5rem 3rem 1.5rem 3.5rem;
     backdrop-filter: blur(20px);
     transition: all var(--transition-normal);
 }
 
-.search-box-enhanced:focus-within {
+.search-box:hover {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-}
-
-.search-box-enhanced input {
-    width: 100%;
-    padding: 20px 60px;
-    border: none;
-    background: transparent;
-    color: var(--white);
-    font-size: 1.2rem;
-    outline: none;
-    font-family: var(--font-family);
-}
-
-.search-box-enhanced input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
 }
 
 .search-icon {
     position: absolute;
-    right: 25px;
+    left: 1.5rem;
     top: 50%;
     transform: translateY(-50%);
     color: var(--primary-color);
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+}
+
+#theme-search {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    placeholder-color: var(--dark-400);
+}
+
+#theme-search::placeholder {
+    color: var(--dark-400);
 }
 
 .search-clear {
     position: absolute;
-    left: 20px;
+    right: 1.5rem;
     top: 50%;
     transform: translateY(-50%);
-    background: none;
+    background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 1.2rem;
+    color: var(--dark-400);
     cursor: pointer;
-    padding: 8px;
-    border-radius: 50%;
-    transition: all var(--transition-fast);
+    font-size: 1.2rem;
     opacity: 0;
-    visibility: hidden;
+    transition: all var(--transition-normal);
 }
 
-.search-clear.visible {
+.search-clear.show {
     opacity: 1;
-    visibility: visible;
 }
 
-.search-clear:hover {
-    color: var(--error-color);
-    background: rgba(239, 68, 68, 0.1);
+.filters-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
 }
 
-/* قسم التحكم */
-.controls-section {
-    padding: var(--spacing-xl) 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.filter-group {
+    position: relative;
 }
 
-.controls-wrapper {
+.filter-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    color: var(--dark-300);
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+}
+
+.filter-select {
+    width: 100%;
+    background: rgba(26, 26, 46, 0.8);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: var(--border-radius-lg);
+    padding: 1rem 1.5rem;
+    color: var(--white);
+    font-size: var(--font-size-base);
+    backdrop-filter: blur(20px);
+    transition: all var(--transition-normal);
+    cursor: pointer;
+}
+
+.filter-select:hover,
+.filter-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.filter-select option {
+    background: var(--dark-800);
+    color: var(--white);
+    padding: 0.5rem;
+}
+
+/* قسم عرض القوالب */
+.themes-section {
+    padding: var(--spacing-3xl) 0;
+}
+
+.view-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-lg);
-}
-
-/* الفلاتر السريعة */
-.quick-filters {
-    display: flex;
-    gap: var(--spacing-sm);
-    flex-wrap: wrap;
-}
-
-.filter-btn {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: 12px 20px;
-    background: rgba(26, 26, 46, 0.7);
-    border: 2px solid rgba(59, 130, 246, 0.3);
-    border-radius: 50px;
-    color: rgba(255, 255, 255, 0.7);
-    cursor: pointer;
-    transition: all var(--transition-normal);
-    font-weight: 600;
+    margin-bottom: var(--spacing-2xl);
+    padding: var(--spacing-lg);
+    background: rgba(26, 26, 46, 0.6);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: var(--border-radius-xl);
     backdrop-filter: blur(20px);
-}
-
-.filter-btn.active,
-.filter-btn:hover {
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-    color: var(--white);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-/* تبديل أنماط العرض */
-.view-controls {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-lg);
 }
 
 .view-toggle {
     display: flex;
-    background: rgba(26, 26, 46, 0.7);
-    border-radius: 50px;
-    padding: 4px;
-    border: 2px solid rgba(59, 130, 246, 0.3);
-    backdrop-filter: blur(20px);
+    gap: var(--spacing-sm);
+    background: rgba(15, 23, 42, 0.8);
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
 .view-btn {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-    padding: 12px 20px;
+    padding: var(--spacing-sm) var(--spacing-md);
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.7);
-    border-radius: 50px;
+    border-radius: var(--border-radius-md);
+    color: var(--dark-400);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
     cursor: pointer;
     transition: all var(--transition-normal);
-    font-weight: 600;
 }
 
 .view-btn.active,
 .view-btn:hover {
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    background: var(--primary-color);
     color: var(--white);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-lg);
 }
 
 .results-info {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--dark-300);
+    font-size: var(--font-size-sm);
     font-weight: 600;
 }
 
-/* قسم القوالب */
-.themes-section {
-    padding: var(--spacing-3xl) 0;
-}
-
+/* شبكة القوالب */
 .themes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-3xl);
-}
-
-.themes-grid.list-view {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
 }
 
 /* بطاقة القالب */
@@ -778,8 +819,8 @@ body.dark-mode .moon-icon {
     height: 100%;
     display: flex;
     flex-direction: column;
-    backdrop-filter: blur(20px);
     cursor: pointer;
+    backdrop-filter: blur(20px);
 }
 
 .theme-card:hover {
@@ -794,10 +835,10 @@ body.dark-mode .moon-icon {
     position: absolute;
     top: var(--spacing-md);
     right: var(--spacing-md);
-    z-index: 5;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
+    z-index: 2;
 }
 
 .badge {
@@ -805,31 +846,33 @@ body.dark-mode .moon-icon {
     align-items: center;
     gap: var(--spacing-xs);
     padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--border-radius-lg);
-    font-size: 0.8rem;
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-xs);
     font-weight: 700;
     text-transform: uppercase;
-    backdrop-filter: blur(20px);
+    letter-spacing: 0.05em;
+    backdrop-filter: blur(10px);
 }
 
 .badge-featured {
-    background: rgba(245, 158, 11, 0.9);
+    background: rgba(239, 68, 68, 0.9);
     color: var(--white);
-    border: 1px solid rgba(245, 158, 11, 0.3);
+    border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .badge-new {
-    background: rgba(16, 185, 129, 0.9);
+    background: rgba(59, 130, 246, 0.9);
     color: var(--white);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 /* معاينة القالب */
 .theme-preview {
     position: relative;
-    height: 240px;
+    height: 220px;
     overflow: hidden;
     background: var(--dark-800);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
 }
 
 .theme-preview img {
@@ -850,8 +893,13 @@ body.dark-mode .moon-icon {
     justify-content: center;
     height: 100%;
     color: var(--dark-400);
-    font-size: 1.2rem;
-    gap: var(--spacing-sm);
+    background: linear-gradient(135deg, var(--dark-800), var(--dark-700));
+}
+
+.no-image i {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-sm);
+    opacity: 0.5;
 }
 
 .theme-preview-overlay {
@@ -864,7 +912,7 @@ body.dark-mode .moon-icon {
         45deg,
         rgba(0, 0, 0, 0.1) 0%,
         transparent 50%,
-        rgba(59, 130, 246, 0.1) 100%
+        rgba(255, 255, 255, 0.1) 100%
     );
     opacity: 0;
     transition: opacity var(--transition-normal);
@@ -876,69 +924,88 @@ body.dark-mode .moon-icon {
 
 /* محتوى القالب */
 .theme-content {
-    padding: var(--spacing-lg);
+    padding: var(--spacing-xl);
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
 .theme-title {
-    margin-bottom: var(--spacing-md);
-    font-size: 1.3rem;
-    font-weight: 700;
-    line-height: 1.4;
+    margin-bottom: var(--spacing-lg);
+    flex-grow: 1;
 }
 
 .theme-title a {
     color: var(--white);
     text-decoration: none;
-    transition: color var(--transition-fast);
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    transition: all var(--transition-normal);
+    display: block;
+    background: linear-gradient(45deg, #ffffff, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+    line-height: 1.4;
 }
 
 .theme-title a:hover {
-    color: var(--primary-color);
+    background-position: 100% 100%;
 }
 
-/* تقييم النجوم */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* تقييم القالب */
 .theme-rating {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
 }
 
 .rating-stars {
     display: flex;
     align-items: center;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-sm);
 }
 
 .rating-stars .fas,
-.rating-stars .far {
+.rating-stars .far,
+.rating-stars .fa-star-half-alt {
     color: #fbbf24;
     font-size: 1rem;
-    transition: all var(--transition-fast);
+    transition: all var(--transition-normal);
     filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.5));
 }
 
 .rating-value {
-    color: var(--dark-400);
-    font-size: 0.9rem;
+    color: var(--dark-300);
+    font-size: var(--font-size-sm);
     font-weight: 600;
-    margin-right: var(--spacing-sm);
+    background: rgba(107, 114, 128, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--border-radius-full);
+    margin-left: var(--spacing-sm);
 }
 
 .no-rating {
     color: var(--dark-400);
-    font-size: 0.9rem;
+    font-size: var(--font-size-sm);
     font-style: italic;
 }
 
-/* بيانات القالب */
+/* معلومات القالب */
 .theme-meta {
-    margin-top: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: rgba(59, 130, 246, 0.05);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid rgba(59, 130, 246, 0.1);
 }
 
 .theme-downloads {
@@ -947,61 +1014,76 @@ body.dark-mode .moon-icon {
     gap: var(--spacing-sm);
     color: var(--accent-color);
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: var(--font-size-sm);
 }
 
-.theme-categories {
-    display: flex;
-    gap: var(--spacing-xs);
-    flex-wrap: wrap;
+.theme-downloads i {
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
 }
 
 .category-tag {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    background: rgba(59, 130, 246, 0.2);
-    color: var(--primary-color);
-    border-radius: var(--border-radius-sm);
-    font-size: 0.8rem;
+    background: rgba(139, 92, 246, 0.2);
+    color: var(--secondary-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-xs);
     font-weight: 600;
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    border: 1px solid rgba(139, 92, 246, 0.3);
 }
 
 /* عرض القائمة */
-.themes-grid.list-view .theme-card {
+.themes-grid.view-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+.view-list .theme-card {
+    display: flex;
     flex-direction: row;
     height: auto;
+    min-height: 200px;
 }
 
-.themes-grid.list-view .theme-preview {
+.view-list .theme-preview {
     width: 300px;
-    height: 200px;
+    height: auto;
     flex-shrink: 0;
+    border-bottom: none;
+    border-left: 1px solid rgba(59, 130, 246, 0.2);
 }
 
-.themes-grid.list-view .theme-content {
+.view-list .theme-content {
     flex: 1;
+    padding: var(--spacing-xl);
+}
+
+.view-list .theme-title a {
+    font-size: var(--font-size-2xl);
 }
 
 /* تحميل المزيد */
 .load-more-section {
     text-align: center;
-    padding: var(--spacing-2xl) 0;
+    margin-top: var(--spacing-3xl);
 }
 
 .load-more-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: 18px 40px;
+    position: relative;
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     border: none;
-    border-radius: 50px;
+    border-radius: var(--border-radius-full);
+    padding: var(--spacing-lg) var(--spacing-2xl);
     color: var(--white);
-    font-size: 1.1rem;
+    font-size: var(--font-size-lg);
     font-weight: 700;
     cursor: pointer;
     transition: all var(--transition-normal);
-    position: relative;
     overflow: hidden;
 }
 
@@ -1013,200 +1095,140 @@ body.dark-mode .moon-icon {
 .load-more-btn:disabled {
     opacity: 0.7;
     cursor: not-allowed;
-    transform: none;
 }
 
-.load-more-btn .btn-loader {
+.btn-loader {
     display: none;
-}
-
-.load-more-btn.loading .btn-text {
-    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid var(--white);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: var(--spacing-sm);
 }
 
 .load-more-btn.loading .btn-loader {
-    display: block;
+    display: inline-block;
 }
 
-/* رسائل خاصة */
-.no-themes {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: var(--spacing-3xl);
-}
-
-.no-themes-content {
-    background: rgba(26, 26, 46, 0.5);
-    padding: var(--spacing-3xl);
-    border-radius: var(--border-radius-2xl);
-    border: 2px dashed rgba(59, 130, 246, 0.3);
-}
-
-.no-themes-content i {
-    font-size: 4rem;
-    color: var(--dark-400);
-    margin-bottom: var(--spacing-lg);
-}
-
-.no-themes-content h3 {
-    font-size: 1.5rem;
-    margin-bottom: var(--spacing-md);
-    color: var(--dark-300);
-}
-
-.no-themes-content p {
-    color: var(--dark-400);
-    font-size: 1.1rem;
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* رسائل Toast */
 .toast-container {
     position: fixed;
     top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10001;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
 }
 
 .toast {
     background: rgba(26, 26, 46, 0.95);
-    color: var(--white);
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-radius: var(--border-radius-lg);
-    margin-bottom: var(--spacing-sm);
     border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    color: var(--white);
     backdrop-filter: blur(20px);
-    animation: toastSlideIn 0.3s ease;
+    transform: translateX(100%);
+    transition: transform var(--transition-normal);
+    min-width: 300px;
+    max-width: 400px;
+}
+
+.toast.show {
+    transform: translateX(0);
 }
 
 .toast.success {
     border-color: var(--success-color);
-    background: rgba(34, 197, 94, 0.1);
 }
 
 .toast.error {
     border-color: var(--error-color);
-    background: rgba(239, 68, 68, 0.1);
 }
 
-@keyframes toastSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Dark Mode Styles */
+/* Dark Mode و Light Mode */
 body.dark-mode {
     background: #000000;
 }
 
-body.dark-mode .theme-card {
-    background: rgba(10, 10, 20, 0.9);
-    border-color: rgba(139, 92, 246, 0.3);
+body.dark-mode .archive-themes-page {
+    background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #16213e 100%);
 }
 
-body.dark-mode .search-box-enhanced {
-    background: rgba(10, 10, 20, 0.8);
-    border-color: rgba(139, 92, 246, 0.4);
-}
-
-/* Light Mode Styles */
 body.light-mode {
     background: #f8fafc;
     color: #1e293b;
 }
 
-body.light-mode .archive-main {
+body.light-mode .archive-themes-page {
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
 body.light-mode .theme-card {
-    background: rgba(255, 255, 255, 0.95);
-    border-color: rgba(59, 130, 246, 0.2);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+body.light-mode .search-box,
+body.light-mode .filter-select {
+    background: rgba(255, 255, 255, 0.9);
     color: #1e293b;
+}
+
+body.light-mode .view-controls {
+    background: rgba(255, 255, 255, 0.8);
 }
 
 body.light-mode .theme-title a {
     color: #1e293b;
 }
 
-body.light-mode .search-box-enhanced {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: rgba(59, 130, 246, 0.3);
-}
-
-body.light-mode .search-box-enhanced input {
-    color: #1e293b;
-}
-
-body.light-mode .search-box-enhanced input::placeholder {
-    color: rgba(30, 41, 59, 0.6);
-}
-
-body.light-mode .filter-btn,
-body.light-mode .view-btn {
-    background: rgba(255, 255, 255, 0.8);
-    color: #1e293b;
-    border-color: rgba(59, 130, 246, 0.3);
-}
-
-body.light-mode .no-themes-content {
-    background: rgba(255, 255, 255, 0.8);
-    color: #1e293b;
-}
-
-body.light-mode .parallax-layer {
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
-}
-
 /* التصميم المتجاوب */
 @media (max-width: 1024px) {
     .themes-grid {
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: var(--spacing-lg);
     }
     
-    .controls-wrapper {
-        flex-direction: column;
-        align-items: stretch;
+    .theme-toggle-sidebar {
+        right: 20px;
     }
     
-    .quick-filters {
-        justify-content: center;
-    }
-    
-    .view-controls {
-        justify-content: center;
+    .container-fluid {
+        padding: 0 var(--spacing-lg);
     }
 }
 
 @media (max-width: 768px) {
-    .container-fluid {
-        padding: 0 var(--spacing-md);
+    .themes-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
     }
     
-    .themes-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    .filters-row {
+        grid-template-columns: 1fr;
         gap: var(--spacing-md);
     }
     
-    .themes-grid.list-view .theme-card {
+    .view-controls {
         flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
     }
     
-    .themes-grid.list-view .theme-preview {
-        width: 100%;
-        height: 200px;
+    .view-toggle {
+        justify-content: center;
     }
     
-    .search-box-enhanced input {
-        padding: 16px 50px;
-        font-size: 1rem;
+    .search-box {
+        padding: 1.2rem 2.5rem 1.2rem 3rem;
     }
     
     .theme-toggle-sidebar {
@@ -1218,27 +1240,37 @@ body.light-mode .parallax-layer {
         height: 50px;
     }
     
-    .quick-filters {
-        justify-content: flex-start;
-        overflow-x: auto;
-        padding-bottom: var(--spacing-sm);
+    .view-list .theme-card {
+        flex-direction: column;
     }
     
-    .filter-btn {
-        white-space: nowrap;
-        flex-shrink: 0;
+    .view-list .theme-preview {
+        width: 100%;
+        height: 200px;
+        border-left: none;
+        border-bottom: 1px solid rgba(59, 130, 246, 0.2);
     }
 }
 
 @media (max-width: 480px) {
-    .themes-grid {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-md);
+    .container-fluid {
+        padding: 0 var(--spacing-md);
     }
     
-    .search-box-enhanced input {
-        padding: 14px 45px;
-        font-size: 0.9rem;
+    .main-search-section {
+        padding: var(--spacing-xl) 0;
+    }
+    
+    .search-box {
+        padding: 1rem 2rem 1rem 2.5rem;
+    }
+    
+    .theme-content {
+        padding: var(--spacing-lg);
+    }
+    
+    .theme-preview {
+        height: 180px;
     }
     
     .theme-toggle-btn {
@@ -1246,23 +1278,20 @@ body.light-mode .parallax-layer {
         height: 45px;
     }
     
-    .toggle-icon {
-        width: 20px;
-        height: 20px;
-    }
-    
-    .sun-icon,
-    .moon-icon {
-        font-size: 16px;
+    .load-more-btn {
+        padding: var(--spacing-md) var(--spacing-xl);
+        font-size: var(--font-size-base);
     }
 }
 
 /* تحسينات الأداء */
 .theme-card,
-.filter-btn,
+.search-box,
+.filter-select,
 .view-btn,
 .load-more-btn {
     will-change: transform, box-shadow;
+    contain: layout style paint;
 }
 
 /* تأثيرات خاصة للمس */
@@ -1271,411 +1300,28 @@ body.light-mode .parallax-layer {
         transform: translateY(-4px);
     }
     
-    .filter-btn:hover,
-    .view-btn:hover {
-        transform: translateY(-1px);
+    .theme-toggle-btn:hover {
+        transform: scale(1.05);
     }
 }
 </style>
 
 <script>
-// 🎬 JavaScript متكامل للأرشيف
+// JavaScript مدمج للأرشيف
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎬 أرشيف القوالب العربية جاهز!');
+    console.log('🎬 صفحة أرشيف القوالب جاهزة!');
     
-    // إخفاء شاشة التحميل
-    setTimeout(() => {
-        const loader = document.getElementById('archive-loader');
-        if (loader) {
-            loader.classList.add('fade-out');
-            setTimeout(() => loader.remove(), 500);
-        }
-    }, 1000);
-    
-    // تهيئة جميع الأنظمة
+    // تهيئة جميع التأثيرات
     initParticles();
     initThemeToggle();
-    initSearch();
-    initFilters();
+    initSearchAndFilters();
     initViewToggle();
     initLoadMore();
-    initThemeCards();
+    initMouseEffects();
     initAnimations();
-    updateResultsCount();
 });
 
-// 🌓 نظام تبديل المظهر
-function initThemeToggle() {
-    const themeToggle = document.getElementById('theme-toggle');
-    if (!themeToggle) return;
-    
-    // قراءة المظهر المحفوظ
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    applyTheme(savedTheme);
-    
-    // معالج النقر
-    themeToggle.addEventListener('click', function() {
-        const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        // تأثير انتقالي سلس
-        document.body.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-        
-        applyTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
-        
-        // تأثير ريبل للزر
-        const ripple = this.querySelector('.toggle-ripple');
-        ripple.style.width = '120px';
-        ripple.style.height = '120px';
-        
-        setTimeout(() => {
-            ripple.style.width = '0';
-            ripple.style.height = '0';
-        }, 600);
-        
-        // إزالة التأثير الانتقالي
-        setTimeout(() => {
-            document.body.style.transition = '';
-        }, 500);
-    });
-    
-    function applyTheme(theme) {
-        document.body.classList.remove('dark-mode', 'light-mode');
-        document.body.classList.add(theme + '-mode');
-        
-        // تحديث meta theme-color
-        let metaThemeColor = document.querySelector('meta[name="theme-color"]');
-        if (!metaThemeColor) {
-            metaThemeColor = document.createElement('meta');
-            metaThemeColor.name = 'theme-color';
-            document.head.appendChild(metaThemeColor);
-        }
-        metaThemeColor.content = theme === 'dark' ? '#0f172a' : '#f8fafc';
-    }
-}
-
-// 🔍 نظام البحث
-function initSearch() {
-    const searchInput = document.getElementById('theme-search');
-    const searchClear = document.getElementById('search-clear');
-    
-    if (!searchInput) return;
-    
-    let searchTimeout;
-    
-    // البحث الفوري
-    searchInput.addEventListener('input', function() {
-        const query = this.value.trim();
-        
-        // إظهار/إخفاء زر المسح
-        if (query) {
-            searchClear.classList.add('visible');
-        } else {
-            searchClear.classList.remove('visible');
-        }
-        
-        // البحث مع تأخير
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            performSearch(query);
-        }, 300);
-    });
-    
-    // مسح البحث
-    if (searchClear) {
-        searchClear.addEventListener('click', function() {
-            searchInput.value = '';
-            searchInput.focus();
-            this.classList.remove('visible');
-            performSearch('');
-        });
-    }
-    
-    // البحث باستخدام Enter
-    searchInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            clearTimeout(searchTimeout);
-            performSearch(this.value.trim());
-        }
-    });
-}
-
-// تنفيذ البحث
-function performSearch(query) {
-    const cards = document.querySelectorAll('.theme-card-wrapper');
-    let visibleCount = 0;
-    
-    cards.forEach(card => {
-        const title = card.dataset.title.toLowerCase();
-        const categories = card.dataset.categories.toLowerCase();
-        const searchTerm = query.toLowerCase();
-        
-        if (!query || title.includes(searchTerm) || categories.includes(searchTerm)) {
-            card.style.display = 'block';
-            visibleCount++;
-        } else {
-            card.style.display = 'none';
-        }
-    });
-    
-    updateResultsCount(visibleCount);
-    showSearchResults(query, visibleCount);
-}
-
-// 🔗 نظام الفلاتر
-function initFilters() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            // إزالة الحالة النشطة من جميع الأزرار
-            filterBtns.forEach(b => b.classList.remove('active'));
-            
-            // تفعيل الزر المحدد
-            this.classList.add('active');
-            
-            // تطبيق الفلتر
-            const filter = this.dataset.filter;
-            applyFilter(filter);
-        });
-    });
-}
-
-// تطبيق الفلتر
-function applyFilter(filter) {
-    const cards = document.querySelectorAll('.theme-card-wrapper');
-    let visibleCount = 0;
-    
-    cards.forEach(card => {
-        let shouldShow = false;
-        
-        switch (filter) {
-            case 'all':
-                shouldShow = true;
-                break;
-            case 'featured':
-                shouldShow = card.dataset.featured === 'true';
-                break;
-            case 'new':
-                shouldShow = card.dataset.type === 'new';
-                break;
-            case 'popular':
-                shouldShow = card.dataset.type === 'popular';
-                break;
-        }
-        
-        if (shouldShow) {
-            card.style.display = 'block';
-            visibleCount++;
-        } else {
-            card.style.display = 'none';
-        }
-    });
-    
-    updateResultsCount(visibleCount);
-    
-    // إضافة تأثير
-    showNotification(`تم تطبيق فلتر: ${getFilterName(filter)} (${visibleCount} قالب)`, 'success');
-}
-
-function getFilterName(filter) {
-    const names = {
-        'all': 'جميع القوالب',
-        'featured': 'القوالب المميزة',
-        'new': 'القوالب الجديدة',
-        'popular': 'القوالب الشائعة'
-    };
-    return names[filter] || filter;
-}
-
-// 👁️ نظام تبديل العرض
-function initViewToggle() {
-    const viewBtns = document.querySelectorAll('.view-btn');
-    const themesGrid = document.getElementById('themes-grid');
-    
-    viewBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            // إزالة الحالة النشطة
-            viewBtns.forEach(b => b.classList.remove('active'));
-            
-            // تفعيل الزر المحدد
-            this.classList.add('active');
-            
-            // تطبيق طريقة العرض
-            const view = this.dataset.view;
-            applyView(view);
-        });
-    });
-}
-
-// تطبيق طريقة العرض
-function applyView(view) {
-    const themesGrid = document.getElementById('themes-grid');
-    
-    if (view === 'list') {
-        themesGrid.classList.add('list-view');
-    } else {
-        themesGrid.classList.remove('list-view');
-    }
-    
-    // إعادة تطبيق الحركات
-    setTimeout(() => {
-        initAnimations();
-    }, 100);
-}
-
-// 📄 تحميل المزيد
-function initLoadMore() {
-    const loadMoreBtn = document.getElementById('load-more-btn');
-    
-    if (!loadMoreBtn) return;
-    
-    loadMoreBtn.addEventListener('click', function() {
-        if (this.classList.contains('loading')) return;
-        
-        const currentPage = parseInt(this.dataset.page);
-        const maxPages = parseInt(this.dataset.maxPages);
-        const nextPage = currentPage + 1;
-        
-        if (nextPage > maxPages) {
-            this.style.display = 'none';
-            return;
-        }
-        
-        // إظهار حالة التحميل
-        this.classList.add('loading');
-        
-        // محاكاة AJAX
-        loadMoreThemes(nextPage).then(success => {
-            this.classList.remove('loading');
-            
-            if (success) {
-                this.dataset.page = nextPage;
-                
-                if (nextPage >= maxPages) {
-                    this.style.display = 'none';
-                    showNotification('تم تحميل جميع القوالب', 'success');
-                }
-            } else {
-                showNotification('حدث خطأ في التحميل', 'error');
-            }
-        });
-    });
-}
-
-// تحميل قوالب إضافية
-function loadMoreThemes(page) {
-    return new Promise((resolve) => {
-        // محاكاة طلب AJAX
-        if (typeof jQuery !== 'undefined' && typeof ArchiveData !== 'undefined') {
-            jQuery.ajax({
-                url: ArchiveData.ajaxUrl,
-                type: 'POST',
-                data: {
-                    action: 'load_more_themes',
-                    page: page,
-                    nonce: ArchiveData.nonce
-                },
-                success: function(response) {
-                    if (response.success && response.data.html) {
-                        const themesGrid = document.getElementById('themes-grid');
-                        const loadMoreSection = document.querySelector('.load-more-section');
-                        
-                        // إضافة القوالب الجديدة
-                        loadMoreSection.insertAdjacentHTML('beforebegin', response.data.html);
-                        
-                        // إعادة تهيئة الحركات
-                        initAnimations();
-                        initThemeCards();
-                        
-                        resolve(true);
-                    } else {
-                        resolve(false);
-                    }
-                },
-                error: function() {
-                    resolve(false);
-                }
-            });
-        } else {
-            // محاكاة بسيطة
-            setTimeout(() => {
-                resolve(Math.random() > 0.2); // نجاح 80%
-            }, 1000);
-        }
-    });
-}
-
-// 🎨 بطاقات القوالب التفاعلية
-function initThemeCards() {
-    const cards = document.querySelectorAll('.theme-card');
-    
-    cards.forEach(card => {
-        // إزالة معالجات الأحداث السابقة
-        card.replaceWith(card.cloneNode(true));
-    });
-    
-    // إعادة الحصول على البطاقات بعد النسخ
-    const newCards = document.querySelectorAll('.theme-card');
-    
-    newCards.forEach(card => {
-        // النقر للانتقال للصفحة
-        card.addEventListener('click', function(e) {
-            // تجاهل النقر على الروابط
-            if (e.target.tagName === 'A' || e.target.closest('a')) {
-                return;
-            }
-            
-            const link = this.querySelector('.theme-title a');
-            if (link) {
-                // تأثير انتقالي
-                this.style.transform = 'scale(0.95)';
-                this.style.opacity = '0.8';
-                
-                setTimeout(() => {
-                    window.location.href = link.href;
-                }, 200);
-            }
-        });
-        
-        // تأثيرات الماوس
-        card.addEventListener('mouseenter', function() {
-            this.style.zIndex = '10';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.zIndex = '';
-        });
-    });
-}
-
-// ✨ نظام الحركات
-function initAnimations() {
-    const cards = document.querySelectorAll('.theme-card-wrapper');
-    
-    // مراقب التقاطع للحركات
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.classList.add('animate-in');
-                }, index * 100);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '50px'
-    });
-    
-    cards.forEach(card => {
-        card.classList.remove('animate-in');
-        observer.observe(card);
-    });
-}
-
-// ⭐ نظام الجسيمات
+// نظام الجسيمات المتحركة
 function initParticles() {
     const canvas = document.getElementById('particles-canvas');
     if (!canvas) return;
@@ -1707,40 +1353,357 @@ function initParticles() {
             this.speedY = (Math.random() - 0.5) * 0.8;
             this.color = this.getRandomColor();
             this.opacity = Math.random() * 0.5 + 0.2;
-            this.pulse = Math.random() * 0.02 + 0.01;
+            this.life = 1.0;
+            this.decay = Math.random() * 0.003 + 0.001;
         }
         
         getRandomColor() {
-            const isDark = document.body.classList.contains('dark-mode');
-            if (isDark) {
-                const colors = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b'];
-                return colors[Math.floor(Math.random() * colors.length)];
-            } else {
-                const colors = ['#3b82f6', '#8b5cf6', '#ec4899', '#10b981'];
-                return colors[Math.floor(Math.random() * colors.length)];
-            }
+            const colors = [
+                '#3b82f6',
+                '#8b5cf6', 
+                '#ec4899',
+                '#10b981'
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
         }
         
         update() {
             this.x += this.speedX;
             this.y += this.speedY;
             
-            // إعادة تدوير
+            // إعادة تدوير الجسيمات
             if (this.x > canvas.width) this.x = 0;
             if (this.x < 0) this.x = canvas.width;
             if (this.y > canvas.height) this.y = 0;
             if (this.y < 0) this.y = canvas.height;
             
-            // نبض
-            this.opacity += this.pulse;
-            if (this.opacity > 0.7 || this.opacity < 0.1) {
-                this.pulse *= -1;
+            // دورة الحياة
+            this.life -= this.decay;
+            if (this.life <= 0) {
+                this.reset();
             }
         }
         
         draw() {
             ctx.save();
-            ctx.globalAlpha = this.opacity;
+            ctx.globalAlpha = this.opacity * this.life;
             ctx.fillStyle = this.color;
+            
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
+        }
+    }
+    
+    // إنشاء الجسيمات
+    for (let i = 0; i < 100; i++) {
+        particles.push(new Particle());
+    }
+    
+    // حلقة الرسم
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+        
+        animationId = requestAnimationFrame(animate);
+    }
+    
+    animate();
+}
+
+// نظام تبديل المظهر
+function initThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (!themeToggle) return;
+    
+    // قراءة المظهر المحفوظ
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    applyTheme(savedTheme);
+    
+    // معالج النقر
+    themeToggle.addEventListener('click', function() {
+        const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        // تأثير ريبل
+        const ripple = this.querySelector('.toggle-ripple');
+        ripple.style.width = '120px';
+        ripple.style.height = '120px';
+        
+        setTimeout(() => {
+            ripple.style.width = '0';
+            ripple.style.height = '0';
+        }, 600);
+    });
+    
+    function applyTheme(theme) {
+        document.body.classList.remove('dark-mode', 'light-mode');
+        document.body.classList.add(theme + '-mode');
+    }
+}
+
+// نظام البحث والفلاتر
+function initSearchAndFilters() {
+    const searchInput = document.getElementById('theme-search');
+    const searchClear = document.getElementById('search-clear');
+    const categoryFilter = document.getElementById('category-filter');
+    const sortFilter = document.getElementById('sort-filter');
+    
+    let searchTimeout;
+    
+    // البحث
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            
+            if (query.length > 0) {
+                searchClear.classList.add('show');
+            } else {
+                searchClear.classList.remove('show');
+            }
+            
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                performSearch(query);
+            }, 300);
+        });
+    }
+    
+    // مسح البحث
+    if (searchClear) {
+        searchClear.addEventListener('click', function() {
+            searchInput.value = '';
+            this.classList.remove('show');
+            performSearch('');
+        });
+    }
+    
+    // فلاتر
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', function() {
+            applyFilters();
+        });
+    }
+    
+    if (sortFilter) {
+        sortFilter.addEventListener('change', function() {
+            applyFilters();
+        });
+    }
+    
+    function performSearch(query) {
+        const cards = document.querySelectorAll('.theme-card-wrapper');
+        let visibleCount = 0;
+        
+        cards.forEach(card => {
+            const title = card.dataset.title.toLowerCase();
+            const categories = card.dataset.categories.toLowerCase();
+            
+            if (query === '' || title.includes(query.toLowerCase()) || categories.includes(query.toLowerCase())) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        updateResultsCount(visibleCount);
+    }
+    
+    function applyFilters() {
+        const category = categoryFilter ? categoryFilter.value : '';
+        const sort = sortFilter ? sortFilter.value : '';
+        const searchQuery = searchInput ? searchInput.value.toLowerCase() : '';
+        
+        let cards = Array.from(document.querySelectorAll('.theme-card-wrapper'));
+        let visibleCards = [];
+        
+        // تطبيق الفلاتر
+        cards.forEach(card => {
+            let show = true;
+            
+            // فلتر التصنيف
+            if (category && !card.dataset.categories.includes(category)) {
+                show = false;
+            }
+            
+            // فلتر البحث
+            if (searchQuery) {
+                const title = card.dataset.title.toLowerCase();
+                const categories = card.dataset.categories.toLowerCase();
+                if (!title.includes(searchQuery) && !categories.includes(searchQuery)) {
+                    show = false;
+                }
+            }
+            
+            if (show) {
+                card.style.display = 'block';
+                visibleCards.push(card);
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        // تطبيق الترتيب
+        if (sort && visibleCards.length > 0) {
+            visibleCards.sort((a, b) => {
+                switch (sort) {
+                    case 'title-asc':
+                        return a.dataset.title.localeCompare(b.dataset.title);
+                    case 'title-desc':
+                        return b.dataset.title.localeCompare(a.dataset.title);
+                    case 'date-asc':
+                        return new Date(a.dataset.date) - new Date(b.dataset.date);
+                    case 'date-desc':
+                        return new Date(b.dataset.date) - new Date(a.dataset.date);
+                    case 'downloads-asc':
+                        return parseInt(a.dataset.downloads) - parseInt(b.dataset.downloads);
+                    case 'downloads-desc':
+                        return parseInt(b.dataset.downloads) - parseInt(a.dataset.downloads);
+                    case 'rating-desc':
+                        return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+                    default:
+                        return 0;
+                }
+            });
+            
+            // إعادة ترتيب العناصر في DOM
+            const grid = document.getElementById('themes-grid');
+            visibleCards.forEach(card => {
+                grid.appendChild(card);
+            });
+        }
+        
+        updateResultsCount(visibleCards.length);
+    }
+    
+    function updateResultsCount(count) {
+        const resultsCount = document.getElementById('results-count');
+        if (resultsCount) {
+            resultsCount.textContent = `تم العثور على ${count} قالب`;
+        }
+    }
+    
+    // التهيئة الأولية
+    updateResultsCount(document.querySelectorAll('.theme-card-wrapper:not([style*="display: none"])').length);
+}
+
+// نظام تبديل طرق العرض
+function initViewToggle() {
+    const viewBtns = document.querySelectorAll('.view-btn');
+    const themesGrid = document.getElementById('themes-grid');
+    
+    if (!viewBtns.length || !themesGrid) return;
+    
+    viewBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const view = this.dataset.view;
+            
+            // تحديث الأزرار
+            viewBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // تحديث الشبكة
+            themesGrid.classList.remove('view-grid', 'view-list');
+            themesGrid.classList.add(`view-${view}`);
+            
+            // حفظ التفضيل
+            localStorage.setItem('preferred-view', view);
+        });
+    });
+    
+    // تطبيق التفضيل المحفوظ
+    const savedView = localStorage.getItem('preferred-view') || 'grid';
+    const savedViewBtn = document.querySelector(`[data-view="${savedView}"]`);
+    if (savedViewBtn) {
+        savedViewBtn.click();
+    }
+}
+
+// نظام تحميل المزيد
+function initLoadMore() {
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (!loadMoreBtn) return;
+    
+    let currentPage = 1;
+    let isLoading = false;
+    
+    loadMoreBtn.addEventListener('click', function() {
+        if (isLoading) return;
+        
+        isLoading = true;
+        currentPage++;
+        
+        // تأثير التحميل
+        this.classList.add('loading');
+        this.querySelector('.btn-text').textContent = 'جاري التحميل...';
+        
+        // محاكاة تحميل البيانات
+        setTimeout(() => {
+            // هنا يمكن إضافة AJAX لتحميل المزيد من القوالب
+            
+            isLoading = false;
+            this.classList.remove('loading');
+            this.querySelector('.btn-text').textContent = 'تحميل المزيد';
+            
+            // إخفاء الزر إذا لم تعد هناك نتائج
+            if (currentPage >= 5) { // محاكاة نهاية النتائج
+                this.style.display = 'none';
+            }
+        }, 2000);
+    });
+}
+
+// تأثيرات الماوس
+function initMouseEffects() {
+    let mouseX = 0;
+    let mouseY = 0;
+    
+    document.addEventListener('mousemove', function(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        // تأثير تتبع الماوس
+        if (Math.random() < 0.1) {
+            createMouseTrail(mouseX, mouseY);
+        }
+    });
+    
+    function createMouseTrail(x, y) {
+        const trail = document.createElement('div');
+        const size = Math.random() * 8 + 4;
+        const colors = ['#3b82f6', '#8b5cf6', '#ec4899', '#10b981'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        trail.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: ${size}px;
+            height: ${size}px;
+            background: ${color};
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            animation: trailFade 1.5s ease-out forwards;
+        `;
+        
+        document.body.appendChild(trail);
+        
+        setTimeout(() => trail.remove(), 1500);
+    }
+}
+
+// تأثيرات الحركة
+function initAnimations() {
+    // مرا
