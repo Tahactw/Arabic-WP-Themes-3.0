@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-get_header(); ?>
+//get_header(); ?>
 
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -31,17 +31,16 @@ get_header(); ?>
 </head>
 <body <?php body_class('archive-themes-page'); ?>>
 
-<!-- أيقونة Dark/Light Mode في الجانب -->
-<div class="theme-toggle-sidebar">
-    <button id="theme-toggle" class="theme-toggle-btn" title="تغيير المظهر">
-        <div class="toggle-icon">
-            <i class="fas fa-sun sun-icon"></i>
-            <i class="fas fa-moon moon-icon"></i>
+
+<!-- زر العودة للصفحة الرئيسية -->
+<div class="home-button-sidebar">
+    <button id="home-button" class="home-btn" title="العودة للصفحة الرئيسية" onclick="window.location.href='<?php echo home_url(); ?>'">
+        <div class="home-icon">
+            <i class="fas fa-home"></i>
         </div>
-        <div class="toggle-ripple"></div>
+        <div class="home-ripple"></div>
     </button>
 </div>
-
 <!-- Canvas للجسيمات المتحركة -->
 <canvas id="particles-canvas"></canvas>
 
@@ -330,14 +329,7 @@ get_header(); ?>
                     endif;
                     ?>
                 </div>
-                
-                <!-- تحميل المزيد -->
-                <div class="load-more-section">
-                    <button id="load-more-btn" class="load-more-btn">
-                        <span class="btn-text">تحميل المزيد</span>
-                        <div class="btn-loader"></div>
-                    </button>
-                </div>
+        
             </div>
         </div>
     </section>
@@ -442,6 +434,7 @@ html, body {
 }
 
 /* أيقونة Dark/Light Mode */
+/* أيقونة Dark/Light Mode - محدثة ومحسنة */
 .theme-toggle-sidebar {
     position: fixed;
     right: 30px;
@@ -474,6 +467,10 @@ html, body {
     box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
 }
 
+.theme-toggle-btn:active {
+    transform: scale(0.95);
+}
+
 .toggle-icon {
     position: relative;
     width: 24px;
@@ -503,33 +500,164 @@ html, body {
     transform: translate(-50%, -50%) rotate(180deg) scale(0);
 }
 
-/* Dark mode */
-body.dark-mode .sun-icon {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(-180deg) scale(0);
+
+
+/* زر العودة للصفحة الرئيسية */
+.home-button-sidebar {
+    position: fixed;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 9999;
 }
 
-body.dark-mode .moon-icon {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+.home-btn {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(26, 26, 46, 0.9);
+    border: 2px solid rgba(16, 185, 129, 0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.toggle-ripple {
+.home-btn:hover {
+    transform: scale(1.1);
+    border-color: #10b981;
+    box-shadow: 0 12px 40px rgba(16, 185, 129, 0.4);
+}
+
+.home-btn:active {
+    transform: scale(0.95);
+}
+
+.home-icon {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
+}
+
+.home-icon i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    color: #10b981;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.home-btn:hover .home-icon i {
+    color: #ffffff;
+    transform: translate(-50%, -50%) scale(1.1);
+    filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.6));
+}
+
+.home-ripple {
     position: absolute;
     top: 50%;
     left: 50%;
     width: 0;
     height: 0;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     transition: all 0.6s ease;
     pointer-events: none;
 }
 
-.theme-toggle-btn:active .toggle-ripple {
+.home-btn:active .home-ripple {
     width: 120px;
     height: 120px;
+}
+
+/* Dark mode للزر الرئيسي */
+body.dark-mode .home-btn {
+    background: rgba(15, 23, 42, 0.9);
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+body.light-mode .home-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 8px 32px rgba(16, 185, 129, 0.2);
+}
+
+body.light-mode .home-btn:hover {
+    box-shadow: 0 12px 40px rgba(16, 185, 129, 0.3);
+}
+
+/* تأثيرات إضافية للزر */
+.home-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: linear-gradient(45deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.home-btn:hover::before {
+    opacity: 1;
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* تحسينات للهواتف المحمولة */
+@media (max-width: 768px) {
+    .home-button-sidebar {
+        left: 15px;
+        top: calc(50% + 80px); /* تحت زر تغيير المظهر */
+    }
+    
+    .home-btn {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .home-icon i {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-button-sidebar {
+        left: 10px;
+        top: calc(50% + 70px);
+    }
+    
+    .home-btn {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .home-icon i {
+        font-size: 14px;
+    }
+}
+
+/* تأثيرات خاصة للمس */
+@media (hover: none) {
+    .home-btn:hover {
+        transform: scale(1.05);
+    }
 }
 
 /* Canvas الجسيمات */
@@ -595,6 +723,128 @@ body.dark-mode .moon-icon {
 .cinematic-portal.active {
     display: flex;
     backdrop-filter: blur(20px);
+}
+
+.portal-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    animation: portalPulse 4s ease-in-out infinite;
+}
+
+.portal-wave {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-radius: 50%;
+    animation: portalExpand 3s ease-out infinite;
+}
+
+.floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.floating-icon,
+.floating-letter {
+    position: absolute;
+    font-size: 2rem;
+    color: rgba(59, 130, 246, 0.6);
+    animation: floatAround 15s linear infinite;
+}
+
+.floating-icon:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+.floating-icon:nth-child(2) { left: 80%; top: 10%; animation-delay: -2s; }
+.floating-icon:nth-child(3) { left: 90%; top: 70%; animation-delay: -4s; }
+.floating-icon:nth-child(4) { left: 20%; top: 80%; animation-delay: -6s; }
+.floating-icon:nth-child(5) { left: 60%; top: 15%; animation-delay: -8s; }
+.floating-icon:nth-child(6) { left: 15%; top: 60%; animation-delay: -10s; }
+
+.floating-letter:nth-child(7) { left: 30%; top: 30%; animation-delay: -1s; }
+.floating-letter:nth-child(8) { left: 70%; top: 40%; animation-delay: -3s; }
+.floating-letter:nth-child(9) { left: 50%; top: 80%; animation-delay: -5s; }
+.floating-letter:nth-child(10) { left: 25%; top: 15%; animation-delay: -7s; }
+.floating-letter:nth-child(11) { left: 85%; top: 55%; animation-delay: -9s; }
+
+.portal-center {
+    position: relative;
+    z-index: 2;
+}
+
+.portal-rings {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.ring {
+    position: absolute;
+    border: 2px solid rgba(59, 130, 246, 0.4);
+    border-radius: 50%;
+    animation: ringRotate 8s linear infinite;
+}
+
+.ring-1 { width: 50px; height: 50px; top: 75px; left: 75px; }
+.ring-2 { width: 100px; height: 100px; top: 50px; left: 50px; animation-direction: reverse; }
+.ring-3 { width: 150px; height: 150px; top: 25px; left: 25px; }
+.ring-4 { width: 200px; height: 200px; top: 0; left: 0; animation-direction: reverse; }
+
+.portal-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    animation: coreGlow 2s ease-in-out infinite alternate;
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+}
+
+@keyframes portalPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+@keyframes portalExpand {
+    0% { width: 0; height: 0; opacity: 1; }
+    100% { width: 600px; height: 600px; opacity: 0; }
+}
+
+@keyframes floatAround {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(50px, -30px) rotate(90deg); }
+    50% { transform: translate(0, -60px) rotate(180deg); }
+    75% { transform: translate(-50px, -30px) rotate(270deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes ringRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes coreGlow {
+    0% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+    100% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
 }
 
 /* المحتوى الرئيسي */
@@ -685,6 +935,41 @@ body.dark-mode .moon-icon {
 
 .search-clear.show {
     opacity: 1;
+}
+
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(26, 26, 46, 0.95);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: var(--border-radius-lg);
+    backdrop-filter: blur(20px);
+    margin-top: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 100;
+}
+
+.search-suggestions.show {
+    display: block;
+}
+
+.suggestion-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background: rgba(59, 130, 246, 0.1);
 }
 
 .filters-row {
@@ -1067,6 +1352,18 @@ body.dark-mode .moon-icon {
     font-size: var(--font-size-2xl);
 }
 
+/* رسالة عدم وجود قوالب */
+.no-themes {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-3xl);
+    color: var(--dark-400);
+    font-size: var(--font-size-xl);
+    background: rgba(26, 26, 46, 0.3);
+    border-radius: var(--border-radius-xl);
+    border: 2px dashed rgba(59, 130, 246, 0.3);
+}
+
 /* تحميل المزيد */
 .load-more-section {
     text-align: center;
@@ -1153,6 +1450,17 @@ body.dark-mode .moon-icon {
     border-color: var(--error-color);
 }
 
+/* حركة ظهور رسائل Toast */
+@keyframes toastFadeIn {
+    from { opacity: 0; transform: translateX(100%); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes trailFade {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+}
+
 /* Dark Mode و Light Mode */
 body.dark-mode {
     background: #000000;
@@ -1188,6 +1496,10 @@ body.light-mode .view-controls {
 
 body.light-mode .theme-title a {
     color: #1e293b;
+}
+
+body.light-mode .main-search-section {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 /* التصميم المتجاوب */
@@ -1313,12 +1625,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // تهيئة جميع التأثيرات
     initParticles();
-    initThemeToggle();
+    initHomeButton(); // إضافة هذا السطر
     initSearchAndFilters();
     initViewToggle();
     initLoadMore();
     initMouseEffects();
     initAnimations();
+    initToastSystem();
 });
 
 // نظام الجسيمات المتحركة
@@ -1417,25 +1730,18 @@ function initParticles() {
     animate();
 }
 
-// نظام تبديل المظهر
-function initThemeToggle() {
-    const themeToggle = document.getElementById('theme-toggle');
-    if (!themeToggle) return;
-    
-    // قراءة المظهر المحفوظ
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    applyTheme(savedTheme);
+
+// تهيئة زر العودة للصفحة الرئيسية
+function initHomeButton() {
+    const homeButton = document.getElementById('home-button');
+    if (!homeButton) return;
     
     // معالج النقر
-    themeToggle.addEventListener('click', function() {
-        const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        applyTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
+    homeButton.addEventListener('click', function(e) {
+        e.preventDefault();
         
         // تأثير ريبل
-        const ripple = this.querySelector('.toggle-ripple');
+        const ripple = this.querySelector('.home-ripple');
         ripple.style.width = '120px';
         ripple.style.height = '120px';
         
@@ -1443,13 +1749,27 @@ function initThemeToggle() {
             ripple.style.width = '0';
             ripple.style.height = '0';
         }, 600);
+        
+        // إظهار toast
+        showToast('جاري الانتقال للصفحة الرئيسية...', 'info', 1500);
+        
+        // تأخير قصير للسماح برؤية التأثير
+        setTimeout(() => {
+            window.location.href = homeButton.getAttribute('onclick').match(/'([^']+)'/)[1];
+        }, 300);
     });
     
-    function applyTheme(theme) {
-        document.body.classList.remove('dark-mode', 'light-mode');
-        document.body.classList.add(theme + '-mode');
-    }
+    // تأثير hover إضافي
+    homeButton.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.1) rotate(5deg)';
+    });
+    
+    homeButton.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1) rotate(0deg)';
+    });
 }
+
+
 
 // نظام البحث والفلاتر
 function initSearchAndFilters() {
@@ -1457,6 +1777,7 @@ function initSearchAndFilters() {
     const searchClear = document.getElementById('search-clear');
     const categoryFilter = document.getElementById('category-filter');
     const sortFilter = document.getElementById('sort-filter');
+    const searchSuggestions = document.getElementById('search-suggestions');
     
     let searchTimeout;
     
@@ -1467,14 +1788,32 @@ function initSearchAndFilters() {
             
             if (query.length > 0) {
                 searchClear.classList.add('show');
+                generateSearchSuggestions(query);
             } else {
                 searchClear.classList.remove('show');
+                hideSearchSuggestions();
             }
             
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 performSearch(query);
             }, 300);
+        });
+
+                // البحث بالضغط على Enter
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch(this.value.trim());
+                hideSearchSuggestions();
+            }
+        });
+        
+        // إخفاء الاقتراحات عند النقر خارجها
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
+                hideSearchSuggestions();
+            }
         });
     }
     
@@ -1484,6 +1823,8 @@ function initSearchAndFilters() {
             searchInput.value = '';
             this.classList.remove('show');
             performSearch('');
+            hideSearchSuggestions();
+            searchInput.focus();
         });
     }
     
@@ -1491,13 +1832,70 @@ function initSearchAndFilters() {
     if (categoryFilter) {
         categoryFilter.addEventListener('change', function() {
             applyFilters();
+            showToast('تم تطبيق فلتر التصنيف', 'success');
         });
     }
     
     if (sortFilter) {
         sortFilter.addEventListener('change', function() {
             applyFilters();
+            showToast('تم تطبيق الترتيب', 'success');
         });
+    }
+    
+    // إنشاء اقتراحات البحث
+    function generateSearchSuggestions(query) {
+        const allThemes = document.querySelectorAll('.theme-card-wrapper');
+        const suggestions = new Set();
+        
+        allThemes.forEach(card => {
+            const title = card.dataset.title.toLowerCase();
+            const categories = card.dataset.categories.toLowerCase();
+            
+            if (title.includes(query.toLowerCase())) {
+                suggestions.add(card.dataset.title);
+            }
+            
+            if (categories.includes(query.toLowerCase())) {
+                const categoryArray = categories.split(',');
+                categoryArray.forEach(cat => {
+                    if (cat.includes(query.toLowerCase())) {
+                        suggestions.add(cat.charAt(0).toUpperCase() + cat.slice(1));
+                    }
+                });
+            }
+        });
+        
+        displaySearchSuggestions(Array.from(suggestions).slice(0, 5));
+    }
+    
+    // عرض اقتراحات البحث
+    function displaySearchSuggestions(suggestions) {
+        if (suggestions.length === 0) {
+            hideSearchSuggestions();
+            return;
+        }
+        
+        searchSuggestions.innerHTML = '';
+        
+        suggestions.forEach(suggestion => {
+            const item = document.createElement('div');
+            item.className = 'suggestion-item';
+            item.textContent = suggestion;
+            item.addEventListener('click', function() {
+                searchInput.value = suggestion;
+                performSearch(suggestion);
+                hideSearchSuggestions();
+            });
+            searchSuggestions.appendChild(item);
+        });
+        
+        searchSuggestions.classList.add('show');
+    }
+    
+    // إخفاء اقتراحات البحث
+    function hideSearchSuggestions() {
+        searchSuggestions.classList.remove('show');
     }
     
     function performSearch(query) {
@@ -1511,12 +1909,22 @@ function initSearchAndFilters() {
             if (query === '' || title.includes(query.toLowerCase()) || categories.includes(query.toLowerCase())) {
                 card.style.display = 'block';
                 visibleCount++;
+                
+                // تأثير ظهور البطاقة
+                setTimeout(() => {
+                    card.classList.add('animate-in');
+                }, Math.random() * 200);
             } else {
                 card.style.display = 'none';
+                card.classList.remove('animate-in');
             }
         });
         
         updateResultsCount(visibleCount);
+        
+        if (visibleCount === 0) {
+            showToast('لم يتم العثور على نتائج للبحث المطلوب', 'error');
+        }
     }
     
     function applyFilters() {
@@ -1548,8 +1956,14 @@ function initSearchAndFilters() {
             if (show) {
                 card.style.display = 'block';
                 visibleCards.push(card);
+                
+                // تأثير ظهور البطاقة
+                setTimeout(() => {
+                    card.classList.add('animate-in');
+                }, Math.random() * 200);
             } else {
                 card.style.display = 'none';
+                card.classList.remove('animate-in');
             }
         });
         
@@ -1558,9 +1972,9 @@ function initSearchAndFilters() {
             visibleCards.sort((a, b) => {
                 switch (sort) {
                     case 'title-asc':
-                        return a.dataset.title.localeCompare(b.dataset.title);
+                        return a.dataset.title.localeCompare(b.dataset.title, 'ar');
                     case 'title-desc':
-                        return b.dataset.title.localeCompare(a.dataset.title);
+                        return b.dataset.title.localeCompare(a.dataset.title, 'ar');
                     case 'date-asc':
                         return new Date(a.dataset.date) - new Date(b.dataset.date);
                     case 'date-desc':
@@ -1578,7 +1992,8 @@ function initSearchAndFilters() {
             
             // إعادة ترتيب العناصر في DOM
             const grid = document.getElementById('themes-grid');
-            visibleCards.forEach(card => {
+            visibleCards.forEach((card, index) => {
+                card.style.order = index;
                 grid.appendChild(card);
             });
         }
@@ -1618,6 +2033,9 @@ function initViewToggle() {
             
             // حفظ التفضيل
             localStorage.setItem('preferred-view', view);
+            
+            // إظهار toast
+            showToast(view === 'grid' ? 'تم التبديل إلى عرض الشبكة' : 'تم التبديل إلى عرض القائمة', 'success');
         });
     });
     
@@ -1647,20 +2065,153 @@ function initLoadMore() {
         this.classList.add('loading');
         this.querySelector('.btn-text').textContent = 'جاري التحميل...';
         
-        // محاكاة تحميل البيانات
+        // محاكاة تحميل البيانات عبر AJAX
         setTimeout(() => {
-            // هنا يمكن إضافة AJAX لتحميل المزيد من القوالب
-            
-            isLoading = false;
-            this.classList.remove('loading');
-            this.querySelector('.btn-text').textContent = 'تحميل المزيد';
-            
-            // إخفاء الزر إذا لم تعد هناك نتائج
-            if (currentPage >= 5) { // محاكاة نهاية النتائج
-                this.style.display = 'none';
-            }
+            // إضافة قوالب جديدة (محاكاة)
+            loadMoreThemes().then(newThemes => {
+                if (newThemes.length > 0) {
+                    appendNewThemes(newThemes);
+                    showToast(`تم تحميل ${newThemes.length} قالب جديد`, 'success');
+                } else {
+                    showToast('لا توجد قوالب إضافية للتحميل', 'info');
+                    this.style.display = 'none';
+                }
+                
+                isLoading = false;
+                this.classList.remove('loading');
+                this.querySelector('.btn-text').textContent = 'تحميل المزيد';
+                
+                // إخفاء الزر إذا لم تعد هناك نتائج
+                if (currentPage >= 5) { // محاكاة نهاية النتائج
+                    this.style.display = 'none';
+                    showToast('تم عرض جميع القوالب المتاحة', 'info');
+                }
+            });
         }, 2000);
     });
+    
+    // دالة محاكاة تحميل المزيد من القوالب
+    async function loadMoreThemes() {
+        // في التطبيق الحقيقي، هذه ستكون استدعاء AJAX
+        return new Promise(resolve => {
+            setTimeout(() => {
+                // محاكاة بيانات قوالب جديدة
+                const mockThemes = [];
+                for (let i = 0; i < 6; i++) {
+                    mockThemes.push({
+                        id: Date.now() + i,
+                        title: `قالب جديد ${currentPage}-${i + 1}`,
+                        image: 'https://via.placeholder.com/400x300',
+                        rating: Math.random() * 5,
+                        downloads: Math.floor(Math.random() * 10000),
+                        categories: ['جديد'],
+                        featured: Math.random() > 0.7
+                    });
+                }
+                resolve(mockThemes);
+            }, 1000);
+        });
+    }
+    
+    // إضافة القوالب الجديدة إلى الشبكة
+    function appendNewThemes(themes) {
+        const grid = document.getElementById('themes-grid');
+        
+        themes.forEach((theme, index) => {
+            const themeHtml = createThemeCardHTML(theme);
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = themeHtml;
+            const card = wrapper.firstElementChild;
+            
+            // تأثير ظهور متتالي
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            grid.appendChild(card);
+            
+            setTimeout(() => {
+                card.classList.add('animate-in');
+            }, index * 100);
+        });
+        
+        // تحديث عداد النتائج
+        const visibleCards = document.querySelectorAll('.theme-card-wrapper:not([style*="display: none"])');
+        const resultsCount = document.getElementById('results-count');
+        if (resultsCount) {
+            resultsCount.textContent = `تم العثور على ${visibleCards.length} قالب`;
+        }
+    }
+    
+    // إنشاء HTML لبطاقة قالب جديد
+    function createThemeCardHTML(theme) {
+        const stars = generateStarsHTML(theme.rating);
+        
+        return `
+            <div class="theme-card-wrapper animate-in" 
+                 data-theme-id="${theme.id}"
+                 data-title="${theme.title}"
+                 data-categories="${theme.categories.join(',')}"
+                 data-date="${new Date().toISOString()}"
+                 data-downloads="${theme.downloads}"
+                 data-rating="${theme.rating}"
+                 data-featured="${theme.featured}">
+                 
+                <article class="theme-card">
+                    <div class="theme-badges">
+                        ${theme.featured ? '<span class="badge badge-featured"><i class="fas fa-star"></i> مميز</span>' : ''}
+                        <span class="badge badge-new"><i class="fas fa-plus"></i> جديد</span>
+                    </div>
+
+                    <div class="theme-preview">
+                        <img src="${theme.image}" alt="${theme.title}" loading="lazy">
+                        <div class="theme-preview-overlay"></div>
+                    </div>
+
+                    <div class="theme-content">
+                        <h3 class="theme-title">
+                            <a href="#">${theme.title}</a>
+                        </h3>
+                        
+                        <div class="theme-rating">
+                            <div class="rating-stars">
+                                ${stars}
+                                <span class="rating-value">(${theme.rating.toFixed(1)})</span>
+                            </div>
+                        </div>
+                        
+                        <div class="theme-meta">
+                            <div class="theme-downloads">
+                                <i class="fas fa-download"></i>
+                                <span>${theme.downloads.toLocaleString()} تحميل</span>
+                            </div>
+                            
+                            <div class="theme-categories">
+                                <span class="category-tag">${theme.categories[0]}</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        `;
+    }
+    
+    // إنشاء نجوم التقييم
+    function generateStarsHTML(rating) {
+        let html = '';
+        const fullStars = Math.floor(rating);
+        const hasHalf = (rating - fullStars) >= 0.5;
+        
+        for (let i = 1; i <= 5; i++) {
+            if (i <= fullStars) {
+                html += '<i class="fas fa-star"></i>';
+            } else if (i === fullStars + 1 && hasHalf) {
+                html += '<i class="fas fa-star-half-alt"></i>';
+            } else {
+                html += '<i class="far fa-star"></i>';
+            }
+        }
+        
+        return html;
+    }
 }
 
 // تأثيرات الماوس
@@ -1673,9 +2224,12 @@ function initMouseEffects() {
         mouseY = e.clientY;
         
         // تأثير تتبع الماوس
-        if (Math.random() < 0.1) {
+        if (Math.random() < 0.05) { // تقليل التكرار
             createMouseTrail(mouseX, mouseY);
         }
+        
+        // تأثير parallax للطبقات
+        updateParallaxLayers(mouseX, mouseY);
     });
     
     function createMouseTrail(x, y) {
@@ -1702,8 +2256,223 @@ function initMouseEffects() {
         
         setTimeout(() => trail.remove(), 1500);
     }
+    
+    function updateParallaxLayers(mouseX, mouseY) {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        const deltaX = (mouseX - centerX) / centerX;
+        const deltaY = (mouseY - centerY) / centerY;
+        
+        const layers = document.querySelectorAll('.parallax-layer');
+        layers.forEach((layer, index) => {
+            const speed = parseFloat(layer.dataset.speed) || 0.1;
+            const x = deltaX * speed * 20;
+            const y = deltaY * speed * 20;
+            
+            layer.style.transform = `translate(${x}px, ${y}px)`;
+        });
+    }
 }
 
-// تأثيرات الحركة
+// تأثيرات الحركة والانيميشن
 function initAnimations() {
-    // مرا
+    // مراقبة ظهور العناصر
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, observerOptions);
+    
+    // مراقبة بطاقات القوالب
+    document.querySelectorAll('.theme-card-wrapper').forEach(card => {
+        observer.observe(card);
+    });
+    
+    // تأثيرات التمرير
+    window.addEventListener('scroll', throttle(handleScroll, 16));
+    
+    function handleScroll() {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.5;
+        
+        // تأثير parallax للخلفية
+        const parallaxBg = document.querySelector('.parallax-background');
+        if (parallaxBg) {
+            parallaxBg.style.transform = `translateY(${rate}px)`;
+        }
+        
+        // إظهار/إخفاء زر العودة للأعلى
+        toggleBackToTop(scrolled);
+    }
+    
+    // زر العودة للأعلى
+    function toggleBackToTop(scrolled) {
+        let backToTopBtn = document.getElementById('back-to-top');
+        
+        if (!backToTopBtn) {
+            backToTopBtn = createBackToTopButton();
+        }
+        
+        if (scrolled > 500) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    }
+    
+    function createBackToTopButton() {
+        const btn = document.createElement('button');
+        btn.id = 'back-to-top';
+        btn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        btn.className = 'back-to-top-btn';
+        btn.title = 'العودة للأعلى';
+        
+        btn.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            z-index: 9998;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            font-size: 18px;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        `;
+        
+        btn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        document.body.appendChild(btn);
+        return btn;
+    }
+    
+    // تحسين الأداء مع throttle
+    function throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        }
+    }
+}
+
+// نظام رسائل Toast
+function initToastSystem() {
+    // إضافة CSS للزر back-to-top
+    const style = document.createElement('style');
+    style.textContent = `
+        .back-to-top-btn.show {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+        
+        .back-to-top-btn:hover {
+            transform: translateY(-3px) scale(1.1) !important;
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.4) !important;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// دالة إظهار رسائل Toast
+function showToast(message, type = 'info', duration = 3000) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    const icon = getToastIcon(type);
+    toast.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="${icon}" style="font-size: 18px;"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    container.appendChild(toast);
+    
+    // إظهار الرسالة
+    setTimeout(() => toast.classList.add('show'), 100);
+    
+    // إخفاء الرسالة
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
+}
+
+function getToastIcon(type) {
+    switch (type) {
+        case 'success': return 'fas fa-check-circle';
+        case 'error': return 'fas fa-exclamation-circle';
+        case 'warning': return 'fas fa-exclamation-triangle';
+        case 'info': 
+        default: return 'fas fa-info-circle';
+    }
+}
+
+// معالجة الأخطاء العامة
+window.addEventListener('error', function(e) {
+    console.error('خطأ في JavaScript:', e.error);
+    showToast('حدث خطأ غير متوقع', 'error');
+});
+
+// تحسين الأداء
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+        // إيقاف الأنيميشن عند إخفاء الصفحة
+        const canvas = document.getElementById('particles-canvas');
+        if (canvas) {
+            canvas.style.display = 'none';
+        }
+    } else {
+        // استئناف الأنيميشن عند إظهار الصفحة
+        const canvas = document.getElementById('particles-canvas');
+        if (canvas) {
+            canvas.style.display = 'block';
+        }
+    }
+});
+
+// تهيئة البوابة السينمائية (اختيارية)
+function showCinematicPortal() {
+    const portal = document.getElementById('cinematic-portal');
+    if (!portal) return;
+    
+    portal.classList.add('active');
+    
+    setTimeout(() => {
+        portal.classList.remove('active');
+    }, 3000);
+}
+
+// استدعاء البوابة عند التحميل (اختيارية)
+// setTimeout(showCinematicPortal, 1000);
+
+</script>
+
+<?php get_footer(); ?>
